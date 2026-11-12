@@ -31,11 +31,45 @@ function tabela(cabs, linhas, vazio) {
 }
 const num = (v) => ({ num: true, v });
 
-function cartaoConta(r) {
+// v2.4.3b: a linha vem do M.placar (mesma conta de meta do painel: config_por_conta[conta].meta_dia_brl)
+function cartaoConta(l) {
+  const p = l.pct != null ? Math.round(l.pct * 100) : null;
   return el("div", { class: "g-cartao" },
-    el("div", { class: "g-rot" }, r.conta),
-    el("div", { class: "g-num" }, brl(Number(r.receita) || 0)),
-    el("div", { class: "g-sub" }, (r.vendas || 0) + " venda" + (Number(r.vendas) === 1 ? "" : "s") + " · " + (r.ppvs || 0) + " PPV · " + (r.jogadas || 0) + " jogada" + (Number(r.jogadas) === 1 ? "" : "s")));
+    el("div", { class: "g-rot" }, l.pos + "º · " + l.conta),
+    el("div", { class: "g-num" }, brl(l.receita)),
+    l.meta ? el("div", { class: "g-meta" },
+      el("i", { class: "dbar" + (p >= 100 ? " ok" : "") }, el("b", { style: "width:" + Math.min(100, p || 0) + "%" })),
+      el("span", { class: "g-sub" }, p + "% da meta de " + brl(l.meta))) : el("div", { class: "g-sub" }, "sem meta no JSON"),
+    el("div", { class: "g-sub" }, (l.vendas || 0) + " venda" + (l.vendas === 1 ? "" : "s") + " · " + (l.ppvs || 0) + " PPV · " + (l.jogadas || 0) + " jogada" + (l.jogadas === 1 ? "" : "s")),
+    el("div", { class: "g-sub" }, "ticket " + (l.ticket != null ? brl(l.ticket) : "—") + " · conversão " + (l.conversao != null ? Math.round(l.conversao * 100) + "%" : "—")));
+}
+
+// v2.4.3b · curva por hora SEM SQL novo: chama coach_relatorio_turno com 1..8 horas e tira a diferença
+// entre as janelas (acumulado de 2 h menos o de 1 h = a hora anterior). Só quando você pede, não a cada 60 s.
+async function carregarCurva() {
+  if (G.curvaCarregando) return;
+  G.curvaCarregando = true; desenhar();
+  try {
+    const janelas = await Promise.all([1, 2, 3, 4, 5, 6, 7, 8].map((h) => rpc("coach_relatorio_turno", { p_horas: h })));
+    const acum = janelas.map((j) => Number((j && j.receita) || 0));
+    const agora = new Date();
+    G.curva = acum.map((v, i) => ({ ha: i + 1, hora: new Date(agora - (i + 1) * 3600e3).getHours(), valor: Math.max(0, v - (i ? acum[i - 1] : 0)) })).reverse();
+  } catch (e) { G.curvaErro = "Não consegui montar a curva: " + (e.message || e); }
+  G.curvaCarregando = false; desenhar();
+}
+function blocoCurva(a) {
+  a.append(el("h3", {}, "Curva por hora"));
+  if (!G.curva) {
+    a.append(el("p", { class: "fraco pequeno" }, "Sua receita hora a hora nas últimas 8 h (das salas que você atendeu). São 8 leituras do banco, por isso não vem sozinha."));
+    a.append(el("button", { class: "btn mini", type: "button", disabled: !!G.curvaCarregando, onclick: carregarCurva }, G.curvaCarregando ? "Lendo…" : "Montar curva"));
+    if (G.curvaErro) a.append(el("div", { class: "nota falhou" }, G.curvaErro));
+    return;
+  }
+  const topo = Math.max(1, ...G.curva.map((h) => h.valor));
+  a.append(el("div", { class: "g-curva" }, G.curva.map((h) => el("div", { class: "g-col", title: h.valor ? brl(h.valor) : "nada nesta hora" },
+    el("i", { style: "height:" + Math.round((h.valor / topo) * 100) + "%" }),
+    el("span", {}, String(h.hora).padStart(2, "0") + "h")))),
+    el("p", { class: "pequeno fraco" }, "Maior hora: ", el("b", {}, brl(topo)), ". Medido pela diferença entre janelas do relatório de turno."));
 }
 
 function desenharGestor(a) {
@@ -49,11 +83,15 @@ function desenharGestor(a) {
   if (G.erro) a.append(el("div", { class: "nota falhou" }, G.erro));
   if (!G.em) { a.append(el("p", { class: "vazio" }, "Lendo o banco…")); return; }
 
-  // 1) hoje, por conta (coach_placar)
-  const totR = G.hoje.reduce((s, r) => s + (Number(r.receita) || 0), 0), totV = G.hoje.reduce((s, r) => s + (Number(r.vendas) || 0), 0);
+  // 1) hoje, por conta, com a meta de cada uma (coach_placar + M.placar)
+  const linhas = M.placar(G.hoje, R, null).linhas;
+  const totR = linhas.reduce((s, l) => s + l.receita, 0), totV = linhas.reduce((s, l) => s + l.vendas, 0);
+  const totM = linhas.reduce((s, l) => s + (Number(l.meta) || 0), 0);
   a.append(el("h3", {}, "Hoje, por conta"),
-    el("div", { class: "g-grade" }, G.hoje.map(cartaoConta)),
-    el("p", { class: "pequeno fraco" }, "Total do dia: ", el("b", {}, brl(totR)), " em " + totV + " venda" + (totV === 1 ? "" : "s") + "."));
+    el("div", { class: "g-grade" }, linhas.map(cartaoConta)),
+    el("p", { class: "pequeno fraco" }, "Total do dia: ", el("b", {}, brl(totR)), " em " + totV + " venda" + (totV === 1 ? "" : "s"),
+      totM ? el("span", {}, " · " + Math.round((totR / totM) * 100) + "% da meta somada (" + brl(totM) + ")") : null));
+  blocoCurva(a);
 
   // 2) turno (coach_relatorio_turno)
   const t = G.turno;

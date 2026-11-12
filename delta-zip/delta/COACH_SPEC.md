@@ -576,6 +576,14 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Cuidado de dado**: `grandes` do `coach_relatorio_turno` é `{nome, total, baleia}` e o valor é o **total na empresa**, não a receita do turno — a tabela diz "já gastou (total)".
 - **Testes**: `estatico.mjs` pega o módulo novo sozinho (regra `painel*.js`): passividade e declaração no `painel.html`. `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok. Conferido na prévia a 1200×900 com os dados de mentira do `shim.js`, e o painel normal (`?c=vip`) continua igual.
 
+## 20ae. v2.4.4 (meta do dia e curva por hora na visão de gestor)
+
+- **Meta por conta**: os cartões de "Hoje, por conta" passam pelo `M.placar(G.hoje, R, null)`, o mesmo cálculo do painel — posição, barra da meta (`config_por_conta[conta].meta_dia_brl`), ticket e conversão. O rodapé soma as 3 metas e dá o % do dia. Conta sem meta no JSON mostra "sem meta no JSON" em vez de barra falsa.
+- **Curva por hora sem SQL novo**: `carregarCurva()` chama `coach_relatorio_turno` com `p_horas` 1 a 8 **em paralelo** e tira a diferença entre as janelas acumuladas (o acumulado de 2 h menos o de 1 h é a hora anterior). Nenhuma função nova no banco.
+- **Só quando pedem**: são 8 leituras, então a curva **não** entra no recarregamento de 60 s; fica atrás do botão "Montar curva" e vale até o próximo "Atualizar".
+- **O que ela mede, honestamente**: `coach_relatorio_turno` é escopado em `auth.uid()`, então a curva é a receita **do operador logado**, das salas que ele atendeu — não o faturamento da agência. O texto na tela diz isso. Com um operador só, dá no mesmo.
+- **Conferido na prévia**: 8 colunas na ordem certa (mais antiga à esquerda); com o `shim.js` devolvendo receita fixa, tudo cai na última hora — que é exatamente o que a conta de diferenças tem que fazer. Barra da meta em 86% com a largura do cartão. `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

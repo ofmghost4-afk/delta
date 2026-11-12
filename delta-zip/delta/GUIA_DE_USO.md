@@ -122,9 +122,14 @@ O painel lembra o que você deixou aberto.
 ### Visão de gestor (2.4.3)
 
 Na aba **Mais**, "Abrir numa aba": abre o Delta em tela cheia do Chrome, só
-com números — hoje por conta, o turno, operadores, roteiros da semana e as
-variantes que mais venderam. Não grava nada e não fala com a Privacy; é para
-você olhar no fim do dia, não durante o atendimento.
+com números — hoje por conta (com a **meta de cada uma**, ticket e conversão),
+o turno, operadores, roteiros da semana e as variantes que mais venderam.
+Não grava nada e não fala com a Privacy; é para você olhar no fim do dia,
+não durante o atendimento.
+
+O botão **Montar curva** mostra sua receita hora a hora nas últimas 8 h. Ele
+fica atrás de um botão porque são 8 leituras do banco — não vem sozinho para
+não pesar. E é a *sua* receita, das salas que você atendeu, não a da casa.
 
 ---
 

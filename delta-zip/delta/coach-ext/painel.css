@@ -651,3 +651,12 @@ body[data-gestor] h4{font-size:var(--t-s);color:var(--tx3);font-weight:600;margi
 .g-tab td:first-child{color:var(--tx)}
 .g-tab th.num,.g-tab td.num{text-align:right}
 .g-tab tr:hover td{background:var(--s1)}
+
+/* v2.4.3b · meta por conta e curva por hora na visão de gestor */
+.g-meta{margin:var(--e1) 0 var(--e2)}
+.g-curva{display:flex;align-items:flex-end;gap:var(--e2);height:132px;margin:var(--e2) 0 var(--e1)}
+.g-curva .g-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:var(--e1)}
+.g-curva .g-col i{display:block;width:100%;min-height:2px;background:var(--acao);border-radius:var(--r-s) var(--r-s) 0 0}
+.g-curva .g-col span{font-size:var(--t-xs);color:var(--tx3)}
+/* a barra da meta ocupa a largura do cartão do gestor */
+.g-meta .dbar{flex:none;width:100%;max-width:none}
