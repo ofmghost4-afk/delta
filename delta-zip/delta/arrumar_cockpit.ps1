@@ -3,9 +3,9 @@
 #  - Nao abre nada, nao fecha nada, nao recarrega e nao navega.
 #  - So muda o lugar e o tamanho das janelas cujo titulo comeca com "Privacy | Chat".
 #  - MODO PALCO (padrao, v2.3): as 3 Privacy ficam EMPILHADAS no mesmo lugar, a esquerda,
-#    com a largura da tela menos 410 px (1030 px numa tela de 1440) e a altura toda.
+#    com a largura da tela menos 700 px (740 px numa tela de 1440) e a altura toda.
 #    Nessa largura a Privacy mostra a lista de conversas E a conversa aberta juntas.
-#    O Delta de cada modelo encaixa sozinho na coluna de 410 px da direita.
+#    O Delta de cada modelo encaixa sozinho na coluna de 700 px da direita.
 #    Depois de arrumar, esta janela vira o AJUDANTE da troca de modelo (trocar_modelo.ps1):
 #    clique no nome da modelo no topo do Delta, ou Alt+1 / Alt+2 / Alt+3.
 #  - Modo antigo (Cockpit 3x2): powershell -File arrumar_cockpit.ps1 -Modo 3x2
@@ -14,7 +14,7 @@
 #  (Sem acentos de proposito: o PowerShell do Windows le este arquivo em ANSI.)
 # =====================================================================
 param([ValidateSet("palco", "3x2")][string]$Modo = "palco", [switch]$SemAjudante)
-$LARG_DELTA = 410   # coluna do Delta no Modo Palco (igual a LARG_NORMAL do coach-ext\fundo.js)
+$LARG_DELTA = 700   # coluna do Delta no Modo Palco (igual a LARG_NORMAL do coach-ext\fundo.js)
 $ALT_DOCA = 195     # faixa das docas no Cockpit 3x2 (igual a ALT_MINI do fundo.js)
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type @"

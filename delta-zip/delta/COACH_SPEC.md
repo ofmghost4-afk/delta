@@ -602,6 +602,15 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **A correção**: rótulo "No campo" → **"Campo"**, `flex-wrap` na `.roteiro .barra` e `margin-left:auto` no Copiar, para que, quando a barra quebrar, ele continue no canto direito. Resultado: o Copiar ganha uma linha só para ele, inteiro e ainda mais evidente.
 - **Doca intacta**: 466×157 sem rolagem, Copiar no canto de baixo à direita (o "Campo" não entra na doca, por causa do limite de 4 linhas).
 
+## 20ah. v2.6.0 (Palco meio a meio: Delta de 700 px em duas colunas)
+
+- **Por quê**: o usuário gostou do formato "tela cheia" de um mockup externo. Aquele formato exato é **impossível**: a Privacy manda `Content-Security-Policy: frame-ancestors 'self' *.privacy.com.br` (verificado em 12/11/2026), então nenhuma página da extensão pode embutir o chat — no mockup o chat era de mentira. O que dava para fazer era a **proporção**: Delta largo ao lado do chat real.
+- **Duas colunas a partir de 700 px** (`painel.css`, `@media (min-width:700px)`): `#conteudo` vira grid de `56% / 1fr`; `.card.jogo` ocupa a coluna 1 inteira (`grid-row: 1 / span 30`) e todo o resto cai na coluna 2, na ordem do DOM. Abaixo de 700 px **nada muda** (uma coluna, com dobras). O gestor e a doca ficam de fora pelo `:not([data-gestor])` e `:not(.mini)`.
+- **O ganho**: nessa largura Preço, Meta, Leitura e Recursos ficam **abertos** o tempo todo — some a necessidade de dobrar para ver o preço.
+- **As larguras mudaram juntas** (senão o Palco nem seria detectado): `fundo.js` `LARG_NORMAL` 410 → **700** e o limiar do Palco virou a constante `PRIV_MIN` = **700** (era o literal 1000, que recusaria uma Privacy de 740 e jogaria o painel no modo compacto de 300 px). `abrir_3_perfis.ps1` e `arrumar_cockpit.ps1`: `$LARG_DELTA` 410 → 700 (Privacy fica com `largura - 700` = 740 em 1440). Prévia do Palco atualizada para 740 + 700.
+- **Defeito pego na prévia**: tentei `flex-wrap:nowrap` na barra do roteiro achando que na coluna larga caberia tudo numa linha. Não cabe — a coluna da esquerda tem ~370 px (56% de 700), quase o mesmo de antes, e o Copiar saía da coluna. A regra foi removida e a barra continua quebrando.
+- **Conferido**: Palco a 1440×860 (duas colunas, Copiar inteiro dentro da coluna), 410 px (continua uma coluna, nada mudou) e doca 466×157 (sem rolagem). `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok. Reversível: é um número nos dois `.ps1`.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

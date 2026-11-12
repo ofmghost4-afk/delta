@@ -4,7 +4,9 @@
 // gruda na SUA janela e acompanha quando ela mexe: janela larga → do lado direito (410 px);
 // janela estreita (layout de 3 em terços) → compacta (300 px) por dentro da borda direita dela.
 // Só mexe na janelinha do Coach: nunca move, redimensiona, recarrega ou navega a janela/aba da Privacy.
-const LARG_COMPACTA = 300, LARG_NORMAL = 410, BARRA_CHROME = 80, BARRA_APP = 34, ALT_MINI = 195, LARG_DOCA_MAX = 480;
+// v2.6.0: o Delta passou de 410 para 700 px (duas colunas) e a Privacy do Palco, de 1030 para 740 — meio a meio
+// numa tela de 1440. PRIV_MIN é a largura mínima da janela da Privacy para valer o Modo Palco.
+const LARG_COMPACTA = 300, LARG_NORMAL = 700, PRIV_MIN = 700, BARRA_CHROME = 80, BARRA_APP = 34, ALT_MINI = 195, LARG_DOCA_MAX = 480;
 // Modo mini (botão ▴ no topo do painel): a janelinha fica com 195 px de altura.
 // v2.1 (Cockpit 3x2): se sobra espaço na tela ABAIXO da janela da Privacy, o mini vira uma Doca Inferior
 // exatamente embaixo dela (mesma largura, até 480 px). Assim clicar na Privacy nunca esconde o Delta.
@@ -21,11 +23,11 @@ async function posAcoplada(janelaOrigem) {
   const t = tela && tela.larg > 0 && meio >= tela.esq && meio <= tela.esq + tela.larg ? tela : null;
   const dir = t ? t.esq + t.larg : null;
   const cabeAoLado = !t || w.left + w.width + LARG_NORMAL <= dir + 8;
-  // v2.3 · Modo Palco: Privacy larga (≥1000 px, ex.: 1030 em tela de 1440) com 410 px livres à direita.
-  // O Delta ocupa essa coluna inteira (410 × altura da Privacy) e nunca fica em mini.
-  const palco = w.width >= 1000 && cabeAoLado;
+  // v2.3 · Modo Palco: Privacy larga (≥700 px, ex.: 740 em tela de 1440) com 700 px livres à direita.
+  // O Delta ocupa essa coluna inteira (700 × altura da Privacy, em duas colunas) e nunca fica em mini.
+  const palco = w.width >= PRIV_MIN && cabeAoLado;
   let p;
-  if (w.width < 1000 || !cabeAoLado) {
+  if (w.width < PRIV_MIN || !cabeAoLado) {
     // Janela estreita (1/3 da tela) ou larga sem espaço ao lado (maximizada): o Coach compacto entra por DENTRO
     // da borda direita da própria janela, abaixo da barra de abas/endereço, para não cobrir a janela vizinha
     // (outro perfil/conta) nem ficar cortado para fora da tela.

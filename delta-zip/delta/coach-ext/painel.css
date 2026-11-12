@@ -679,3 +679,15 @@ body[data-gestor] h4{font-size:var(--t-s);color:var(--tx3);font-weight:600;margi
 .roteiro .barra .btn.campo{flex:none;min-height:30px}
 /* quando a barra quebra, o Copiar continua sendo o canto direito (a ação dominante nao muda de lugar) */
 .roteiro .barra .btn.copiar{margin-left:auto}
+
+/* ---------- v2.6.0 · painel largo em duas colunas (a partir de 700 px) ---------- */
+/* Esquerda: o trabalho (cartão da jogada, inteiro). Direita: quem é o fã e os números, já abertos —
+   nessa largura Preço e Meta não precisam mais ficar dobrados. Abaixo de 700 px nada muda. */
+@media (min-width: 700px) {
+  body:not(.mini):not([data-gestor]) #conteudo{display:grid;grid-template-columns:minmax(0,56%) minmax(0,1fr);gap:var(--e4);align-content:start}
+  body:not(.mini):not([data-gestor]) #conteudo > .card.jogo{grid-column:1;grid-row:1 / span 30;align-self:start}
+  body:not(.mini):not([data-gestor]) #conteudo > *:not(.card.jogo){grid-column:2;width:auto}
+  body:not(.mini):not([data-gestor]) #conteudo > .barra-doca{display:none}
+}
+/* A coluna da esquerda tem ~56% de 700 px (≈370), quase a mesma largura de antes: a barra do roteiro
+   CONTINUA quebrando, senão o Copiar é espremido para fora da coluna (defeito visto na prévia). */

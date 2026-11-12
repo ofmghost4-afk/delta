@@ -6,8 +6,8 @@
 <!--
   Prévia do Modo Palco (v2.3), sem abrir Chrome por cima de nada e sem internet.
   Abra pelo servidor da prévia: node teste/previa/servidor.mjs → http://127.0.0.1:4391/teste/previa/palco.html
-  Tela de 1440 × 860: à esquerda uma Privacy DE MENTIRA (1030 px, lista + conversa juntas), à direita o painel do Delta
-  DE VERDADE (410 px) de cada modelo, os 3 empilhados no mesmo lugar. Clique no nome de outra modelo no topo do Delta
+  Tela de 1440 × 860: à esquerda uma Privacy DE MENTIRA (740 px, lista + conversa juntas), à direita o painel do Delta
+  DE VERDADE (700 px) de cada modelo, os 3 empilhados no mesmo lugar. Clique no nome de outra modelo no topo do Delta
   (ou Alt+1/2/3): esta página faz o papel do ajudante trocar_modelo.ps1 — lê o pedido no título da janelinha e traz a
   Privacy + o Delta daquela modelo para a frente.
 -->
@@ -16,7 +16,7 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: #0b0809; font: 13px/1.4 system-ui, "Segoe UI", sans-serif; color: #f5eef2; }
   #tela { position: relative; width: 1440px; height: 860px; overflow: hidden; background: #000; }
-  .priv { position: absolute; left: 0; top: 0; width: 1030px; height: 860px; display: none; flex-direction: column; background: #f6f2ee; color: #2a2226; }
+  .priv { position: absolute; left: 0; top: 0; width: 740px; height: 860px; display: none; flex-direction: column; background: #f6f2ee; color: #2a2226; }
   .priv.on { display: flex; }
   .priv .barra { height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: #fff; border-bottom: 1px solid #e6dfda; font-size: 12px; color: #6b5d63; }
   .priv .barra i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
@@ -35,7 +35,7 @@
   .m { max-width: 60%; padding: 8px 12px; border-radius: 14px; background: #ebe4e0; }
   .m.nossa { align-self: flex-end; background: #ffcfae; }
   .campo { margin: 12px 18px 16px; padding: 12px 14px; border-radius: 22px; background: #fff; border: 1px solid #e6dfda; color: #9a8d92; }
-  iframe { position: absolute; left: 1030px; top: 0; width: 410px; height: 860px; border: 0; visibility: hidden; background: #0e0a0d; }
+  iframe { position: absolute; left: 740px; top: 0; width: 700px; height: 860px; border: 0; visibility: hidden; background: #0e0a0d; }
   iframe.on { visibility: visible; }
   #legenda { padding: 10px 14px; font-size: 13px; color: #cbbcc3; }
   #legenda b { color: #f0c86e; }
@@ -61,7 +61,7 @@
       const cfg = R.config_por_conta[m.conta] || {};
       const priv = document.createElement("div");
       priv.className = "priv"; priv.dataset.conta = m.conta; priv.style.setProperty("--c", cfg.cor || "#8b1e3f");
-      priv.innerHTML = `<div class="barra"><i></i>Privacy | Chat — ${cfg.rotulo || m.conta} (@${m.conta}) · Web App de 1030 px</div>
+      priv.innerHTML = `<div class="barra"><i></i>Privacy | Chat — ${cfg.rotulo || m.conta} (@${m.conta}) · Web App de 740 px</div>
         <div class="corpo"><div class="lista"><h3>Conversas</h3>
           <div class="sala aberta"><div class="av">${iniciais(m.fa)}</div><div><b>${m.fa}</b><small>${m.msgs[m.msgs.length - 1][0]}</small></div><span></span></div>
           ${OUTRAS.map(([n, u, k]) => `<div class="sala"><div class="av">${iniciais(n)}</div><div><b>${n}</b><small>${u}</small></div>${k ? `<span class="nl">${k}</span>` : "<span></span>"}</div>`).join("")}

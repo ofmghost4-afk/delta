@@ -94,13 +94,18 @@ Não funcionam com o cursor dentro de um campo de texto.
 
 **Um só botão cheio:** o `Copiar`, vermelho. O resto é discreto de propósito.
 
-**Sempre à vista:** fã, relógio, fase, texto e o Copiar.
+**No Palco (Delta com 700 px), o painel fica em duas colunas:**
 
-**Quatro cartões (2×2), fechados mostram o número que importa:** Preço, Meta
-do dia, Leitura do fã e Recursos. **Não precisa abrir para saber como está.**
+- **Esquerda — o trabalho:** fase, instrução, texto, variantes, o que a IA leu
+  e a barra com `Campo` e `Copiar`.
+- **Direita — quem é e como está:** o fã com o relógio, as abas, o próximo da
+  fila e os números **já abertos** (Preço, Meta do dia, Leitura, Recursos).
 
-**Faixas embaixo:** Mais avisos, Fila, Roteiros da semana e Diagnóstico. As
-tracejadas são técnicas — não são para a sua próxima mensagem.
+Nessa largura você não precisa abrir nada para ver o preço.
+
+**Se a janela for mais estreita que 700 px** (doca, ou Delta encolhido), ele
+volta para uma coluna com os cartões dobrados — fechados, cada um já mostra o
+número que importa.
 
 ---
 

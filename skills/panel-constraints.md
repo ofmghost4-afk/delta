@@ -3,8 +3,8 @@
 ## Larguras e modos (classes no `<body>`)
 | Modo | Largura | Altura útil | Regra |
 |---|---|---|---|
-| Palco (`body.palco`) | 410 px | ~860 px | Alvo principal. Cartão da jogada inteiro acima da dobra. |
-| Inteiro | 380–420 px | livre | Mesmo desenho do Palco, com o selo da conta no topo. |
+| Palco (`body.palco`) | **700 px** | ~860 px | Alvo principal desde a v2.6.0: **duas colunas** (esquerda o cartão da jogada, direita fã, abas e os cartões de número já abertos). A Privacy fica com 740 px. |
+| Inteiro estreito | 380–420 px | livre | Uma coluna, com dobras — o desenho de antes da v2.6.0. Vale abaixo de 700 px. |
 | Compacto (`body.compacto`) | < 360 px | ~590 px | Mesmo conteúdo, espaçamento menor. Copiar acima da dobra. |
 | Mini / doca (`body.mini`) | 300–466 px | ~155 px | SEM rolagem. 4 linhas: topo · lead · cartão (3 linhas de texto) · barra com Copiar. |
 

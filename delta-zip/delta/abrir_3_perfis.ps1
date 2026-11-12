@@ -3,8 +3,8 @@
 #  - Abre 3 perfis do Chrome (1 conta da Privacy por perfil) como janela de
 #    aplicativo (--app=https://privacy.com.br/chat, sem barra de endereco).
 #  - MODO PALCO (padrao, v2.3): as 3 ficam EMPILHADAS a esquerda, com a largura
-#    da tela menos 410 px (1030 em 1440) e a altura toda: lista + conversa juntas.
-#    O Delta de cada uma ocupa a coluna de 410 px da direita. No fim, esta janela
+#    da tela menos 700 px (740 em 1440) e a altura toda: lista + conversa juntas.
+#    O Delta de cada uma ocupa a coluna de 700 px da direita. No fim, esta janela
 #    vira o AJUDANTE da troca de modelo (clique no nome no topo do Delta, ou
 #    Alt+1 / Alt+2 / Alt+3).
 #  - Modo antigo (Cockpit 3x2): -Modo 3x2 (1/3 da largura cada, 195 px livres
@@ -27,7 +27,7 @@ $PERFIS  = @("Profile 30", "Profile 31", "Profile 34")
 $ROTULOS = @("Arruda", "Luna", "Louise")
 $ESPERA_MAX = 25   # segundos esperando cada janela aparecer
 $ALT_DOCA = 195     # faixa livre embaixo para as 3 Docas do Delta (igual ao ALT_MINI do fundo.js)
-$LARG_DELTA = 410   # coluna do Delta no Modo Palco (igual ao LARG_NORMAL do fundo.js)
+$LARG_DELTA = 700   # coluna do Delta no Modo Palco (igual ao LARG_NORMAL do fundo.js)
 # --------------------------------------------------------------------
 
 $chrome = @("$env:ProgramFiles\Google\Chrome\Application\chrome.exe", "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe", "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
@@ -94,7 +94,7 @@ for ($i = 0; $i -lt $PERFIS.Count; $i++) {
   Start-Sleep -Milliseconds 600
 }
 
-# Palco: as 3 empilhadas a esquerda, (largura util - 410) x altura util.
+# Palco: as 3 empilhadas a esquerda, (largura util - 700) x altura util.
 # 3x2: andar de cima, 3 janelas de 1/3 da largura e (altura util - 195). Janela de aplicativo aceita 480 px;
 # se alguma nao aceitar, as 3 ficam um pouco sobrepostas, mas todas inteiras dentro da tela.
 $n = $PERFIS.Count
