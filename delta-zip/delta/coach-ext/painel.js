@@ -940,8 +940,20 @@ function desenharCorpo(a) {
   const selos = el("div", { class: "selos" }, res.selos.map((s) => el("span", { class: "chip " + s.id, title: (s.dica || "") + " · origem: " + (R.origens[s.origem] || s.origem) }, s.txt)),
     rl.nobre ? el("span", { class: "chip nobre", title: "20h–3h = 41,3% da receita (base)" }, rl.pico ? "PICO" : "Horário nobre") : null);
   const fichaDin = ficha && !ligacaoProvavel(), total = fichaDin ? Number(ficha.total) : est.conv.total;
+  // === Padrão detectado pelo leitor ===
+  const rotulosPadrao = {
+    mencionou_preco: "💰 Mencionou preço",
+    rapido_positivo: "🔥 Rápido positivo",
+    lento_curto: "🐢 Respostas curtas",
+    mandou_audio: "🎤 Mandou áudio"
+  };
+  const chipPadrao = (est.padrao && est.padrao !== "neutro")
+    ? el("span", { class: "chip", style: "margin-left:8px; font-size:11px; opacity:0.9; vertical-align:middle" }, rotulosPadrao[est.padrao] || est.padrao)
+    : null;
+
   a.append(el("div", { class: "cab" },
-    el("div", {}, el("div", { class: "nome" }, est.conv.nome || est.conv.perfil || "(sem nome)"),
+    el("div", {}, 
+      el("div", { class: "nome" }, est.conv.nome || est.conv.perfil || "(sem nome)", chipPadrao),
       el("div", { class: "sub" }, est.conta + (total != null ? " · gastou " + brl(total) + (fichaDin ? " na empresa" : " nesta conta") : "") + (res.ctx.gasto7 != null ? " · " + brl(res.ctx.gasto7) + " nos 7 primeiros dias" : "")),
       selos), rel, dadosLead(res, total)));
   if (fichaErro && fichaErro !== "conta_fora") a.append(el("p", { class: "pequeno fraco" }, "Ficha indisponível (" + fichaErro + "). As regras usam só o que está na tela."));
