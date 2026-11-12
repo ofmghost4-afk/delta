@@ -439,7 +439,7 @@ function mostrarModo() {
   const b = $("btnModo"); if (!b || !R) return;
   const dom = modo === "dominante";
   document.body.classList.toggle("dom", dom);
-  b.textContent = dom ? "MODO DOMINANTE" : "Modo normal"; b.title = dom ? "Clique para voltar ao modo normal" : "Clique para ligar o Modo Dominante";
+  b.textContent = dom ? "Dominante" : "Normal"; b.title = dom ? "Clique para voltar ao modo normal" : "Clique para ligar o Modo Dominante";
   b.className = "btn mini " + (dom ? "dom-on" : "");
 }
 
@@ -779,13 +779,22 @@ function desenharCenaTopo(a, res, c) {
     el("div", { class: "nota" }, c.origem + ". Só use se a conta tem esse conteúdo, na ordem.")));
   return { texto: leg.texto, res, n: c.total, cena: true, faltam: leg.faltam };
 }
-let cenaAberta = false, convAberta = false;
+let cenaAberta = false;
+// v2.4 · progressive disclosure: tudo o que não muda a próxima mensagem fica numa linha dobrada ("dobra").
+// O resumo (com o número-chave) fica sempre à vista; o painel lembra quais dobras você abriu (o remendar() troca
+// o <details> a cada segundo porque ele tem ouvinte, então o estado aberto mora aqui, não no DOM).
+const dobrasAbertas = new Set();
+function dobra(chave, resumo, filhos, cls) {
+  const d = el("details", { class: "dobra dobra-" + chave + (cls ? " " + cls : ""), ontoggle: (e) => { if (e.target.open) dobrasAbertas.add(chave); else dobrasAbertas.delete(chave); } },
+    el("summary", {}, resumo), el("div", { class: "dobra-c" }, filhos));
+  if (dobrasAbertas.has(chave)) d.open = true;
+  return d;
+}
 function desenharConversao(a) {
   if (!conversao || !conversao.length) return;
   const L = M.conversaoSemana(conversao);
-  const d = el("details", { ontoggle: (e) => { convAberta = e.target.open; } }, el("summary", {}, "Roteiros da semana · conversão em 60 min"));
-  if (convAberta) d.open = true;
-  d.append(el("ul", { class: "lista" }, L.slice(0, 25).map((x) => el("li", {}, el("span", {}, el("b", {}, x.roteiro_id), el("small", { class: "fraco", style: "display:block" }, x.usos + " usos · " + x.vendas + " vendas · " + brl(x.receita))), el("span", { class: "chip " + (x.selo === "cortar" ? "esfriou" : x.selo === "manter" ? "nobre" : "") }, Math.round(x.conv * 100) + "% " + x.selo)))));
+  const d = dobra("conv", [el("span", { class: "dt" }, "Roteiros da semana"), el("span", { class: "dv" }, "conversão em 60 min")], []);
+  d.lastChild.append(el("ul", { class: "lista" }, L.slice(0, 25).map((x) => el("li", {}, el("span", {}, el("b", {}, x.roteiro_id), el("small", { class: "fraco", style: "display:block" }, x.usos + " usos · " + x.vendas + " vendas · " + brl(x.receita))), el("span", { class: "chip " + (x.selo === "cortar" ? "esfriou" : x.selo === "manter" ? "nobre" : "") }, Math.round(x.conv * 100) + "% " + x.selo)))));
   a.append(d);
 }
 function desenharPlacar(a) {
@@ -800,17 +809,14 @@ function desenharPlacar(a) {
   }
   const P = M.placar(linhas, R, est.conta), at = P.atual;
   const box = el("div", { class: "placar" });
+  const pct = at && at.pct != null ? Math.round(at.pct * 100) : null;
   if (at) {
-    const pct = at.pct != null ? Math.round(at.pct * 100) : null;
-    box.append(el("div", { class: "placar-top" },
-      el("div", {}, el("div", { class: "placar-t" }, "Meta do dia"), el("div", { class: "placar-v" }, brl(at.receita) + (at.meta ? " / " + brl(at.meta) : ""))),
-      el("div", { class: "placar-pos" }, el("span", { class: "pos-n" }, at.pos + "º"), el("small", {}, at.pos === 1 ? "na frente" : "atrás " + brl(P.atras_do_lider)))),
-      at.meta ? el("div", { class: "barra-meta" }, el("i", { style: "width:" + Math.min(100, pct) + "%" })) : null,
-      el("div", { class: "placar-k" },
+    // v2.4: valor, posição e barra ficam no resumo da dobra; aqui dentro só o detalhe
+    box.append(el("div", { class: "placar-k" },
+        el("span", {}, el("b", {}, at.pos === 1 ? "na frente" : brl(P.atras_do_lider)), at.pos === 1 ? " posição" : " atrás do 1º"),
         el("span", {}, el("b", {}, at.ticket != null ? brl(at.ticket) : "—"), " ticket"),
         el("span", {}, el("b", {}, at.conversao != null ? Math.round(at.conversao * 100) + "%" : "—"), " conversão"),
-        el("span", {}, el("b", {}, String(at.vendas)), " vendas"),
-        pct != null ? el("span", {}, el("b", {}, pct + "%"), " da meta") : null));
+        el("span", {}, el("b", {}, String(at.vendas)), " vendas")));
   }
   box.append(el("div", { class: "podio" }, P.linhas.map((l) => el("span", { class: l.conta === est.conta ? "eu" : "" }, el("i", {}, l.pos + "º"), " " + (((R.config_por_conta || {})[l.conta] || {}).rotulo || l.conta) + " ", el("b", {}, brl(l.receita))))));
   // v2.2 · ritmo de chegada + placar do chatter (login) + fechar turno
@@ -822,7 +828,11 @@ function desenharPlacar(a) {
     botaoTurno()));
   blocoTurno(box);
   box.append(el("div", { class: "placar-f" }, "Fonte: " + fonte));
-  a.append(box);
+  a.append(dobra("placar", at
+    ? [el("span", { class: "dt" }, "Meta do dia"), el("span", { class: "dv" }, brl(at.receita) + (at.meta ? " de " + brl(at.meta).replace(/^R\$\s*/, "") : "")),
+       el("span", { class: "pos-n" + (at.pos === 1 ? " lider" : "") }, at.pos + "º"),
+       at.meta ? el("i", { class: "dbar" + (pct >= 100 ? " ok" : "") }, el("b", { style: "width:" + Math.min(100, pct || 0) + "%" })) : null]
+    : [el("span", { class: "dt" }, "Placar das contas")], box));
 }
 
 function desenharConta(a) {
@@ -841,8 +851,13 @@ function desenharHud(a, res) {
     if (n >= ((R.modos.dominante.limiares.fila_alerta_n || {}).v || 3)) itens.push({ nivel: "aviso", txt: n + " conversas com mensagem não lida na fila. Ritmo!" });
   }
   if (!itens.length) return;
-  a.append(el("div", { class: "hud" }, itens.map((x) => el("div", { class: "hud-i " + x.nivel + (x.tipo ? " " + x.tipo : "") }, String(x.txt).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, ""),
-    x.tipo === "meta7" ? el("div", { class: "barra-meta hud-barra" + (x.batida ? " ok" : "") }, el("i", { style: "width:" + Math.round((x.pct || 0) * 100) + "%" })) : null))));
+  const item = (x) => el("div", { class: "hud-i " + x.nivel + (x.tipo ? " " + x.tipo : "") }, String(x.txt).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, ""),
+    x.tipo === "meta7" ? el("div", { class: "barra-meta hud-barra" + (x.batida ? " ok" : "") }, el("i", { style: "width:" + Math.round((x.pct || 0) * 100) + "%" })) : null);
+  // v2.4: só o aviso mais importante fica à vista; os outros numa dobra (no compacto a meta de 7 dias continua à vista)
+  const fora = itens.filter((x, i) => i === 0 || x.tipo === "meta7"), resto = itens.filter((x) => !fora.includes(x));
+  a.append(el("div", { class: "hud" }, fora.map(item)));
+  if (resto.length) a.append(dobra("hud", [el("span", { class: "dt" }, resto.length === 1 ? "Mais 1 aviso" : "Mais " + resto.length + " avisos"),
+    resto.some((x) => x.nivel === "aviso") ? el("i", { class: "dponto aviso", "aria-hidden": "true" }) : null], el("div", { class: "hud" }, resto.map(item))));
 }
 // Dados do lead, sempre ACIMA da sugestão de conversa (pedido do usuário em 11/11/2026), também na doca:
 // linha 1 = dinheiro (total, nº de compras, última compra de conteúdo, há quantos dias, contas, selos);
@@ -1016,30 +1031,36 @@ function desenharCorpo(a) {
       chipsFaltam(p),
       el("div", { class: "barra" },
         nav(),
-        el("span", { class: "esp" }), origemTag(res.roteiro.origem),
+        el("span", { class: "esp" }),
         botaoUsei(res, true),
         el("button", { class: "btn mini rosa copiar", type: "button", title: "Copiar e já marcar como usado (tecla C ou Enter)", onclick: (ev) => copiarAtual(ev) }, rotuloCopiar(p.texto))),
       blocoIA(res),
       !iaV && res.variantesInfo && res.variantesInfo.melhor && res.variantesIdx[variante % vs.length] === res.variantesInfo.melhor.i ? el("div", { class: "nota melhor" }, "★ Esta é a variante que mais converteu na semana (" + Math.round(res.variantesInfo.melhor.conv * 100) + "% em " + res.variantesInfo.melhor.usos + " usos): por isso vem primeiro.") : null,
       res.momentoOfertar && res.momentoOfertar.variantes.includes(res.variantesIdx[variante % vs.length]) ? el("div", { class: "nota oferta" }, "🎯 Variante de oferta: sobe agora porque é o momento de ofertar.") : null,
-      res.variantesInfo && res.variantesInfo.ocultas.length ? el("div", { class: "nota" }, res.variantesInfo.ocultas.length + (res.variantesInfo.ocultas.length === 1 ? " variante já usada com ele ficou escondida." : " variantes já usadas com ele ficaram escondidas.")) : null,
       avisoJogada() ? el("div", { class: "nota reg" + (/^(Jogada registrada|Já registrado)/.test(avisoJogada()) ? " ok" : " falhou") }, avisoJogada()) : null,
-      p.faltam.length ? el("div", { class: "nota" }, "Preencha antes de enviar: " + p.faltam.map((f) => "{" + f + "}").join(", ")) : null,
-      res.roteiro.nota ? el("div", { class: "nota" }, res.roteiro.nota) : null,
-      el("div", { class: "nota" }, res.roteiro.id + " · " + res.roteiro.situacao + (res.modo === "dominante" ? " · tom dominante" : "")));
+      p.faltam.length ? el("div", { class: "nota falta-n" }, "Preencha antes de enviar: " + p.faltam.map((f) => "{" + f + "}").join(", ")) : null,
+      // v2.4: de onde vem o roteiro e as observações dele ficam numa dobra (nível 3)
+      dobra("rot", [el("span", { class: "dt" }, "Sobre este roteiro"), origemTag(res.roteiro.origem)], [
+        el("div", { class: "nota" }, res.roteiro.id + " · " + res.roteiro.situacao + (res.modo === "dominante" ? " · tom dominante" : "")),
+        res.roteiro.nota ? el("div", { class: "nota" }, res.roteiro.nota) : null,
+        res.variantesInfo && res.variantesInfo.ocultas.length ? el("div", { class: "nota" }, res.variantesInfo.ocultas.length + (res.variantesInfo.ocultas.length === 1 ? " variante já usada com ele ficou escondida." : " variantes já usadas com ele ficaram escondidas.")) : null], "dobra-rot"));
     if (res.repetido) caixa.prepend(el("div", { class: "repetido" }, res.repetido.txt));
     a.append(caixa);
   }
   }
   a = fora;
   desenharAbas(a, res); // v2.2: abas do Aura logo abaixo do comando principal
-  if (res.modo === "dominante") { const lt = el("section", { class: "card leit" }); desenharLeitura(lt, res); a.append(lt); }
+  if (res.modo === "dominante") {
+    const lt = el("div", { class: "leit" }); desenharLeitura(lt, res);
+    const t = res.termometro, c = res.cena;
+    a.append(dobra("leit", [el("span", { class: "dt" }, "Leitura do fã"), el("span", { class: "dv" }, [res.perfil ? res.perfil.rotulo : "", t ? "termômetro " + t.n + "/10" : "", c && res.fase.id !== "vulneravel" ? (c.fim ? "cena: aftercare" : "cena " + c.n + "/" + c.total) : ""].filter(Boolean).join(" · "))], lt));
+  }
 
   // preço
   const pr = res.preco;
   if (res.fase.id !== "vulneravel") {
-    a = el("section", { class: "card precos" }); fora.append(a);
-    a.append(el("h3", {}, "Preço para este fã"));
+    a = el("div", { class: "precos" });
+    fora.append(dobra("preco", [el("span", { class: "dt" }, "Preço"), el("span", { class: "dv din" }, pr.min === pr.max ? brl(pr.min) : brl(pr.min) + " – " + brl(pr.max).replace(/^R\$\s*/, "")), pr.pix ? el("span", { class: "chip nobre" }, "Pix") : null], a));
     a.append(el("div", { class: "preco" },
       el("div", {}, el("div", { class: "faixa" }, pr.min === pr.max ? brl(pr.min) : brl(pr.min) + " – " + brl(pr.max)),
         el("div", { class: "liq" }, "você recebe ≈ " + brl(pr.liquido[0]) + (pr.min === pr.max ? "" : " – " + brl(pr.liquido[1])) + " (taxa Privacy 20%)" + (pr.ultima ? " · última compra " + brl(pr.ultima) : ""))),
@@ -1062,18 +1083,19 @@ function desenharCorpo(a) {
 
   a = fora;
   // recursos
-  if (res.recursos.length && res.fase.id !== "vulneravel") {
-    a.append(el("h3", {}, "Recurso da Privacy agora"));
-    res.recursos.forEach((x) => a.append(el("div", { class: "recurso" }, el("b", {}, x.txt), el("span", { class: "pequeno fraco" }, x.aviso))));
-  }
+  if (res.recursos.length && res.fase.id !== "vulneravel")
+    a.append(dobra("rec", [el("span", { class: "dt" }, "Recursos da Privacy"), el("span", { class: "dv" }, String(res.recursos.length))],
+      res.recursos.map((x) => el("div", { class: "recurso" }, el("b", {}, x.txt), el("span", { class: "pequeno fraco" }, x.aviso)))));
 
-  // estado do PPV
-  a.append(el("p", { class: "pequeno fraco", style: "margin-top:12px" },
+  // estado do PPV + leitura da tela: diagnóstico, só aberto quando pedido (a falha de leitura já vira alerta vermelho no topo)
+  const diag = [];
+  diag.push(el("p", { class: "pequeno fraco" },
     res.ppvFonte === "banco" ? "PPVs lidos do banco (emp_ppvs)."
       : (!ppvsDisponivel ? "Estado do PPV indisponível (coach_ppvs não existe no banco)." : "Sem PPV no banco para esta sala.")
         + (res.ppvFonte === "tela" ? (res.ppvEstadoTela ? " Usando o PPV visto na tela (pago / não pago lido na tela da Privacy)." : " Usando o PPV visto na tela (palpite: não sei se ele comprou).") : " Nenhum PPV visto na tela.")));
 
-  if (est.diag) a.append(el("p", { class: "pequeno fraco leitura-diag" }, "Leitura da tela: " + est.diag.lidas + " de " + est.diag.vistas + " mensagens lidas" + (est.diag.avisos ? " · " + est.diag.avisos + " aviso(s) de venda ignorado(s)" : "") + (est.diag.sem_id ? " · " + est.diag.sem_id + " sem código" : "") + (est.diag.sala ? "" : " · sala não identificada (uso o número do chat)") + " · " + (est.salas || []).length + " conversas na lista."));
+  if (est.diag) diag.push(el("p", { class: "pequeno fraco leitura-diag" }, "Leitura da tela: " + est.diag.lidas + " de " + est.diag.vistas + " mensagens lidas" + (est.diag.avisos ? " · " + est.diag.avisos + " aviso(s) de venda ignorado(s)" : "") + (est.diag.sem_id ? " · " + est.diag.sem_id + " sem código" : "") + (est.diag.sala ? "" : " · sala não identificada (uso o número do chat)") + " · " + (est.salas || []).length + " conversas na lista."));
+  a.append(dobra("diag", [el("span", { class: "dt" }, "Diagnóstico"), el("span", { class: "dv" }, (res.ppvFonte === "banco" ? "PPV do banco" : res.ppvFonte === "tela" ? "PPV da tela" : "sem PPV") + (est.diag ? " · " + est.diag.lidas + "/" + est.diag.vistas + " msgs lidas" : ""))], diag));
   if (!res.roteiro && !cFixa) a.append(el("div", { class: "usei-fim" }, botaoUsei(res, false), el("span", { class: "pequeno fraco" }, avisoJogada())));
   useiTopo(res); copiarTopo(acao); faTopo(res);
   barraDoca(a, res, acao);
@@ -1112,15 +1134,14 @@ document.addEventListener("keydown", (e) => {
   else if ((k === "1" || k === "2" || k === "3") && !a.cena && Number(k) <= a.n) { e.preventDefault(); variante = Number(k) - 1; desenhar(); }
 });
 
-let filaAberta = false;
 function desenharFila(a) {
   if (!est || !est.salas || !est.salas.length) return;
   const res = window.__coachUltimo;
   const esperando = M.fila(est.salas, R, Date.now(), res && est.conv ? res.fase.id : null).filter((s) => s.naoLidas > 0);
   const estour = esperando.filter((s) => s.estourou).length;
-  const d = el("details", { ontoggle: (e) => { filaAberta = e.target.open; } }, el("summary", {}, "Fila · " + esperando.length + " com mensagem não lida" + (estour ? " · " + estour + " passou do prazo" : "") + (textoMedDia() ? " · " + textoMedDia() : "")));
-  if (filaAberta || estour) d.open = true;
-  d.append(el("ul", { class: "lista" }, esperando.length ? esperando.map((s) => el("li", { class: s.estourou ? "estourou" : "" }, el("span", {}, el("b", {}, s.nome || "(sem nome)"), s.online ? " · online" : "", el("small", { class: "fraco", style: "display:block" }, s.rotulo + " · prazo " + M.fmtSeg(s.sla_s) + (s.espera_s != null ? " · esperando " + (s.espera_s >= 86400 ? "desde ontem ou antes" : M.fmtSeg(s.espera_s)) : "") + (s.gasto ? " · gastou " + brl(s.gasto) : ""))), el("span", {}, s.estourou ? "⏰ " + s.naoLidas : s.naoLidas))) : el("li", { class: "fraco" }, "Ninguém esperando na lista carregada.")));
+  const d = dobra("fila", [el("span", { class: "dt" }, "Fila"), el("span", { class: "dv" }, esperando.length + " não lida" + (esperando.length === 1 ? "" : "s") + (textoMedDia() ? " · " + textoMedDia().replace("resposta média hoje", "média") : "")),
+    estour ? el("span", { class: "chip tarde" }, estour + " no prazo estourado") : null], []);
+  d.lastChild.append(el("ul", { class: "lista" }, esperando.length ? esperando.map((s) => el("li", { class: s.estourou ? "estourou" : "" }, el("span", {}, el("b", {}, s.nome || "(sem nome)"), s.online ? " · online" : "", el("small", { class: "fraco", style: "display:block" }, s.rotulo + " · prazo " + M.fmtSeg(s.sla_s) + (s.espera_s != null ? " · esperando " + (s.espera_s >= 86400 ? "desde ontem ou antes" : M.fmtSeg(s.espera_s)) : "") + (s.gasto ? " · gastou " + brl(s.gasto) : ""))), el("span", {}, s.estourou ? "⏰ " + s.naoLidas : s.naoLidas))) : el("li", { class: "fraco" }, "Ninguém esperando na lista carregada.")));
   a.append(d);
   if (est.conv) desenharConversao(a);
 }
