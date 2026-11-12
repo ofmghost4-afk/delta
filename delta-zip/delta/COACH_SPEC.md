@@ -443,13 +443,19 @@ Cenas fora (`coach_cenas.json > fora`, com motivo): K1, K2, K4, S9, S25, S30, S3
 - Testes: 3 novos no `unit_v22.mjs` (61 ok). Sem SQL novo e sem mudar a função da IA.
 
 
-## 20n. v2.3.7 (painel.js em módulos: 1ª etapa)
+## 20n. v2.3.7–2.3.8 (painel.js em módulos)
 Começa a quebrar o `painel.js` (1.571 linhas num arquivo só) em módulos. **Nenhuma mudança de lógica**: as linhas foram recortadas e colocadas em outro arquivo, na mesma ordem.
 - **`painel-abas.js` (243 linhas)**: o bloco "Painel Único" (abas Delta · Ficha · Fila · Sumidos · Mais) saiu inteiro do `painel.js`. O `painel.js` foi de 1.571 para 1.332 linhas.
 - Carrega **antes** do `painel.js` no `painel.html`. Os dois são scripts clássicos, então o estado (`est`, `aba`, `R`…) continua compartilhado sem precisar de `import`/`export`.
 - **`teste/estatico.mjs`**: agora lê todos os `painel*.js` da pasta e aplica as conferências de segurança em cada um (não só no `painel.js`), mais uma nova: todo `painel*.js` precisa estar declarado no `painel.html`.
 - Conferido na prévia: as 5 abas foram abertas antes e depois do corte e o texto da tela saiu **idêntico** nas cinco (mesmo tamanho e mesmo hash), sem erro no console. `estatico.mjs` "tudo ok" e `unit_v22.mjs` 61 ok.
-- Próximas etapas (ainda não feitas): tirar o bloco da IA (`⚡ Adaptar`, ~112 linhas) e o do relatório de fim de turno.
+
+**2ª e 3ª etapas (v2.3.8)**, pelo mesmo método e com a mesma conferência:
+- **`painel-ia.js` (115 linhas)**: o bloco `⚡ Adaptar` (Edge Function `coach-ia` + memória do fã).
+- **`painel-turno.js` (39 linhas)**: o relatório `📊 Fechar Turno`.
+- `painel.js`: **1.571 → 1.185 linhas** (−25%). Ordem no `painel.html`: `painel-turno.js` → `painel-ia.js` → `painel-abas.js` → `painel.js`.
+- Conferido na prévia antes e depois de cada corte: 5 abas + fluxo completo do `⚡` (clique, resposta, revisor descartando a versão com contato externo) + `📊 Fechar Turno`. **Os 7 deram texto idêntico**, mesmo tamanho e mesmo hash, sem erro no console.
+- Ainda por fazer: o miolo do `painel.js` (estado, banco, desenho) continua junto; é o pedaço mais entrelaçado e exige mais cuidado.
 
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
