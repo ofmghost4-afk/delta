@@ -575,14 +575,17 @@ function proximos() {
   const grupo = (s) => (s.gasto >= grande ? 0 : s.espera_s == null ? 2 : s.espera_s < 86400 ? 1 : 3);
   const folga = (s) => (s.folga_s == null ? 1e9 : s.folga_s);
   fl.sort((a, b) => grupo(a) - grupo(b) || (grupo(a) === 3 ? b.gasto - a.gasto : folga(a) - folga(b) || Number(b.online) - Number(a.online)) || b.gasto - a.gasto || b.naoLidas - a.naoLidas);
-  const lem = lembretes.filter((l) => l.conta === est.conta && l.em <= agora && l.k !== salaK()).map((l) => ({ lembrete: true, nome: l.nome, atraso_s: (agora - l.em) / 1000 }));
-  return lem.concat(fl.map((s) => ({ nome: s.nome, espera_s: s.espera_s, naoLidas: s.naoLidas, gasto: s.gasto, online: s.online, grande: s.gasto >= grande })));
+  // v2.5.0: leva a sala junto, para o clique poder abrir a conversa na Privacy (o lembrete só leva se a chave for uma sala)
+  const lem = lembretes.filter((l) => l.conta === est.conta && l.em <= agora && l.k !== salaK()).map((l) => ({ lembrete: true, nome: l.nome, atraso_s: (agora - l.em) / 1000, sala: /^[0-9a-f]{24}$/.test(l.k) ? l.k : null }));
+  return lem.concat(fl.map((s) => ({ sala: s.sala, nome: s.nome, espera_s: s.espera_s, naoLidas: s.naoLidas, gasto: s.gasto, online: s.online, grande: s.gasto >= grande })));
 }
 function linhaProximo() {
   const ps = proximos(), p = ps[0];
   if (!p) return el("span", { class: "bd-prox ok" }, est && est.salas && est.salas.length ? "✓ Fila em dia" : "");
-  if (p.lembrete) return el("span", { class: "bd-prox lem", title: "Lembrete que você marcou com o ⏰" }, "⏰ Voltar agora: ", el("b", {}, p.nome || "(sem nome)"), p.atraso_s > 90 ? " · há " + M.fmtSeg(p.atraso_s) : "", ps.length > 1 ? el("small", {}, " +" + (ps.length - 1)) : null);
-  return el("span", { class: "bd-prox" + (p.grande ? " grande" : ""), title: "Próxima conversa para abrir nesta conta" + (ps.length > 1 ? " · mais " + (ps.length - 1) + " na fila" : "") },
+  // v2.5.0: clicar no "Próximo" abre essa conversa na Privacy (um clique seu = um clique lá). Não envia nada.
+  const aoAbrir = p.sala ? () => abrirNaPrivacy(p.sala, p.nome) : null;
+  if (p.lembrete) return el("span", { class: "bd-prox lem" + (aoAbrir ? " bd-abre" : ""), onclick: aoAbrir, title: "Lembrete que você marcou com o ⏰" + (aoAbrir ? " · clique para abrir na Privacy" : "") }, "⏰ Voltar agora: ", el("b", {}, p.nome || "(sem nome)"), p.atraso_s > 90 ? " · há " + M.fmtSeg(p.atraso_s) : "", ps.length > 1 ? el("small", {}, " +" + (ps.length - 1)) : null);
+  return el("span", { class: "bd-prox" + (p.grande ? " grande" : "") + (aoAbrir ? " bd-abre" : ""), onclick: aoAbrir, title: (aoAbrir ? "Clique para abrir esta conversa na Privacy" : "Próxima conversa para abrir nesta conta") + (ps.length > 1 ? " · mais " + (ps.length - 1) + " na fila" : "") },
     (p.grande ? "★ " : "▶ ") + "Próximo: ", el("b", {}, p.nome || "(sem nome)"),
     p.espera_s != null ? " · " + (p.espera_s >= 86400 ? "desde ontem" : M.fmtSeg(p.espera_s)) : "", " · " + p.naoLidas + (p.naoLidas === 1 ? " msg" : " msgs"), p.gasto ? " · " + brl(p.gasto) : "", p.online ? " · online" : "",
     ps.length > 1 ? el("small", {}, " +" + (ps.length - 1)) : null);
@@ -845,13 +848,14 @@ function desenharHud(a, res) {
   const itens = (res.hud || []).slice();
   // próximo da fila também no painel inteiro (na doca ele fica no rodapé)
   const px = proximos()[0];
-  if (px) itens.unshift({ nivel: px.lembrete || px.grande ? "aviso" : "info", txt: px.lembrete ? "Lembrete vencido: volte para " + (px.nome || "(sem nome)") + "." : "Próximo da fila: " + (px.nome || "(sem nome)") + (px.espera_s != null ? " · esperando " + (px.espera_s >= 86400 ? "desde ontem" : M.fmtSeg(px.espera_s)) : "") + " · " + px.naoLidas + " não lida" + (px.naoLidas === 1 ? "" : "s") + (px.gasto ? " · já gastou " + brl(px.gasto) : "") + "." });
+  // v2.5.0: no painel inteiro o aviso do próximo também abre a conversa na Privacy, com um clique seu
+  if (px) itens.unshift({ nivel: px.lembrete || px.grande ? "aviso" : "info", sala: px.sala || null, nome: px.nome, txt: px.lembrete ? "Lembrete vencido: volte para " + (px.nome || "(sem nome)") + "." : "Próximo da fila: " + (px.nome || "(sem nome)") + (px.espera_s != null ? " · esperando " + (px.espera_s >= 86400 ? "desde ontem" : M.fmtSeg(px.espera_s)) : "") + " · " + px.naoLidas + " não lida" + (px.naoLidas === 1 ? "" : "s") + (px.gasto ? " · já gastou " + brl(px.gasto) : "") + "." });
   if (modo === "dominante" && est && est.salas) {
     const n = est.salas.filter((s) => s.naoLidas > 0).length;
     if (n >= ((R.modos.dominante.limiares.fila_alerta_n || {}).v || 3)) itens.push({ nivel: "aviso", txt: n + " conversas com mensagem não lida na fila. Ritmo!" });
   }
   if (!itens.length) return;
-  const item = (x) => el("div", { class: "hud-i " + x.nivel + (x.tipo ? " " + x.tipo : "") }, String(x.txt).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, ""),
+  const item = (x) => el("div", { class: "hud-i " + x.nivel + (x.tipo ? " " + x.tipo : "") + (x.sala ? " bd-abre" : ""), onclick: x.sala ? () => abrirNaPrivacy(x.sala, x.nome) : null, title: x.sala ? "Clique para abrir esta conversa na Privacy" : "" }, String(x.txt).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, ""),
     x.tipo === "meta7" ? el("div", { class: "barra-meta hud-barra" + (x.batida ? " ok" : "") }, el("i", { style: "width:" + Math.round((x.pct || 0) * 100) + "%" })) : null);
   // v2.4: só o aviso mais importante fica à vista; os outros numa dobra (no compacto a meta de 7 dias continua à vista)
   const fora = itens.filter((x, i) => i === 0 || x.tipo === "meta7"), resto = itens.filter((x) => !fora.includes(x));
@@ -1028,7 +1032,8 @@ function desenharCorpo(a) {
     baseIA = iaV ? M.preencher(vsRot[0], dados).texto : p.texto;
     acao = { texto: p.texto, res, n: vs.length, faltam: p.faltam, base: baseIA };
     autoAdaptar(res, baseIA); // v2.4.2: IA no automático, se ia.automatico.ativo estiver ligado no JSON
-    const caixa = el("div", { class: "roteiro" + (iaV ? " da-ia" : "") },
+    const vIA = iaV ? iaV[variante % iaV.length] : null; // v2.5.0: versão da IA com alerta fica marcada, não sumiu
+    const caixa = el("div", { class: "roteiro" + (iaV ? " da-ia" : "") + (vIA && vIA.barrada ? " ia-risco" : "") },
       ia && ia.chave === chaveIA(res) && ia.erro ? el("div", { class: "ia-erro" }, "⚡ " + ia.erro) : null,
       textoRoteiro(p, dados),
       chipsFaltam(p),
@@ -1036,7 +1041,10 @@ function desenharCorpo(a) {
         nav(),
         el("span", { class: "esp" }),
         botaoUsei(res, true),
+        // v2.5.0: põe o texto no campo da Privacy para você revisar e enviar na mão (tecla V). Não envia.
+        el("button", { class: "btn mini campo", type: "button", title: "Colocar este texto no campo da Privacy (tecla V). Não envia: você revisa e aperta Enter.", onclick: preencherNaPrivacy }, "No campo"),
         el("button", { class: "btn mini rosa copiar", type: "button", title: "Copiar e já marcar como usado (tecla C ou Enter)", onclick: (ev) => copiarAtual(ev) }, rotuloCopiar(p.texto))),
+      avisoAcao ? el("div", { class: "nota reg" + (/^Não deu/.test(avisoAcao) ? " falhou" : " ok") }, avisoAcao) : null,
       blocoIA(res),
       !iaV && res.variantesInfo && res.variantesInfo.melhor && res.variantesIdx[variante % vs.length] === res.variantesInfo.melhor.i ? el("div", { class: "nota melhor" }, "★ Esta é a variante que mais converteu na semana (" + Math.round(res.variantesInfo.melhor.conv * 100) + "% em " + res.variantesInfo.melhor.usos + " usos): por isso vem primeiro.") : null,
       res.momentoOfertar && res.momentoOfertar.variantes.includes(res.variantesIdx[variante % vs.length]) ? el("div", { class: "nota oferta" }, "🎯 Variante de oferta: sobe agora porque é o momento de ofertar.") : null,
@@ -1127,6 +1135,8 @@ document.addEventListener("keydown", (e) => {
   const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   if (k === "m") { e.preventDefault(); if (!palco) definirMini(!mini); return; } // no Palco o painel fica sempre inteiro
   if (k === "n") { e.preventDefault(); abrirNota(); return; }          // nota rápida do lead
+  if (k === "v") { e.preventDefault(); preencherNaPrivacy(); return; } // v2.5.0: texto no campo da Privacy (não envia)
+  if (k === " ") { const pr = proximos()[0]; if (pr && pr.sala) { e.preventDefault(); abrirNaPrivacy(pr.sala, pr.nome); } return; } // abre o próximo
   if (k === "l") { e.preventDefault(); ciclarLembrete(); return; }     // lembrete 10 min → 30 min → 1 h → desliga
   if (k === "a" && acaoTopo && !acaoTopo.cena && acaoTopo.res.roteiro) { // ⚡ adaptar com a IA / voltar ao roteiro
     e.preventDefault();
@@ -1146,7 +1156,8 @@ function desenharFila(a) {
   const estour = esperando.filter((s) => s.estourou).length;
   const d = dobra("fila", [el("span", { class: "dt" }, "Fila"), el("span", { class: "dv" }, esperando.length + " não lida" + (esperando.length === 1 ? "" : "s") + (textoMedDia() ? " · " + textoMedDia().replace("resposta média hoje", "média").replace(/\s*\(.*\)$/, "") : "")),
     estour ? el("span", { class: "chip tarde" }, estour + " no prazo estourado") : null], []);
-  d.lastChild.append(el("ul", { class: "lista" }, esperando.length ? esperando.map((s) => el("li", { class: s.estourou ? "estourou" : "" }, el("span", {}, el("b", {}, s.nome || "(sem nome)"), s.online ? " · online" : "", el("small", { class: "fraco", style: "display:block" }, s.rotulo + " · prazo " + M.fmtSeg(s.sla_s) + (s.espera_s != null ? " · esperando " + (s.espera_s >= 86400 ? "desde ontem ou antes" : M.fmtSeg(s.espera_s)) : "") + (s.gasto ? " · gastou " + brl(s.gasto) : ""))), el("span", {}, s.estourou ? "⏰ " + s.naoLidas : s.naoLidas))) : el("li", { class: "fraco" }, "Ninguém esperando na lista carregada.")));
+  // v2.5.0: clicar na linha abre essa conversa na Privacy (um clique seu = um clique lá). Não envia nada.
+  d.lastChild.append(el("ul", { class: "lista clicavel" }, esperando.length ? esperando.map((s) => el("li", { class: (s.estourou ? "estourou" : "") + (s.sala ? " abre" : ""), title: s.sala ? "Abrir esta conversa na Privacy" : "", onclick: s.sala ? () => abrirNaPrivacy(s.sala, s.nome) : null }, el("span", {}, el("b", {}, s.nome || "(sem nome)"), s.online ? " · online" : "", el("small", { class: "fraco", style: "display:block" }, s.rotulo + " · prazo " + M.fmtSeg(s.sla_s) + (s.espera_s != null ? " · esperando " + (s.espera_s >= 86400 ? "desde ontem ou antes" : M.fmtSeg(s.espera_s)) : "") + (s.gasto ? " · gastou " + brl(s.gasto) : ""))), el("span", {}, s.estourou ? "⏰ " + s.naoLidas : s.naoLidas))) : el("li", { class: "fraco" }, "Ninguém esperando na lista carregada.")));
   a.append(d);
   if (est.conv) desenharConversao(a);
 }
@@ -1159,6 +1170,34 @@ $("formLogin").addEventListener("submit", async (e) => {
 });
 $("btnSair").addEventListener("click", sair);
 
+// ---------- v2.5.0 · as duas ações de acessibilidade (sempre depois de um clique seu) ----------
+// Cada chamada nasce de um clique ou de uma tecla sua. Não existe laço, fila nem temporizador chamando isto.
+// Nenhuma delas envia mensagem: "abrir" só foca a conversa que você escolheu, "preencher" só põe o texto no campo.
+let avisoAcao = "", avisoAcaoEm = 0;
+function pedirAcao(acao) {
+  return new Promise((resolve) => {
+    if (origem == null) { resolve({ ok: false, erro: "não sei qual é a janela da Privacy" }); return; }
+    chrome.runtime.sendMessage({ t: "coach_acao", origem, acao }, (r) => {
+      if (chrome.runtime.lastError) { resolve({ ok: false, erro: chrome.runtime.lastError.message }); return; }
+      resolve(r || { ok: false, erro: "sem resposta" });
+    });
+  });
+}
+function mostrarAcao(r, okTxt) {
+  avisoAcao = r.ok ? okTxt : "Não deu: " + (r.erro || "erro"); avisoAcaoEm = Date.now(); desenhar();
+  setTimeout(() => { if (Date.now() - avisoAcaoEm >= 3000) { avisoAcao = ""; desenhar(); } }, 3200);
+}
+async function abrirNaPrivacy(sala, nome) {
+  if (!sala) return;
+  mostrarAcao(await pedirAcao({ t: "coach_abrir_conversa", sala }), "Abri " + (nome || "a conversa") + " na Privacy.");
+}
+async function preencherNaPrivacy() {
+  const a = acaoTopo; if (!a || !a.texto) return;
+  if (a.faltam && a.faltam.length) { mostrarAcao({ ok: false, erro: "preencha antes: " + a.faltam.map((f) => "{" + f + "}").join(", ") }, ""); return; }
+  const r = await pedirAcao({ t: "coach_preencher", texto: a.texto });
+  mostrarAcao(r, "Texto no campo da Privacy. Revise e aperte Enter.");
+  if (r.ok && !registradas.has(chaveJogada(a.res))) registrar(a.res); // mesma marca do Copiar
+}
 function pedirEstado() {
   if (origem == null) return;
   chrome.tabs.query({ active: true, windowId: origem }, (abas) => {

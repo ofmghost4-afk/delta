@@ -19,11 +19,31 @@ const painel = Object.values(PAINEL).join("\n");
 const motor = semComentario(ler("motor.js"));
 const manifest = JSON.parse(ler("manifest.json"));
 
-// 1) leitor.js é passivo: nenhuma ação na página e nenhum pedido de rede.
-const acoes = achar(leitor, /\.(click|dispatchEvent|focus|blur|submit|scroll\w*|select|setRangeText|execCommand|remove|append\w*|prepend|insert\w+|replace(Children|With)|setAttribute|removeAttribute)\s*\(|\b(fetch|XMLHttpRequest|WebSocket|sendBeacon|EventSource)\b|\.(value|innerHTML|outerHTML|textContent|innerText|checked|href|src)\s*=(?!=)|\blocation\s*(\.\w+\s*)?=(?!=)|preventDefault|stopPropagation|stopImmediatePropagation/g);
-confere("leitor.js não clica, digita, envia, rola, altera a página nem faz pedido de rede", acoes.length === 0, acoes);
+// 1) leitor.js: desde a v2.5.0 ele tem DUAS ações de acessibilidade (abrir a conversa que você escolheu e pôr o
+//    texto no campo), cada uma disparada por um clique seu no Delta. A trava deixou de ser "nenhuma ação" e passou
+//    a ser precisa: o que não pode, em hipótese alguma, é ENVIAR ou imitar gente para enganar a detecção.
+confere("leitor.js: nenhum pedido de rede", achar(leitor, /\b(fetch|XMLHttpRequest|WebSocket|sendBeacon|EventSource)\b/g).length === 0, null);
+confere("leitor.js: não altera o conteúdo da página (só o campo de digitar)",
+  achar(leitor, /\.(innerHTML|outerHTML|textContent|innerText|checked|href|src)\s*=(?!=)|\b(append\w*|prepend|insert\w+|replaceChildren|replaceWith|setAttribute|removeAttribute)\s*\(|\blocation\s*(\.\w+\s*)?=(?!=)/g).length === 0, null);
+// NUNCA enviar: nada de tecla, de botão de enviar, de submit, de atalho do chat.
+const enviar = achar(leitor, /KeyboardEvent|key(down|press|up)|["'`]Enter["'`]|keyCode|\.submit\s*\(|vac-send|send-?(icon|button)|btnEnviar/gi);
+confere("leitor.js: NÃO envia (sem tecla, sem botão de enviar, sem submit)", enviar.length === 0, enviar);
+// Nada de imitar gente: atraso aleatório e coordenada sorteada existem para enganar detecção, não para acessibilidade.
+confere("leitor.js: sem sorteio/atraso para parecer humano", !/Math\.random|jitter|humaniz/i.test(leitor), null);
+confere("leitor.js: no máximo UM clique, no item que você escolheu", achar(leitor, /\.click\s*\(/g).length <= 1, achar(leitor, /\.click\s*\(/g));
+confere("leitor.js: sem lote (nenhum temporizador mexendo na página)", !/set(Timeout|Interval)\([^)]*(click|preencher|abrirConversa)/.test(leitor), null);
 const ouvintes = achar(leitor, /addEventListener\(\s*"[^"]+"/g);
 confere("leitor.js só escuta input e visibilitychange", ouvintes.every((x) => /"(input|visibilitychange)"/.test(x)), ouvintes);
+// 1b) o painel só pede ação depois de um clique seu: nada de laço ou temporizador chamando pedirAcao.
+confere("painel: ação só por clique seu (sem temporizador chamando pedirAcao)",
+  !/set(Timeout|Interval)\([^)]*pedirAcao|for\s*\([^)]*\)\s*[^;]*pedirAcao|\.forEach\([^)]*pedirAcao/.test(painel), null);
+// o leitor só aceita as DUAS ações: o mapa ACOES é a lista fechada do que pode acontecer na página.
+{
+  const mapa = (leitor.match(/const ACOES\s*=\s*\{([^}]*)\}/) || [])[1] || "";
+  const chaves = (mapa.match(/coach_[a-z_]+/g) || []).sort();
+  confere("leitor.js: só existem 2 ações (abrir conversa e preencher campo)",
+    JSON.stringify(chaves) === JSON.stringify(["coach_abrir_conversa", "coach_preencher"]), chaves);
+}
 
 // 2) Nenhuma escrita em abas, em nenhum arquivo da extensão.
 const tudo = { "leitor.js": leitor, "fundo.js": fundo, ...PAINEL, "motor.js": motor };

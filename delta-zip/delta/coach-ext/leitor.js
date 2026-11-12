@@ -192,7 +192,7 @@
   }
   let ultimoEndereco = location.href;
   setInterval(() => {
-    ligar();
+    ligar(); ligarPorta(); // v2.5.0: se o service worker dormiu, a porta volta no próximo ciclo
     if (location.href !== ultimoEndereco) { ultimoEndereco = location.href; agendar(); }
     lerTexto(); // cobre campo que muda sem evento (ex.: após enviar)
   }, 2000);
@@ -200,5 +200,46 @@
   chrome.runtime.onMessage.addListener((m, _s, responder) => {
     if (m && m.t === "coach_pedir") { ultimoJson = ""; avisar(true); responder({ ok: true }); }
   });
+
+  // ---------- v2.5.0 · acessibilidade: DUAS ações, cada uma por um clique seu no Delta ----------
+  // Pedido do dono em 12/11/2026 (dor no braço e tempo perdido caçando conversa e colando texto).
+  // O que estas ações FAZEM: abrir a conversa que você escolheu e colocar o texto no campo.
+  // O que elas NUNCA fazem: enviar. Não existe clique no botão de enviar, não existe tecla Enter
+  // simulada, não existe lote, fila, temporizador nem atraso aleatório. O Enter é seu, sempre.
+  function abrirConversa(m) {
+    const r = raiz(); if (!r) return { ok: false, erro: "não achei o chat na tela" };
+    const sala = String((m && m.sala) || "");
+    if (!/^[0-9a-f]{24}$/.test(sala)) return { ok: false, erro: "sala inválida" };
+    const it = r.querySelector('#rooms-list .vac-room-item[id="' + sala + '"]');
+    if (!it) return { ok: false, erro: "essa conversa não está na lista carregada; role a lista da Privacy" };
+    it.scrollIntoView({ block: "nearest" });
+    it.click(); // UM clique, no item que você escolheu no Delta
+    return { ok: true };
+  }
+  function preencher(m) {
+    const r = raiz(); if (!r) return { ok: false, erro: "não achei o chat na tela" };
+    const c = campo(r); if (!c) return { ok: false, erro: "não achei o campo de digitar" };
+    const texto = String((m && m.texto) || ""); if (!texto) return { ok: false, erro: "sem texto" };
+    c.focus();
+    // setter nativo + evento de input: é o que o campo precisa para registrar o texto, igual a colar.
+    const set = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value");
+    if (set && set.set) set.set.call(c, texto); else c.value = texto;
+    c.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true, inputType: "insertText", data: texto }));
+    return { ok: true }; // e para por aqui: quem revisa e aperta Enter é você
+  }
+  const ACOES = { coach_abrir_conversa: abrirConversa, coach_preencher: preencher };
+  let porta = null;
+  function ligarPorta() {
+    if (porta) return;
+    try { porta = chrome.runtime.connect({ name: "delta-leitor" }); } catch (_) { porta = null; return; }
+    porta.onDisconnect.addListener(() => { porta = null; });
+    porta.onMessage.addListener((m) => {
+      const f = m && ACOES[m.t];
+      let r; try { r = f ? f(m) : { ok: false, erro: "ação desconhecida" }; } catch (e) { r = { ok: false, erro: String((e && e.message) || e) }; }
+      try { porta.postMessage({ t: "coach_acao_fim", id: m && m.id, ok: !!r.ok, erro: r.erro || "" }); } catch (_) {}
+      if (r.ok) agendar(300); // a tela mudou: manda o estado novo
+    });
+  }
+  ligarPorta();
   ligar();
 })();

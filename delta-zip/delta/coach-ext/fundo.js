@@ -107,8 +107,34 @@ async function abrirSozinho(aba) {
   if (coachJanela) { try { await chrome.windows.get(coachJanela); return; } catch (_) { /* fechada */ } }
   await abrirCoach(aba.windowId);
 }
-chrome.runtime.onMessage.addListener((m, quem) => {
+// ---------- v2.5.0 · ponte das duas ações de acessibilidade (painel → leitor da janela certa) ----------
+// Uma porta por janela da Privacy. Não usa a API de abas: o leitor é quem abre a porta, o fundo só responde
+// nela. O fundo não cria ação nenhuma: ele repassa o que o painel pediu depois de um clique seu.
+const portas = new Map();   // windowId -> porta do leitor
+const esperando = new Map(); // id do pedido -> responder() do painel
+let proximoId = 1;
+chrome.runtime.onConnect.addListener((p) => {
+  if (!p || p.name !== "delta-leitor" || !p.sender || !p.sender.tab) return;
+  const w = p.sender.tab.windowId;
+  portas.set(w, p);
+  p.onDisconnect.addListener(() => { if (portas.get(w) === p) portas.delete(w); });
+  p.onMessage.addListener((m) => {
+    if (!m || m.t !== "coach_acao_fim") return;
+    const r = esperando.get(m.id); if (!r) return;
+    esperando.delete(m.id); r({ ok: !!m.ok, erro: m.erro || "" });
+  });
+});
+chrome.runtime.onMessage.addListener((m, quem, responder) => {
   if (m && m.t === "coach_acoplar") acoplar();
+  else if (m && m.t === "coach_acao") {
+    const p = portas.get(m.origem);
+    if (!p) { responder({ ok: false, erro: "a Privacy desta janela não está aberta (dê F5 nela)" }); return; }
+    const id = proximoId++;
+    esperando.set(id, responder);
+    setTimeout(() => { if (esperando.has(id)) { esperando.delete(id); try { responder({ ok: false, erro: "a Privacy não respondeu" }); } catch (_) {} } }, 4000);
+    try { p.postMessage(Object.assign({}, m.acao, { id })); } catch (e) { esperando.delete(id); responder({ ok: false, erro: String(e.message || e) }); }
+    return true; // resposta assíncrona
+  }
   else if (m && m.t === "coach_estado" && quem && quem.tab && quem.tab.id != null && !abrindoSozinho)
     abrindoSozinho = abrirSozinho(quem.tab).catch(() => {}).finally(() => { abrindoSozinho = null; });
 });

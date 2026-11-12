@@ -54,6 +54,8 @@ Se já copiou com o mouse sem querer, clique em `✓ Usei` para registrar.
 | Tecla | O que faz |
 |---|---|
 | `C` ou `Enter` | Copia o roteiro **e** marca como usado |
+| `V` | Põe o texto direto no campo da Privacy (não envia) |
+| `Espaço` | Abre o próximo da fila na Privacy |
 | `←` `→` | Troca a variante do roteiro (ou o passo da cena) |
 | `1` `2` `3` | Vai direto na variante 1, 2 ou 3 |
 | `A` | ⚡ Liga/desliga a versão da IA para este roteiro |
@@ -64,6 +66,24 @@ Se já copiou com o mouse sem querer, clique em `✓ Usei` para registrar.
 
 As teclas não funcionam quando o cursor está dentro de um campo de texto —
 clique fora primeiro.
+
+---
+
+## 3b. Menos Ctrl+V e menos caça à conversa (2.5.0)
+
+Duas coisas que o Delta passou a fazer por você, **sempre com um clique seu**:
+
+**`V` ou o botão "No campo"** põe o texto do roteiro direto no campo da
+Privacy. Já marca a jogada como usada, igual ao Copiar. **Não envia:** você lê,
+ajusta e aperta Enter. Se faltar preencher um `{campo}`, ele recusa e diz qual.
+
+**Clique no nome e a conversa abre na Privacy.** Funciona no aviso "Próximo da
+fila", nas linhas da aba Fila e no rodapé da doca — ou tecla `Espaço` para o
+primeiro da fila.
+
+O que ele **nunca** faz, e o teste automático impede: apertar enviar, simular
+Enter, rodar em lote ou fingir ser gente para enganar a Privacy. Uma ação por
+clique seu, e o envio é sempre seu.
 
 ---
 

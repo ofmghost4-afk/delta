@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Delta",
-  "version": "2.4.4",
-  "description": "Treinador ao lado do chat da Privacy (Modo Dominante): fase, jogada, roteiro, cena, preço, placar e alertas. Só lê. Nunca envia nada.",
+  "version": "2.5.0",
+  "description": "Treinador ao lado do chat da Privacy: fase, jogada, roteiro, cena, preço, placar e alertas. Abre a conversa e preenche o campo quando você clica. Nunca envia: o Enter é seu.",
   "permissions": [
     "storage",
     "clipboardWrite"

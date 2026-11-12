@@ -660,3 +660,17 @@ body[data-gestor] h4{font-size:var(--t-s);color:var(--tx3);font-weight:600;margi
 .g-curva .g-col span{font-size:var(--t-xs);color:var(--tx3)}
 /* a barra da meta ocupa a largura do cartão do gestor */
 .g-meta .dbar{flex:none;width:100%;max-width:none}
+
+/* ---------- v2.5.0 · acessibilidade e IA avisada ---------- */
+/* "No campo": secundário, fantasma. O Copiar continua sendo o único botão cheio. */
+.btn.campo{background:transparent;color:var(--tx2);border:1px solid var(--linha2)}
+.btn.campo:hover{background:var(--s3);color:var(--tx)}
+/* linhas da fila e "Próximo" que abrem a conversa na Privacy */
+.lista.clicavel li.abre{cursor:pointer;border-radius:var(--r-s)}
+.lista.clicavel li.abre:hover{background:var(--s2)}
+.bd-abre{cursor:pointer}
+.bd-abre:hover{text-decoration:underline}
+/* versão da IA que bate num alerta: aparece avisada, não some */
+.roteiro.ia-risco{border-color:var(--perigo)}
+.ia-bloq{margin-top:var(--e2);padding:var(--e2);border-radius:var(--r-s);background:var(--perigo-bg);color:var(--perigo);font-size:var(--t-s)}
+.ia-bloq small{color:var(--tx3);display:block;margin-top:2px}

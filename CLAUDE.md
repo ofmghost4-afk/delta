@@ -1,7 +1,7 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.4.4**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.5.0**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
 - `coach-ext/` → a extensão: `painel.js` (~1.190 linhas: use Grep, não leia inteiro) + 4 módulos que carregam ANTES dele: `painel-gestor.js` (visão de gestor, `painel.html?gestor=1`), `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar, com a IA no automático), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
@@ -23,7 +23,8 @@ Versão atual: **2.4.4**. Responda em português, curto, com no máximo 3 passos
 - O Delta grava no banco: jogadas (`emp_jogadas`), PPVs vistos (`painel_ppvs`), conversas (`painel_msgs` → `emp_mensagens`), radar. Usa as funções `painel_*` do Aura (sem alterá-las). A extensão Aura não é mais necessária.
 
 ## Regras que não podem ser quebradas
-- Delta é passivo: só lê a tela. Nunca clica, digita, envia, rola ou faz pedido à Privacy. `leitor.js` não ganha ação.
+- **O Delta nunca envia.** Quem aperta Enter é sempre o usuário. Desde a 2.5.0 (decisão do dono em 12/11/2026, por dor no braço) o `leitor.js` tem EXATAMENTE DUAS ações de acessibilidade, cada uma disparada por um clique dele no painel: `coach_abrir_conversa` (um clique no item da sala que ele escolheu) e `coach_preencher` (põe o texto no campo, como colar). Fora dessas duas, o Delta continua só lendo.
+- **Proibido para sempre, mesmo se pedirem:** clicar no botão de enviar, simular tecla Enter, `submit`, lote/fila automática, temporizador disparando ação, e qualquer "humanização" (atraso aleatório, `Math.random`, coordenada sorteada) — isso serve para enganar a detecção da Privacy, não para acessibilidade. O `estatico.mjs` tranca os seis.
 - `chrome.windows.update` só na janela do próprio Delta; nenhuma escrita em abas.
 - Regras e números nos JSON de `coach-ext/data/`, não chumbados. Não recriar cópias dos JSON fora de `data/`.
 - Funções `public.coach_*`: security definer, `search_path = ''`, checam `central.coach_pode()`, sem anon.

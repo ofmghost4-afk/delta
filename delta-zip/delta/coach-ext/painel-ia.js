@@ -124,13 +124,18 @@ async function adaptar(res, base) {
     const Rm = M.aplicarModo(R, modo), c = M.contexto(contexto(), Rm);
     const versoes = (Array.isArray(j && j.versoes) ? j.versoes : []).map((v) => String(v || "").trim()).filter(Boolean).slice(0, 5).map((v) => {
       const al = M.alertas(v, c, Rm), rv = M.revisor(v, c, res.fase, Rm).filter((x) => x.id !== "copiado_igual");
-      return { texto: v, barrada: al.some((x) => x.nivel === "bloqueio_visual"), avisos: al.filter((x) => x.nivel !== "bloqueio_visual" && x.nivel !== "info").map((x) => x.motivo).concat(rv.map((x) => x.motivo)) };
+      const bloq = al.filter((x) => x.nivel === "bloqueio_visual");
+      // v2.5.0: guarda TAMBÉM o motivo do bloqueio, porque a versão não é mais descartada — ela aparece avisada
+      return { texto: v, barrada: bloq.length > 0, motivos: bloq.map((x) => x.motivo),
+        avisos: al.filter((x) => x.nivel !== "bloqueio_visual" && x.nivel !== "info").map((x) => x.motivo).concat(rv.map((x) => x.motivo)) };
     });
     const mem = j && j.memoria && typeof j.memoria === "object" ? Object.fromEntries(Object.entries(j.memoria).filter(([, v]) => v != null && String(v).trim()).map(([k, v]) => [k, String(v).trim().slice(0, 200)])) : {};
-    const boas = versoes.filter((v) => !v.barrada).slice(0, 3);
+    // v2.5.0: nada é descartado calado. As 3 versões aparecem; a que bate num alerta vem marcada em
+    // vermelho com o motivo, e quem decide é você. As limpas continuam vindo primeiro.
+    const boas = versoes.slice().sort((x, y) => (x.barrada ? 1 : 0) - (y.barrada ? 1 : 0)).slice(0, 3);
     ia = { chave, versoes: boas, barradas: versoes.filter((v) => v.barrada).length, memoria: Object.keys(mem).length ? mem : null,
       leitura: j && j.leitura ? String(j.leitura).trim().slice(0, 240) : "", lidas: corpo.msgs.length, salvas: todas.filter((m) => m.salva).length };
-    if (!boas.length) ia.erro = versoes.length ? "A IA respondeu, mas nenhuma versão passou nos alertas. Use o roteiro normal." : "A IA respondeu sem versões" + (j && j.erro ? " (" + j.erro + ")" : "") + ". Use o roteiro normal.";
+    if (!boas.length) ia.erro = "A IA respondeu sem versões" + (j && j.erro ? " (" + j.erro + ")" : "") + ". Use o roteiro normal.";
     else variante = 0;
   } catch (e) {
     if (!ia || ia.chave !== chave) return;
@@ -152,8 +157,10 @@ function blocoIA(res) {
   const vAtual = ia.versoes && ia.versoes.length ? ia.versoes[variante % ia.versoes.length] : null;
   // o que a IA entendeu da conversa (para você ver se ela leu mesmo) e quantas mensagens da tela ela recebeu
   if (vAtual && ia.leitura) b.append(el("div", { class: "ia-leu" }, el("b", {}, "A IA leu: "), ia.leitura, el("small", { class: "fraco" }, " · " + (ia.lidas || 0) + " msgs" + (ia.salvas ? " (" + ia.salvas + " do histórico salvo, fora da tela)" : " da tela"))));
-  if (vAtual) b.append(el("div", { class: "ia-t" }, "⚡ Versões da IA no lugar do roteiro · use ‹ › para trocar" + (ia.barradas ? " · " + ia.barradas + " descartada" + (ia.barradas > 1 ? "s" : "") + " pelos alertas" : "")));
-  if (vAtual && vAtual.avisos.length) b.append(el("div", { class: "ia-a" }, "Revisor: " + vAtual.avisos[0]));
+  if (vAtual) b.append(el("div", { class: "ia-t" }, "⚡ Versões da IA no lugar do roteiro · use ‹ › para trocar" + (ia.barradas ? " · " + ia.barradas + " com alerta" : "")));
+  // v2.5.0: a versão que bateria num bloqueio aparece com o aviso em vermelho, em vez de sumir. Você decide.
+  if (vAtual && vAtual.barrada) b.append(el("div", { class: "ia-bloq" }, el("b", {}, "Alerta: "), (vAtual.motivos && vAtual.motivos[0]) || vAtual.avisos[0] || "esta versão bate numa regra de risco.", el("small", {}, " Leia antes de copiar — o Delta não decide por você.")));
+  else if (vAtual && vAtual.avisos.length) b.append(el("div", { class: "ia-a" }, "Revisor: " + vAtual.avisos[0]));
   if (ia.memoria) b.append(el("div", { class: "ia-m" }, el("span", {}, el("b", {}, "Memória do fã: "), Object.entries(ia.memoria).map(([k, v]) => k.replace(/_/g, " ") + ": " + v).join(" · ")),
     ia.salvou ? el("span", { class: "ok" }, "✓ salvo nas notas") : el("button", { class: "btn mini", type: "button", disabled: !!ia.salvando || !ficha || !ficha.fa, title: "Grava nas notas da ficha (as mesmas do Aura), uma nota por campo", onclick: salvarMemoria }, ia.salvando ? "Salvando…" : "Salvar nas notas"),
     ia.erroMem ? el("div", { class: "nota falhou" }, ia.erroMem) : null));
