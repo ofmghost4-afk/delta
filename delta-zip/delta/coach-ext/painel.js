@@ -3,16 +3,49 @@
 // Nunca fala com a Privacy e nunca envia mensagem. Só grava, se você clicar, a jogada usada.
 const $ = (id) => document.getElementById(id);
 const M = self.CoachMotor;
+// v2.3.13: o el() monta o elemento pelo VanJS (van.tags). Mesmo uso de antes: el("div", { class: "x", onclick: fn }, filhos).
+// Regras iguais às antigas: atributo null/false some, true vira atributo vazio, on* vira ouvinte, filhos aceitam nó, texto e listas.
+// O el() guarda os ouvintes em e.__on: o remendar() (abaixo) usa isso para saber se o elemento tem clique/tecla própria.
 function el(tag, attrs, ...filhos) {
-  const e = document.createElement(tag);
+  const props = {}, vazios = [], ouvintes = {};
   for (const [k, v] of Object.entries(attrs || {})) {
     if (v == null || v === false) continue;
-    if (k === "class") e.className = v;
-    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
-    else e.setAttribute(k, v === true ? "" : v);
+    if (k.startsWith("on")) ouvintes[k.slice(2)] = v;
+    else if (v === true) vazios.push(k);
+    else props[k] = v;
   }
-  for (const f of filhos.flat(Infinity)) if (f != null && f !== false) e.append(f.nodeType ? f : document.createTextNode(String(f)));
+  const kids = filhos.flat(Infinity).filter((f) => f != null && f !== false).map((f) => (f.nodeType ? f : String(f)));
+  const e = van.tags[tag](props, ...kids);
+  vazios.forEach((k) => e.setAttribute(k, ""));
+  for (const [ev, fn] of Object.entries(ouvintes)) e.addEventListener(ev, fn);
+  e.__on = ouvintes;
   return e;
+}
+// ---------- v2.3.13 · remendo cirúrgico do DOM ----------
+// A cada segundo o painel monta a tela nova FORA da tela (um <div> solto) e o remendar() copia só o que mudou para a
+// tela de verdade: texto que mudou, atributo que mudou, bloco que entrou ou saiu. O que não mudou nem é tocado.
+// Regras de segurança (por isso nunca perde o foco nem o que você está digitando):
+//  - o campo em foco (e tudo em volta dele) nunca é trocado nem apagado: se o remendo precisasse fazer isso, pula só esse trecho;
+//  - elemento com clique/tecla próprio (e todo campo de digitação) é trocado inteiro pelo novo, para o ouvinte novo valer;
+//  - elemento só de exibição (div, span, texto...) é atualizado no lugar.
+const CAMPOS = /^(INPUT|TEXTAREA|SELECT|OPTION)$/;
+function remendar(vivo, novo) {
+  const vs = [...vivo.childNodes], ns = [...novo.childNodes], ativo = document.activeElement, comum = Math.min(vs.length, ns.length);
+  const protegido = (n) => !!ativo && ativo !== document.body && n.nodeType === 1 && n.contains(ativo);
+  for (let i = 0; i < comum; i++) igualar(vs[i], ns[i], ativo, protegido);
+  for (let i = comum; i < vs.length; i++) if (!protegido(vs[i])) vs[i].remove();
+  for (let i = comum; i < ns.length; i++) vivo.append(ns[i]);
+}
+function igualar(v, n, ativo, protegido) {
+  if (v.nodeType === 3 && n.nodeType === 3) { if (v.data !== n.data) v.data = n.data; return; }
+  const trocar = () => { if (!protegido(v)) v.replaceWith(n); };
+  if (v.nodeType !== 1 || n.nodeType !== 1 || v.nodeName !== n.nodeName) return trocar();
+  if (v === ativo && CAMPOS.test(v.nodeName)) return; // campo em foco: intocado
+  const comOuvinte = n.__on && Object.keys(n.__on).length > 0;
+  if (comOuvinte || CAMPOS.test(v.nodeName) || v.nodeName === "BUTTON") return trocar();
+  for (const at of [...n.attributes]) if (v.getAttribute(at.name) !== at.value) v.setAttribute(at.name, at.value);
+  for (const at of [...v.attributes]) if (!n.hasAttribute(at.name)) v.removeAttribute(at.name);
+  remendar(v, n);
 }
 const brl = (n) => Number(n || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const ORIG = { OF: "OF", BASE: "base", PRIVACY: "Privacy", LEI: "lei", CONSENSO: "consenso", HIPOTESE: "calibrar" };
@@ -849,13 +882,14 @@ function contexto() {
 function desenhar() {
   // Digitando um {campo} em cima do roteiro: não redesenha (o campo sumiria). Volta ao normal ao confirmar/sair.
   if (editando) { if (document.querySelector("#conteudo input.campo")) return; editando = null; }
-  // v2.2: digitando uma nota/tag (ou escolhendo o extrato) numa aba: também não redesenha
-  const ae = document.activeElement;
-  if (ae && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA") && ae.closest && ae.closest("#conteudo")) return;
+  // v2.3.13: digitando uma nota/tag numa aba o painel CONTINUA atualizando; o remendar() não mexe no campo em foco
   if (!sessao || !R) { useiTopo(null); copiarTopo(null); faTopo(null); radar(null); desenharRadar(); return; }
   const lembreteVencido = conferirLembretes();
   document.body.classList.toggle("urgente-lembrete", lembreteVencido);
-  let a = $("conteudo"); a.replaceChildren(); useiTopo(null); copiarTopo(null);
+  const vivo = $("conteudo"), a = document.createElement("div"); useiTopo(null); copiarTopo(null);
+  try { desenharCorpo(a); } finally { remendar(vivo, a); } // v2.3.13: monta fora da tela e remenda só o que mudou
+}
+function desenharCorpo(a) {
   document.body.dataset.aba = aba; desenharRadar();
   if (!est || !est.conv || fichaErro === "conta_fora") radar(null);
   if (!est || !est.conv) faTopo(null);
