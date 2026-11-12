@@ -829,7 +829,7 @@ function desenharPlacar(a) {
   blocoTurno(box);
   box.append(el("div", { class: "placar-f" }, "Fonte: " + fonte));
   a.append(dobra("placar", at
-    ? [el("span", { class: "dt" }, "Meta do dia"), el("span", { class: "dv" }, brl(at.receita) + (at.meta ? " de " + brl(at.meta).replace(/^R\$\s*/, "") : "")),
+    ? [el("span", { class: "dt" }, "Meta do dia"), el("span", { class: "dv" }, brl(at.receita)), at.meta ? el("span", { class: "ds" }, "de " + brl(at.meta).replace(/^R\$\s*/, "")) : null,
        el("span", { class: "pos-n" + (at.pos === 1 ? " lider" : "") }, at.pos + "º"),
        at.meta ? el("i", { class: "dbar" + (pct >= 100 ? " ok" : "") }, el("b", { style: "width:" + Math.min(100, pct || 0) + "%" })) : null]
     : [el("span", { class: "dt" }, "Placar das contas")], box));
@@ -1053,14 +1053,16 @@ function desenharCorpo(a) {
   if (res.modo === "dominante") {
     const lt = el("div", { class: "leit" }); desenharLeitura(lt, res);
     const t = res.termometro, c = res.cena;
-    a.append(dobra("leit", [el("span", { class: "dt" }, "Leitura do fã"), el("span", { class: "dv" }, [res.perfil ? res.perfil.rotulo : "", t ? "termômetro " + t.n + "/10" : "", c && res.fase.id !== "vulneravel" ? (c.fim ? "cena: aftercare" : "cena " + c.n + "/" + c.total) : ""].filter(Boolean).join(" · "))], lt));
+    a.append(dobra("leit", [el("span", { class: "dt" }, "Leitura do fã"), el("span", { class: "dv" }, t ? t.n + "/10" : res.perfil ? res.perfil.rotulo : "—"),
+      el("span", { class: "ds" }, [t ? "termômetro" : "", c && res.fase.id !== "vulneravel" ? (c.fim ? "cena: aftercare" : "cena " + c.n + "/" + c.total) : ""].filter(Boolean).join(" · "))], lt));
   }
 
   // preço
   const pr = res.preco;
   if (res.fase.id !== "vulneravel") {
     a = el("div", { class: "precos" });
-    fora.append(dobra("preco", [el("span", { class: "dt" }, "Preço"), el("span", { class: "dv din" }, pr.min === pr.max ? brl(pr.min) : brl(pr.min) + " – " + brl(pr.max).replace(/^R\$\s*/, "")), pr.pix ? el("span", { class: "chip nobre" }, "Pix") : null], a));
+    fora.append(dobra("preco", [el("span", { class: "dt" }, "Preço"), el("span", { class: "dv din" }, brl(pr.min)),
+      el("span", { class: "ds" }, pr.min === pr.max ? "preço fechado" : "até " + brl(pr.max)), pr.pix ? el("span", { class: "chip nobre" }, "Pix") : null], a));
     a.append(el("div", { class: "preco" },
       el("div", {}, el("div", { class: "faixa" }, pr.min === pr.max ? brl(pr.min) : brl(pr.min) + " – " + brl(pr.max)),
         el("div", { class: "liq" }, "você recebe ≈ " + brl(pr.liquido[0]) + (pr.min === pr.max ? "" : " – " + brl(pr.liquido[1])) + " (taxa Privacy 20%)" + (pr.ultima ? " · última compra " + brl(pr.ultima) : ""))),
@@ -1084,7 +1086,7 @@ function desenharCorpo(a) {
   a = fora;
   // recursos
   if (res.recursos.length && res.fase.id !== "vulneravel")
-    a.append(dobra("rec", [el("span", { class: "dt" }, "Recursos da Privacy"), el("span", { class: "dv" }, String(res.recursos.length))],
+    a.append(dobra("rec", [el("span", { class: "dt" }, "Recursos da Privacy"), el("span", { class: "dv" }, String(res.recursos.length)), el("span", { class: "ds" }, "para usar agora")],
       res.recursos.map((x) => el("div", { class: "recurso" }, el("b", {}, x.txt), el("span", { class: "pequeno fraco" }, x.aviso)))));
 
   // estado do PPV + leitura da tela: diagnóstico, só aberto quando pedido (a falha de leitura já vira alerta vermelho no topo)
@@ -1139,7 +1141,7 @@ function desenharFila(a) {
   const res = window.__coachUltimo;
   const esperando = M.fila(est.salas, R, Date.now(), res && est.conv ? res.fase.id : null).filter((s) => s.naoLidas > 0);
   const estour = esperando.filter((s) => s.estourou).length;
-  const d = dobra("fila", [el("span", { class: "dt" }, "Fila"), el("span", { class: "dv" }, esperando.length + " não lida" + (esperando.length === 1 ? "" : "s") + (textoMedDia() ? " · " + textoMedDia().replace("resposta média hoje", "média") : "")),
+  const d = dobra("fila", [el("span", { class: "dt" }, "Fila"), el("span", { class: "dv" }, esperando.length + " não lida" + (esperando.length === 1 ? "" : "s") + (textoMedDia() ? " · " + textoMedDia().replace("resposta média hoje", "média").replace(/\s*\(.*\)$/, "") : "")),
     estour ? el("span", { class: "chip tarde" }, estour + " no prazo estourado") : null], []);
   d.lastChild.append(el("ul", { class: "lista" }, esperando.length ? esperando.map((s) => el("li", { class: s.estourou ? "estourou" : "" }, el("span", {}, el("b", {}, s.nome || "(sem nome)"), s.online ? " · online" : "", el("small", { class: "fraco", style: "display:block" }, s.rotulo + " · prazo " + M.fmtSeg(s.sla_s) + (s.espera_s != null ? " · esperando " + (s.espera_s >= 86400 ? "desde ontem ou antes" : M.fmtSeg(s.espera_s)) : "") + (s.gasto ? " · gastou " + brl(s.gasto) : ""))), el("span", {}, s.estourou ? "⏰ " + s.naoLidas : s.naoLidas))) : el("li", { class: "fraco" }, "Ninguém esperando na lista carregada.")));
   a.append(d);

@@ -549,6 +549,13 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Doca e compacto**: mesma estrutura de linhas da doca (sem rolagem); na doca estreita (300 px) o rótulo "esperando" sai e fica só o relógio colorido (antes os pontinhos do radar encostavam no relógio).
 - **Passivo**: nenhuma ação nova na Privacy; `leitor.js` intocado. Testes: `estatico.mjs` tudo ok; `unit_v22.mjs` 137 ok. Prévia conferida em 410×860 (VIP, PPV, sem conversa, aba Ficha), 340 px (compacto), doca 466×157 e 300×157, e Palco 1440×860.
 
+## 20ab. v2.4.1 (visual vermelho, texto maior, cartões no lugar das linhas)
+- **Por quê**: o usuário achou a 2.4.0 "bem feia": sem cor, Copiar branco, texto apagado e pequeno, e as linhas recolhidas pareciam tela de configurações. Pediu **vermelho, não rosa**.
+- **Cor**: tokens novos `--acao` #e5233a (Copiar cheio, chip da fase no Dominante), `--verm`/`--verm-bg`/`--verm-linha` (aba ativa sublinhada, chip da fase, contorno e fundo do cartão da jogada, Copiar do topo em contorno). Superfícies levemente quentes. A cor de cada conta (`coach_regras.json`) não mudou: continua no seletor de modelo e na faixa do topo.
+- **Texto**: escala maior (corpo 14 px, roteiro 15,5, jogada 17, nome 20, relógio 30) e cinzas mais claros (`--tx2` #ddd1d2, `--tx3` #a8999b). Aviso do HUD ganhou fundo.
+- **Dobras viraram cartões**: Preço (preço de entrada grande + "até R$ máx" + Pix), Meta do dia (valor + "de meta" + posição + barra), Leitura do fã (termômetro N/10 + cena) e Recursos (quantidade) ficam numa grade 2×2; ao abrir, o cartão ocupa a largura toda. Mais avisos, Fila e Diagnóstico viraram faixas com fundo; Diagnóstico e Roteiros da semana ficam tracejados (técnicos). No inteiro o `#conteudo` passou a `flex-flow: row wrap` (cada bloco ocupa 100%, só os 4 cartões fechados ficam a 50%).
+- **Doca**: mesma estrutura; só as cores novas. Testes: `estatico.mjs` tudo ok; `unit_v22.mjs` 137 ok. Prévia conferida em 410×860, 340 px, doca 466×157 e Palco 1440×860.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

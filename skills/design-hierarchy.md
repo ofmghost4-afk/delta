@@ -18,7 +18,8 @@ O chatter olha o Delta de relance, entre uma mensagem e outra. Cada tela respond
 
 ## 3. Progressive disclosure
 - Nível 1 (sempre visível): o que muda a próxima mensagem. Fã, relógio, fase, texto, Copiar, preço curto (chip).
-- Nível 2 (uma linha, dobrada): resumo + número-chave na própria linha ("Preço · R$ 219–321").
+- Nível 2 (dobrado): Preço, Meta do dia, Leitura e Recursos são **cartões em grade 2×2** (rótulo pequeno + número grande);
+  avisos extras, Fila e Diagnóstico são faixas de uma linha. Nada de "lista de configurações" com linhas finas.
   Abre com um clique; o painel lembra o que ficou aberto.
 - Nível 3 (dentro da dobra): explicação, origem dos números, nota técnica.
 - Texto de diagnóstico ("Leitura da tela: 6 de 6…") nunca no nível 1.

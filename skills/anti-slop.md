@@ -16,7 +16,7 @@
 - **Glassmorphism**, blur de fundo, ruído, "bento grid".
 
 ## Preferir
-- Superfícies quase pretas e neutras, com um único acento (a cor da conta) e uma cor de ação.
+- Superfícies quase pretas levemente quentes, identidade **vermelha** (não rosa: pedido do usuário em 12/11/2026), a cor da conta só no seletor de modelo.
 - Linhas finas (1 px, 6–8% de branco) em vez de caixas.
 - Alinhamento à esquerda e espaço em branco no lugar de divisórias.
 - Números com `tabular-nums`.

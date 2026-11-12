@@ -12,7 +12,8 @@ resto do arquivo quando existir token. Tema único: escuro (o painel roda ao lad
 | `--s3` | hover, trilho de barra |
 | `--linha`, `--linha2` | divisórias (fraca / média) |
 | `--tx`, `--tx2`, `--tx3` | texto principal / secundário / apagado |
-| `--acao`, `--acao-tx`, `--acao-h` | o ÚNICO botão cheio (Copiar) |
+| `--acao`, `--acao-tx`, `--acao-h` | vermelho do Delta (#e5233a): o ÚNICO botão cheio (Copiar) |
+| `--verm`, `--verm-bg`, `--verm-linha` | destaques vermelhos: aba ativa, chip da fase, contorno do cartão da jogada, Copiar do topo |
 | `--conta` | cor da conta ativa (vem do `coach_regras.json`); só identidade, nunca botão |
 | `--ok`, `--alerta`, `--perigo` | estado (verde / âmbar / vermelho) |
 | `--dinheiro` | valores em R$ e VIP/Baleia (ouro) |
@@ -23,8 +24,9 @@ para não quebrar estilos inline no JS.
 
 ## Tipografia
 - Família: `--fonte` = pilha do sistema (SF / Segoe UI / Roboto). Sem fonte baixada.
-- Escala: `--t-xs` 11 · `--t-s` 12 · `--t-m` 13.5 · `--t-l` 15 · `--t-xl` 18 · `--t-xxl` 26 (px).
-- Pesos: 400 texto, 600 rótulo/botão, 700 nome/número. Nada de 800/900.
+- Escala: `--t-xs` 11.5 · `--t-s` 13 · `--t-m` 14 · `--t-l` 16 · `--t-xl` 20 · `--t-xxl` 30 (px). Roteiro 15.5 px.
+- Texto claro de propósito (o usuário achou o cinza apagado): `--tx2` #ddd1d2, `--tx3` #a8999b; não escurecer.
+- Pesos: 400 texto, 600 rótulo/botão, 700–800 nome, jogada, relógio e números dos cartões.
 - `font-variant-numeric: tabular-nums` no corpo.
 
 ## Espaçamento (grade de 4)

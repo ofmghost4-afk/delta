@@ -1,25 +1,26 @@
-/* Delta · painel v2.4 · tema escuro único. Só visual: nenhuma regra de negócio aqui.
+/* Delta · painel v2.4.1 · tema escuro único, identidade VERMELHA. Só visual: nenhuma regra de negócio aqui.
    Guias: skills/design-hierarchy.md · skills/anti-slop.md · skills/panel-constraints.md · skills/tokens.md
    Hierarquia: 1 ação cheia por tela (Copiar) · essencial à vista, o resto em "dobras" · cor = estado. */
 :root{
   /* superfícies (profundidade pelo tom, não por sombra) */
-  --s0:#0c0b0d;--s1:#151317;--s2:#1c1a1f;--s3:#27242b;
-  --linha:rgba(255,255,255,.06);--linha2:rgba(255,255,255,.11);
-  /* texto */
-  --tx:#f2eef0;--tx2:#b3acb1;--tx3:#7c757a;
-  /* a ÚNICA ação cheia (Copiar): clara sobre o escuro, sem concorrência */
-  --acao:#f3eee8;--acao-h:#ffffff;--acao-tx:#141114;
+  --s0:#0f0a0b;--s1:#1a1213;--s2:#23191a;--s3:#312224;
+  --linha:rgba(255,255,255,.07);--linha2:rgba(255,255,255,.13);
+  /* texto (claro: lido de relance, ao lado do chat) */
+  --tx:#fdf8f8;--tx2:#ddd1d2;--tx3:#a8999b;
+  /* vermelho do Delta: a ÚNICA ação cheia (Copiar) + destaques (aba ativa, fase, cartão da jogada) */
+  --acao:#e5233a;--acao-h:#f23a50;--acao-tx:#ffffff;
+  --verm:#ff4a5c;--verm-bg:rgba(229,35,58,.14);--verm-linha:rgba(229,35,58,.45);
   /* estados */
   --ok:#5fcf8f;--ok-bg:rgba(95,207,143,.1);
   --alerta:#e9b04a;--alerta-bg:rgba(233,176,74,.1);
-  --perigo:#ff5a6e;--perigo-bg:rgba(255,90,110,.12);
+  --perigo:#ff4a5c;--perigo-bg:rgba(255,74,92,.14);
   --dinheiro:#e8c272;--dinheiro-bg:rgba(232,194,114,.1);
-  --marca:#e8547f;--marca-bg:rgba(232,84,127,.1);
+  --marca:var(--verm);--marca-bg:var(--verm-bg);
   /* identidade da conta (vem do coach_regras.json via JS) */
   --conta:#d3456f;
   /* tipografia */
   --fonte:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --t-xs:11px;--t-s:12px;--t-m:13.5px;--t-l:15px;--t-xl:18px;--t-xxl:26px;
+  --t-xs:11.5px;--t-s:13px;--t-m:14px;--t-l:16px;--t-xl:20px;--t-xxl:30px;
   /* espaço (grade de 4) */
   --e1:4px;--e2:8px;--e3:12px;--e4:16px;--e5:24px;--e6:32px;
   /* raio */
@@ -33,9 +34,9 @@
 [hidden]{display:none!important}
 html,body{margin:0;height:100%}
 body{font:var(--t-m)/1.5 var(--fonte);color:var(--tx);background:var(--s0);display:flex;flex-direction:column;min-width:260px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
-::selection{background:rgba(232,84,127,.32)}
+::selection{background:rgba(229,35,58,.4)}
 ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:8px}::-webkit-scrollbar-track{background:transparent}
-:focus-visible{outline:2px solid var(--acao);outline-offset:2px}
+:focus-visible{outline:2px solid var(--verm);outline-offset:2px}
 p{margin:0}
 b,strong{font-weight:700}
 
@@ -114,10 +115,10 @@ input:focus{outline:2px solid var(--linha2);border-color:var(--tx3)}
 /* ---------- cabeçalho do fã ---------- */
 .cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:var(--e2) var(--e3);padding:var(--e4);background:transparent;border:0;border-radius:0;padding:var(--e1) var(--e1) 0}
 .cab>div:first-child{min-width:0;flex:1}
-.cab .nome{font-weight:700;font-size:var(--t-xl);letter-spacing:-.01em;line-height:1.25}
+.cab .nome{font-weight:800;font-size:var(--t-xl);letter-spacing:-.015em;line-height:1.2}
 .cab .sub{font-size:var(--t-s);color:var(--tx2);margin-top:2px}
 .relogio{text-align:right;flex:none}
-.relogio .grande{font-size:var(--t-xxl);font-weight:700;line-height:1;letter-spacing:-.02em}
+.relogio .grande{font-size:var(--t-xxl);font-weight:800;line-height:1;letter-spacing:-.02em}
 .relogio .grande.verde{color:var(--ok)}.relogio .grande.amarelo{color:var(--alerta)}.relogio .grande.vermelho{color:var(--perigo)}
 .relogio .r{font-size:var(--t-xs);color:var(--tx3);margin-top:var(--e1)}
 .selos{display:flex;flex-wrap:wrap;gap:var(--e1);margin-top:var(--e2)}
@@ -129,7 +130,7 @@ body:not(.mini) .cab .sub,body:not(.mini) .cab .selos{display:none}
 button.chip{font:inherit;font-size:var(--t-xs);font-weight:600;cursor:pointer}
 .chip.vip,.chip.nobre,.chip.cara_baleia{background:var(--dinheiro-bg);color:var(--dinheiro)}
 .chip.baleia{background:var(--dinheiro);color:#18130a;font-weight:700}
-.chip.potencial,.chip.multi,.chip.sutil{background:var(--marca-bg);color:#f4c3d1}
+.chip.potencial,.chip.multi,.chip.sutil{background:var(--verm-bg);color:#ffc2c8}
 .chip.esfriou,.chip.ruim,.chip.freio,.chip.so-nome{background:var(--alerta-bg);color:var(--alerta)}
 .chip.tarde{background:var(--perigo-bg);color:var(--perigo)}
 
@@ -156,16 +157,16 @@ button.chip{font:inherit;font-size:var(--t-xs);font-weight:600;cursor:pointer}
 
 /* ---------- HUD (avisos curtos) ---------- */
 .hud{display:flex;flex-direction:column;gap:6px}
-.hud-i{font-size:var(--t-s);color:var(--tx2);position:relative;padding:0 0 0 var(--e4);line-height:1.45}
-.hud-i::before{content:"";position:absolute;left:2px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--tx3)}
-.hud-i.aviso{color:#f2dcb0}.hud-i.aviso::before{background:var(--alerta)}
+.hud-i{font-size:var(--t-s);color:var(--tx2);position:relative;padding:var(--e2) var(--e3) var(--e2) 28px;line-height:1.45;background:var(--s1);border-radius:var(--r-m)}
+.hud-i::before{content:"";position:absolute;left:var(--e3);top:15px;width:6px;height:6px;border-radius:50%;background:var(--tx3)}
+.hud-i.aviso{color:#f6e2b8;background:var(--alerta-bg)}.hud-i.aviso::before{background:var(--alerta)}
 .hud-barra{display:none;height:3px;margin:6px 0 2px}
 
 /* ---------- cartão da jogada (o centro da tela) ---------- */
-.jogo{padding:var(--e4);gap:var(--e3)}
+.jogo{padding:var(--e4);gap:var(--e3);background:#1d1214;border-color:var(--verm-linha)}
 .fase{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
-.fase .chip{background:var(--s3);color:var(--tx);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:10.5px;padding:3px var(--e2)}
-body.dom .fase .chip:not(.tier):not(.preco-chip){background:var(--marca-bg);color:#f6c9d6}
+.fase .chip{background:var(--verm-bg);color:#ffd3d7;font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:10.5px;padding:3px var(--e2)}
+body.dom .fase .chip:not(.tier):not(.preco-chip){background:var(--acao);color:#fff}
 .fase .chip.tier{background:transparent;color:var(--tx2);text-transform:none;letter-spacing:0;padding:3px 0}
 .fase .chip.tier.vip{color:var(--dinheiro)}
 .fase .chip.tier.baleia{background:var(--dinheiro);color:#18130a;padding:3px var(--e2)}
@@ -173,14 +174,14 @@ body.dom .fase .chip:not(.tier):not(.preco-chip){background:var(--marca-bg);colo
 .fase .chip.preco-chip:hover{background:var(--dinheiro-bg)}
 .fase .chip.preco-chip.ok{color:var(--ok)}
 .fase .motivo{font-size:var(--t-s);color:var(--tx3);flex-basis:100%}
-.jogada{font-weight:700;font-size:var(--t-l);letter-spacing:-.005em;line-height:1.35}
+.jogada{font-weight:800;font-size:17px;letter-spacing:-.005em;line-height:1.35}
 .jogada.espere{color:var(--alerta);font-size:var(--t-m)}
 .jogo .abertura{color:var(--tx2)}
 .nav-mini,.fa-topo,.barra-doca,.jog-inline{display:none}
 
 /* roteiro: o texto que vai ser copiado */
-.roteiro{background:var(--s2);border-radius:var(--r-m);padding:var(--e3) var(--e4) var(--e3)}
-.roteiro .txt{white-space:pre-wrap;font-size:14.5px;line-height:1.6;color:var(--tx)}
+.roteiro{background:#120c0d;border-radius:var(--r-m);padding:var(--e3) var(--e4) var(--e3)}
+.roteiro .txt{white-space:pre-wrap;font-size:15.5px;line-height:1.55;color:var(--tx)}
 body:not(.mini) .jogo .roteiro .txt{max-height:34vh;overflow-y:auto}
 .roteiro .falta{background:var(--alerta-bg);color:var(--alerta);border-radius:4px;padding:0 4px;cursor:pointer}
 .roteiro .falta:hover{background:rgba(233,176,74,.25)}
@@ -202,7 +203,7 @@ body:not(.mini) .jogo .roteiro .txt{max-height:34vh;overflow-y:auto}
 .btn.usei:hover{background:var(--s3);color:var(--tx)}
 .btn.usei.feito{color:var(--ok)}
 .btn.usei.falhou{color:var(--perigo)}
-.roteiro .barra .btn.rosa,.roteiro .btn.copiar{min-height:34px;min-width:92px;padding:0 var(--e4);font-size:var(--t-m);flex:none}
+.roteiro .barra .btn.rosa,.roteiro .btn.copiar{min-height:38px;min-width:104px;padding:0 var(--e5);font-size:var(--t-l);font-weight:700;flex:none}
 .roteiro .nota{font-size:var(--t-xs);color:var(--tx3);margin-top:var(--e2)}
 .roteiro .nota.reg.ok{color:var(--ok)}.roteiro .nota.reg.falhou{color:var(--alerta)}
 .roteiro .nota.melhor,.roteiro .nota.oferta{color:var(--dinheiro)}
@@ -237,9 +238,9 @@ body:not(.mini) .jogo .roteiro .txt{max-height:34vh;overflow-y:auto}
 
 /* ---------- abas ---------- */
 .abas{display:flex;gap:2px;border-bottom:1px solid var(--linha);margin-top:var(--e1)}
-.abas button{flex:1 1 0;min-width:0;font:inherit;font-size:var(--t-s);font-weight:600;color:var(--tx3);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:var(--e2) var(--e1);cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:color var(--rapido)}
+.abas button{flex:1 1 0;min-width:0;font:inherit;font-size:var(--t-s);font-weight:600;color:var(--tx2);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:var(--e2) var(--e1);cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:color var(--rapido)}
 .abas button:hover{color:var(--tx)}
-.abas button.ativa{color:var(--tx);border-bottom-color:var(--tx)}
+.abas button.ativa{color:#fff;border-bottom-color:var(--acao)}
 .abas-n{font-size:10px;font-weight:700;background:var(--perigo);color:#fff;border-radius:var(--r-full);padding:0 5px;line-height:15px}
 /* fora da aba Delta: só fã + jogada + a aba escolhida */
 body:not(.mini)[data-aba="ficha"] #conteudo>*:not(.alerta):not(.cab):not(.jogo):not(.abas):not(.pane):not(.vazio),
@@ -248,35 +249,56 @@ body:not(.mini)[data-aba="sumidos"] #conteudo>*:not(.alerta):not(.cab):not(.jogo
 body:not(.mini)[data-aba="mais"] #conteudo>*:not(.alerta):not(.cab):not(.jogo):not(.abas):not(.pane):not(.vazio){display:none}
 
 /* ---------- dobras (progressive disclosure) ---------- */
-/* Linha única com resumo + número-chave; abre com 1 clique. Sem caixa: só uma divisória fina. */
-.dobra{border-bottom:1px solid var(--linha)}
-#conteudo>.dobra{margin-top:calc(var(--e3) * -1)}
-#conteudo>.hud{margin-bottom:var(--e1)}
-.dobra>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:var(--e2);min-height:40px;padding:var(--e2) 2px;font-size:var(--t-s);color:var(--tx2);user-select:none}
+/* v2.4.1: cartões, não "lista de configurações". Preço · Meta do dia · Leitura · Recursos ficam em grade 2×2
+   (rótulo pequeno + número grande); ao abrir, o cartão ocupa a largura toda. Avisos, Fila e Diagnóstico são faixas. */
+body:not(.mini) #conteudo{flex-flow:row wrap;align-content:flex-start}
+body:not(.mini) #conteudo>*{flex:1 1 100%;min-width:0}
+.dobra{background:var(--s1);border:1px solid var(--linha);border-radius:var(--r-l);position:relative}
+.dobra[open]{border-color:var(--linha2)}
+.dobra>summary{cursor:pointer;list-style:none;display:flex;align-items:center;flex-wrap:wrap;gap:2px var(--e2);min-height:46px;padding:10px 36px 10px var(--e4);font-size:var(--t-s);color:var(--tx2);user-select:none;position:relative}
 .dobra>summary::-webkit-details-marker{display:none}
-.dobra>summary::after{content:"";margin-left:auto;width:6px;height:6px;border-right:1.5px solid var(--tx3);border-bottom:1.5px solid var(--tx3);transform:rotate(45deg) translate(-2px,-2px);transition:transform var(--rapido);flex:none}
-.dobra[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.dobra>summary::after{content:"";position:absolute;right:var(--e4);top:19px;width:7px;height:7px;border-right:2px solid var(--tx3);border-bottom:2px solid var(--tx3);transform:rotate(45deg);transition:transform var(--rapido)}
+.dobra[open]>summary::after{transform:rotate(-135deg);top:22px}
 .dobra>summary:hover{color:var(--tx)}
-.dobra>summary:hover::after{border-color:var(--tx2)}
-.dobra .dt{font-weight:600;color:var(--tx);flex:none}
-.dobra .dv{color:var(--tx3);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dobra>summary:hover::after{border-color:var(--tx)}
+.dobra:hover{border-color:var(--linha2)}
+.dobra .dt{font-weight:700;color:var(--tx);flex:none}
+.dobra .dv{color:var(--tx2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dobra .dv.din{color:var(--dinheiro);font-weight:700}
-.dobra .pos-n{flex:none;font-size:var(--t-xs);font-weight:700;color:var(--tx2);background:var(--s2);border-radius:var(--r-s);padding:0 6px}
+.dobra .ds{color:var(--tx3);font-size:var(--t-xs);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dobra .pos-n{flex:none;font-size:var(--t-xs);font-weight:800;color:var(--tx);background:var(--s3);border-radius:var(--r-s);padding:0 7px;line-height:20px}
 .dobra .pos-n.lider{color:#18130a;background:var(--dinheiro)}
-.dbar{flex:1 1 40px;max-width:90px;height:3px;border-radius:2px;background:var(--s3);overflow:hidden;display:block}
+.dbar{flex:1 1 40px;max-width:90px;height:4px;border-radius:2px;background:var(--s3);overflow:hidden;display:block}
 .dbar b{display:block;height:100%;background:var(--dinheiro)}
 .dbar.ok b{background:var(--ok)}
-.dponto{width:6px;height:6px;border-radius:50%;flex:none;background:var(--tx3)}
+.dponto{width:8px;height:8px;border-radius:50%;flex:none;background:var(--tx3)}
 .dponto.aviso{background:var(--alerta)}
-.dobra-c{padding:0 2px var(--e4);display:flex;flex-direction:column;gap:var(--e3)}
-/* dobra dentro do roteiro (sobre este roteiro): menor, sem divisória */
-.dobra.dobra-rot{border-bottom:0;margin-top:var(--e2)}
-.dobra.dobra-rot>summary{min-height:24px;padding:0;font-size:var(--t-xs);gap:6px}
+.dobra .chip.tarde{margin-left:0}
+.dobra-c{padding:0 var(--e4) var(--e4);display:flex;flex-direction:column;gap:var(--e3)}
+/* os 4 cartões de número (grade 2×2 quando fechados) */
+body:not(.mini) #conteudo>.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec):not([open]){flex:1 1 calc(50% - var(--e3))}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec)>summary{flex-direction:column;align-items:flex-start;gap:2px;min-height:84px;padding:var(--e3) 32px var(--e3) 14px}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec)>summary::after{right:14px;top:17px;width:6px;height:6px}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec)[open]>summary::after{top:20px}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec) .dt{font-size:var(--t-xs);font-weight:600;color:var(--tx2)}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec) .dv{font-size:19px;font-weight:800;color:var(--tx);letter-spacing:-.01em;max-width:100%;line-height:1.25}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec) .dv.din{color:var(--dinheiro)}
+.dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec) .ds{max-width:100%}
+.dobra-placar .pos-n{position:absolute;right:30px;top:12px}
+.dobra-placar .dbar{flex:none;width:100%;max-width:none;margin-top:6px}
+.dobra-preco>summary .chip{position:absolute;right:30px;top:12px}
+/* faixas técnicas: discretas */
+.dobra:is(.dobra-diag,.dobra-conv){background:transparent;border-style:dashed}
+.dobra:is(.dobra-diag,.dobra-conv) .dt{color:var(--tx2);font-weight:600}
+/* dobra dentro do roteiro (sobre este roteiro): só uma linha de texto */
+.dobra.dobra-rot{background:none;border:0;border-radius:0;margin-top:var(--e2)}
+.dobra.dobra-rot>summary{min-height:24px;padding:0 18px 0 0;font-size:var(--t-xs);gap:6px;flex-wrap:nowrap;display:inline-flex}
 .dobra.dobra-rot .dt{color:var(--tx3);font-weight:600}
-.dobra.dobra-rot>summary::after{margin-left:0}
+.dobra.dobra-rot>summary::after{right:2px;top:7px;width:5px;height:5px;border-width:1.5px}
+.dobra.dobra-rot[open]>summary::after{top:10px}
 .dobra.dobra-rot .dobra-c{padding:var(--e1) 0 0;gap:2px}
 .dobra.dobra-rot .nota{margin-top:0}
-/* ordem visual (a ordem no HTML não muda): alerta → fã → ofertar → jogada → abas → aba → avisos → dobras */
+/* ordem visual (a ordem no HTML não muda): alerta → fã → ofertar → jogada → abas → aba → aviso → cartões → faixas */
 body:not(.mini) #conteudo>.alerta{order:-9}
 body:not(.mini) #conteudo>.cab{order:-8}
 body:not(.mini) #conteudo>.ofertar-agora{order:-7}
@@ -284,11 +306,11 @@ body:not(.mini) #conteudo>.jogo{order:-6}
 body:not(.mini) #conteudo>.abas{order:-5}
 body:not(.mini) #conteudo>.pane{order:-4}
 body:not(.mini) #conteudo>.hud{order:-3}
-body:not(.mini) #conteudo>.dobra-hud{order:-2}
-body:not(.mini) #conteudo>.dobra-preco{order:-1}
+body:not(.mini) #conteudo>.dobra-preco{order:-2}
+body:not(.mini) #conteudo>.dobra-placar{order:-1}
 body:not(.mini) #conteudo>.dobra-leit{order:0}
-body:not(.mini) #conteudo>.dobra-placar{order:1}
-body:not(.mini) #conteudo>.dobra-rec{order:2}
+body:not(.mini) #conteudo>.dobra-rec{order:1}
+body:not(.mini) #conteudo>.dobra-hud{order:2}
 body:not(.mini) #conteudo>.dobra-fila{order:3}
 body:not(.mini) #conteudo>.dobra-conv{order:4}
 body:not(.mini) #conteudo>.usei-fim{order:5}
@@ -407,7 +429,7 @@ details.cena[open]{padding-bottom:var(--e3)}
 #btnMini{margin-left:auto}
 #btnUseiTopo{flex:none;min-width:68px;min-height:28px}
 /* o Copiar do topo é atalho (o dominante é o do cartão): contorno, não cheio */
-#btnCopiarTopo{flex:none;min-width:72px;min-height:28px;padding:4px var(--e3);background:transparent;color:var(--acao);border-color:var(--acao)}
+#btnCopiarTopo{flex:none;min-width:72px;min-height:28px;padding:4px var(--e3);background:transparent;color:var(--verm);border-color:var(--verm-linha)}
 #btnCopiarTopo:hover{background:var(--acao);color:var(--acao-tx)}
 .topo:has(#btnUseiTopo:not([hidden])) .conta-badge{flex-basis:calc(100% - 124px);min-width:0}
 .topo:has(#btnUseiTopo:not([hidden])) #btnMini{margin-left:0}
@@ -444,7 +466,7 @@ body:not(.mini) .rg{flex-direction:column;align-items:stretch;gap:2px;padding:6p
 .rg.eu .rg-n{color:#fff}
 .rg:not(.eu):hover{background:var(--s1);border-color:var(--linha2)}
 .rg:not(.eu):active{transform:translateY(1px)}
-.rg:focus-visible{outline:2px solid var(--acao);outline-offset:1px}
+.rg:focus-visible{outline:2px solid var(--verm);outline-offset:1px}
 .rg-pulso{width:7px;height:7px;border-radius:50%;background:var(--dinheiro);flex:none;animation:pulso 1.2s ease-in-out infinite}
 .rg.sla .rg-pulso{background:var(--perigo)}
 .rg.pedindo{border-color:var(--dinheiro);background:var(--dinheiro-bg)}
@@ -501,7 +523,9 @@ body.compacto .meta7-bloco{display:none}
 body.compacto .hud-barra{display:block}
 body.compacto .btn.adaptar .rot{display:none}
 body.compacto .btn.adaptar{width:26px;padding:0;display:inline-flex;align-items:center;justify-content:center}
-body.compacto .dobra>summary{min-height:36px}
+body.compacto .dobra>summary{min-height:40px}
+body.compacto .dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec)>summary{min-height:76px;padding:10px 26px 10px 12px}
+body.compacto .dobra:is(.dobra-preco,.dobra-placar,.dobra-leit,.dobra-rec) .dv{font-size:17px}
 
 /* ================= mini · doca (~155 px de conteúdo, SEM rolagem) =================
    linha 1: conta · fã + selos · radar (bolinhas) · relógio · ▾
