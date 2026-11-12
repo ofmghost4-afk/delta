@@ -42,6 +42,22 @@ Com um `{campo}` por preencher, o `V` recusa e diz qual falta.
 
 ---
 
+## 2b. Fã que acabou de chegar
+
+Quando a conversa tem **só a mensagem automática da modelo** — o fã entrou e
+ainda não falou — aparece no topo do cartão de trabalho um bloco com três
+saudações prontas, já com o primeiro nome dele:
+
+> Oiii Lucas · Oiii Lucas, que bom te ver por aqui 😊 · Oiii Lucas 😏 chegou agora?
+
+Um clique põe a frase no campo da Privacy (e, se não der, copia). Como sempre:
+**não envia**. O nome sai limpo — sem emoji, número nem sobrenome.
+
+Para mudar as frases: `coach-ext/data/coach_regras.json` → `saudacao` →
+`textos`. Para desligar: `ativo: false`.
+
+---
+
 ## 3. Abrir a conversa certa sem caçar na lista
 
 Clique no nome e a conversa abre na Privacy. Funciona em três lugares:

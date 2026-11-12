@@ -691,3 +691,11 @@ body[data-gestor] h4{font-size:var(--t-s);color:var(--tx3);font-weight:600;margi
 }
 /* A coluna da esquerda tem ~56% de 700 px (≈370), quase a mesma largura de antes: a barra do roteiro
    CONTINUA quebrando, senão o Copiar é espremido para fora da coluna (defeito visto na prévia). */
+
+/* ---------- v2.7.0 · saudação rápida de quem acabou de chegar ---------- */
+.card.chegou{background:var(--verm-bg);border:1px solid var(--verm-linha);border-radius:var(--r-m);padding:var(--e3);margin-bottom:var(--e3)}
+.chegou-t{font-size:var(--t-s);color:var(--tx2);margin-bottom:var(--e2)}
+/* empilhados e com o texto inteiro: a frase e o botao, entao nao pode ser cortada */
+.chegou-b{display:flex;flex-direction:column;align-items:flex-start;gap:var(--e1)}
+.chegou-b .btn{min-height:32px;max-width:100%;white-space:normal;text-align:left;line-height:1.35;padding:var(--e1) var(--e3);border:1px solid var(--verm-linha);color:var(--tx)}
+.chegou-b .btn:hover{background:var(--s3)}

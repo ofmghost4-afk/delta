@@ -327,5 +327,21 @@ console.log("== ficha ligada só pelo nome (v2.3.6, trazido do Aura) ==");
   confere("só pelo nome, mas a Privacy mostra R$ 640 gastos: não cai para o preço de entrada", soNomeTela.ctx.total === 640 && soNomeTela.preco.min > R.config_por_conta.arrudafree.entrada_brl[1], { total: soNomeTela.ctx.total, preco: soNomeTela.preco });
   confere("só pelo nome: ignora as compras da ficha (total da tela), sem selo VIP/Baleia e sem 'Nunca pagou'", soNome.ctx.total === 0 && soNome.ctx.ultCompraValor == null && !soNome.selos.some((s) => ["vip", "baleia", "nunca"].includes(s.id)), { total: soNome.ctx.total, ult: soNome.ctx.ultCompraValor, selos: soNome.selos.map((s) => s.id) });
 }
+// v2.7.0 · saudação rápida de quem acabou de chegar
+{
+  const so = (a) => a.map((de_fa, i) => ({ id: "x" + i, em: AG - 60000, de_fa, texto: "oi" }));
+  confere("chegou agora: só a mensagem automática da modelo", M.chegouAgora(so([false]), R), null);
+  confere("chegou agora: NÃO vale se o fã já falou", !M.chegouAgora(so([false, true]), R), null);
+  confere("chegou agora: NÃO vale com a conversa vazia", !M.chegouAgora([], R), null);
+  confere("chegou agora: respeita ate_n", M.chegouAgora(so([false, false]), Object.assign({}, R, { saudacao: Object.assign({}, R.saudacao, { ate_n: 2 }) })), null);
+  confere("chegou agora: ativo:false desliga", !M.chegouAgora(so([false]), Object.assign({}, R, { saudacao: { ativo: false } })), null);
+  confere("primeiro nome: tira sobrenome", M.primeiroNome("Carlos Mendes") === "Carlos", M.primeiroNome("Carlos Mendes"));
+  confere("primeiro nome: tira emoji e número", M.primeiroNome("🔥Lucas_92 Silva") === "Lucas", M.primeiroNome("🔥Lucas_92 Silva"));
+  confere("primeiro nome: arruma o caixa alta", M.primeiroNome("JOÃO") === "João", M.primeiroNome("JOÃO"));
+  confere("primeiro nome: sem nome usável devolve vazio", M.primeiroNome("🔥🔥 123") === "", JSON.stringify(M.primeiroNome("🔥🔥 123")));
+  const s = M.saudacoes("Carlos Mendes", R);
+  confere("saudações: usam o primeiro nome e vêm do JSON", s[0] === "Oiii Carlos" && s.length === R.saudacao.textos.length, s);
+  confere("saudações: sem nome não deixam espaço sobrando", M.saudacoes("🔥", R)[0] === "Oiii", JSON.stringify(M.saudacoes("🔥", R)[0]));
+}
 console.log("\n" + (n - falhas) + " ok, " + falhas + " falha(s)");
 process.exit(falhas ? 1 : 0);

@@ -1003,6 +1003,33 @@
     return Object.assign(extras, { modo: R._modo, fase: fz, rotuloFase, selos: sl, jogada: jg, roteiro: rot, variantes, preco: pr, recursos: rc, alertas: al, relogio: rl, hud: hud(c, R, sl, rl, m7, fz), meta7: m7, tier: tr ? { id: tr.id, rotulo: tr.rotulo } : null, ppvFonte: c.fontePpv, nome: c.nome, ctx: { msgsFaDesdePpv: c.msgsFaDesdePpv, gapFa_s: c.gapFa_s, total: c.total, gasto7: c.gasto7, ultCompraValor: c.ultCompraValor } });
   }
 
-  const API = { momentoOfertar, sugestaoOferta, variantesOferta, pesoOferta, construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
+  // ---------- v2.7.0 · saudação rápida de quem acabou de chegar ----------
+  // "Só a mensagem automática da modelo na conversa" = o fã entrou, recebeu o automático e ainda não falou.
+  // Vale para 1 mensagem (ou poucas, R.saudacao.ate_n) e NENHUMA delas do fã.
+  function chegouAgora(msgs, R) {
+    const S = (R && R.saudacao) || {};
+    if (S.ativo === false) return false;
+    const ms = Array.isArray(msgs) ? msgs : [];
+    if (!ms.length || ms.length > (S.ate_n || 1)) return false;
+    return !ms.some((m) => m && m.de_fa);
+  }
+  // Primeiro nome limpo para o {nome}: tira emoji, número, pontuação e sobrenome. Sem nome usável, devolve "".
+  function primeiroNome(nome) {
+    const limpo = String(nome || "")
+      .replace(/[\p{Extended_Pictographic}️‍]/gu, " ")      // emoji
+      .replace(/[^\p{L}\s'-]/gu, " ")                                   // número, pontuação, símbolo
+      .replace(/\s+/g, " ").trim();
+    const p = limpo.split(" ").find((x) => x.replace(/[^\p{L}]/gu, "").length >= 2) || "";
+    if (!p) return "";
+    return p.charAt(0).toUpperCase() + p.slice(1).toLowerCase();
+  }
+  // Textos da saudação, com o {nome} já preenchido (vêm do coach_regras.json, não chumbados aqui).
+  function saudacoes(nome, R) {
+    const S = (R && R.saudacao) || {}, pn = primeiroNome(nome);
+    return (S.textos || []).map((t) => String(t).replace(/\{nome\}/g, pn).replace(/\s{2,}/g, " ").trim())
+      .map((t) => t.replace(/\s+([!?,.])/g, "$1")).filter(Boolean);
+  }
+
+  const API = { chegouAgora, primeiroNome, saudacoes, momentoOfertar, sugestaoOferta, variantesOferta, pesoOferta, construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else raiz.CoachMotor = API;
 })(typeof self !== "undefined" ? self : this);

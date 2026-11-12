@@ -1005,6 +1005,7 @@ function desenharCorpo(a) {
   desenharHud(a, res);
   // fase
   const fora = a; a = el("section", { class: "card jogo" }); fora.append(a);
+  blocoSaudacao(a); // v2.7.0: fã que acabou de chegar — fica no topo do cartão de trabalho, onde o olho já está
   let acao = null; // o que o "Copiar" do topo copia
   const cFixa = cenaFixa(res);
   if (cFixa) acao = desenharCenaTopo(a, res, cFixa);
@@ -1190,6 +1191,22 @@ function mostrarAcao(r, okTxt) {
 async function abrirNaPrivacy(sala, nome) {
   if (!sala) return;
   mostrarAcao(await pedirAcao({ t: "coach_abrir_conversa", sala }), "Abri " + (nome || "a conversa") + " na Privacy.");
+}
+// v2.7.0 · saudação rápida: um clique põe o texto no campo da Privacy; se não der, copia (sempre tem saída).
+async function usarSaudacao(txt, ev) {
+  const r = await pedirAcao({ t: "coach_preencher", texto: txt });
+  if (r.ok) { mostrarAcao(r, "No campo: “" + txt + "”. Revise e aperte Enter."); return; }
+  const copiou = await copiar(txt, ev);
+  mostrarAcao({ ok: copiou, erro: r.erro }, copiou ? "Não deu para preencher, então copiei: “" + txt + "”." : "");
+}
+// Bloco de boas-vindas: só quando a conversa tem apenas a mensagem automática da modelo (o fã ainda não falou).
+function blocoSaudacao(a) {
+  if (!est || !est.conv || !R || !M.chegouAgora(est.msgs, R)) return;
+  const textos = M.saudacoes(est.conv.nome, R);
+  if (!textos.length) return;
+  a.append(el("section", { class: "card chegou" },
+    el("div", { class: "chegou-t" }, el("b", {}, "Acabou de chegar"), " · só a mensagem automática. Quebre o gelo:"),
+    el("div", { class: "chegou-b" }, textos.map((t) => el("button", { class: "btn mini", type: "button", title: "Põe no campo da Privacy. Não envia: você aperta Enter.", onclick: (ev) => usarSaudacao(t, ev) }, t)))));
 }
 async function preencherNaPrivacy() {
   const a = acaoTopo; if (!a || !a.texto) return;

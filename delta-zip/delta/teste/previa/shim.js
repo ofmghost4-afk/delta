@@ -23,6 +23,9 @@
       ultimas: [{ data: new Date(Date.now() - 86400e3).toISOString().slice(0, 10), valor: 79.9, tipo: "Chat" }], dias_sem: 1, por: 1,
       msgs: [msg(4000, true, "oi"), msg(3900, false, "oi Rafa 😏"), msg(3000, true, "tem novidade?"), msg(2400, true, "tô curioso"), msg(1000, true, "manda"), msg(700, false, "olha o que eu separei pra você", { ppv: true, comprado: false, preco: 129.9, tipo: "ppv" })],
       ppvs: [{ id: id(700, 700), preco: "129.90", em: new Date((t0 - 700) * 1000).toISOString(), pago: false, pago_em: "" }] },
+    // v2.7.0: fã que acabou de chegar — só a mensagem automática da modelo, e o nome sujo de emoji e número
+    chegou: { nome: "🔥Lucas_92 Silva", total: 0, n: 0, notas: [], tags: [], ultimas: [], dias_sem: null, por: 0,
+      msgs: [msg(90, false, "Oi amor, seja bem-vindo! 😘 Me chama aqui que eu respondo rapidinho")] },
     vazio: null
   };
   const c = CENAS[cena];

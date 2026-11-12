@@ -1801,5 +1801,15 @@
  "proximo": {
   "_doc": "Próximo da fila (doca e avisos): 1) lembrete vencido; 2) fã grande (gasto na lista >= grande_brl) esperando; 3) quem escreveu hoje, mais atrasado primeiro, online na frente; 4) mensagens de outro dia, por quem gastou mais.",
   "grande_brl": 1000
+ },
+ "saudacao": {
+  "_doc": "v2.7.0: quem acabou de chegar e só recebeu a mensagem automática da modelo (nenhuma mensagem do fã na conversa) ganha botões de saudação rápida no topo do painel. Um clique põe o texto no campo da Privacy (não envia; o Enter é seu) e, se não der para preencher, copia. {nome} vira o primeiro nome limpo, sem emoji, número nem sobrenome; sem nome usável, a frase sai sem ele. ate_n = até quantas mensagens (todas da modelo) ainda contam como 'acabou de chegar'. ativo:false desliga.",
+  "ativo": true,
+  "ate_n": 1,
+  "textos": [
+   "Oiii {nome}",
+   "Oiii {nome}, que bom te ver por aqui 😊",
+   "Oiii {nome} 😏 chegou agora?"
+  ]
  }
 }

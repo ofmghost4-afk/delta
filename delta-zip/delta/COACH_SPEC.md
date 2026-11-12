@@ -619,6 +619,16 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Scripts**: `$LARG_DELTA` virou **`$LARG_PRIVACY = 827`** (a Privacy é que tem largura própria; o Delta pega o resto). Sintaxe dos dois `.ps1` validada pelo parser do PowerShell e ASCII conferido.
 - **Conferido na prévia** a 827 + 613: duas colunas, coluna da esquerda com 321 px, Copiar inteiro dentro dela, Privacy com lista + conversa + campo. `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok.
 
+## 20aj. v2.7.0 (saudação rápida de quem acabou de chegar)
+
+- **Pedido**: o fã que entra recebe a mensagem automática da modelo; enquanto ele não responde, a conversa tem **uma mensagem só, e ela é nossa**. Nesse estado o usuário quer mandar rápido um "Oiii {nome}".
+- **Motor** (funções puras, testáveis): `chegouAgora(msgs, R)` — verdadeiro com até `saudacao.ate_n` mensagens e **nenhuma do fã**; `primeiroNome(nome)` — tira emoji, número, pontuação e sobrenome e arruma o caixa ("🔥Lucas_92 Silva" → "Lucas", "JOÃO" → "João"); `saudacoes(nome, R)` — os textos do JSON com `{nome}` trocado, sem espaço sobrando quando não há nome usável.
+- **JSON** (`coach_regras.json` → `saudacao`): `ativo`, `ate_n` (1) e `textos` (3 frases, a primeira "Oiii {nome}"). Nada chumbado no código.
+- **No painel**: `blocoSaudacao()` entra **no topo do cartão de trabalho** (não numa faixa à parte), com os textos empilhados. Um clique chama `coach_preencher`; **se não der para preencher, copia** — sempre há saída. Não envia.
+- **Três defeitos pegos na prévia**: (1) o bloco caía na coluna da direita, embaixo da Meta do dia — longe do olho; (2) os botões maiores eram cortados pela largura da coluna; (3) o primeiro botão era cheio e brigava com o Copiar, quebrando a regra de "uma ação dominante". Correções: bloco dentro do `.card.jogo`, botões empilhados com `white-space:normal`, e todos em contorno — o Copiar segue sendo o único cheio.
+- **Prévia**: caso novo `?c=chegou` no `shim.js`, com o nome sujo de propósito ("🔥Lucas_92 Silva") para exercitar a limpeza.
+- **Testes**: 11 novos no `unit_v22.mjs` (137 → **148 ok**), incluindo "não vale se o fã já falou", "respeita ate_n", "ativo:false desliga" e a limpeza do nome. `estatico.mjs` tudo ok. Conferido que o bloco **não** aparece na conversa com histórico (`?c=vip`).
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.
