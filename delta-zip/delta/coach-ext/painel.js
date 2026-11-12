@@ -108,6 +108,7 @@ let acaoTopo = null; // o que o "Copiar" do topo (e as teclas C / Enter) copia a
 // abas do Aura dentro do Delta (Ficha / Fila / Sumidos / Mais) e botão ⚡ Adaptar. Cada bloco some sozinho se a
 // função dele ainda não existe no banco (coach_sql.sql v2.2 não rodado).
 let convVar = null, convVarEm = 0, convVarDisp = true;
+let momentoStats = null, momentoStatsEm = 0, momentoStatsDisp = true; // v2.3.16: coach_momento_stats
 let radarG = null, radarDisp = true, radarEm = 0, radarOcupado = false, radarConta = null;
 let chatter = null, chatterDisp = true, chatterEm = 0;
 let aba = "delta"; // delta | ficha | fila | sumidos | mais
@@ -321,6 +322,14 @@ async function carregarPlacar(forcar) {
   desenhar();
 }
 // v2.2 · conversão por variante na semana (para a ordem automática das variantes)
+async function carregarMomentoStats(forcar) {
+  if (!sessao || !momentoStatsDisp || !est || !est.conta || !(R && R.momento_ofertar && R.momento_ofertar.ativo !== false)) return;
+  if (!forcar && Date.now() - momentoStatsEm < 15 * 60000) return;
+  momentoStatsEm = Date.now();
+  try { const r = await rpc("coach_momento_stats", { p_conta: null }); momentoStats = Array.isArray(r) ? r : null; }
+  catch (e) { if (faltaFuncao(e)) { momentoStatsDisp = false; momentoStats = null; } }
+  desenhar();
+}
 async function carregarConvVar(forcar) {
   if (!sessao || !convVarDisp || !est || !est.conta) return;
   if (!forcar && Date.now() - convVarEm < 10 * 60000) return;
@@ -457,7 +466,9 @@ async function registrar(res) {
   if (registrando) return;
   registrando = true;
   try {
-    await rpc("coach_registrar_jogada", { p_sala: est.conv.sala || String(est.conv.cid), p_fa_id: ficha && ficha.fa ? String(ficha.fa.id) : est.conv.perfil, p_conta: est.conta, p_fase: res.fase.id + (res.fase.tipo ? ":" + res.fase.tipo : ""), p_jogada: j.txt, p_roteiro_id: j.roteiro, p_variante: j.variante, p_preco: res.preco ? res.preco.max : null, p_modo: res.modo });
+    await rpc("coach_registrar_jogada", { p_sala: est.conv.sala || String(est.conv.cid), p_fa_id: ficha && ficha.fa ? String(ficha.fa.id) : est.conv.perfil, p_conta: est.conta, p_fase: res.fase.id + (res.fase.tipo ? ":" + res.fase.tipo : ""), p_jogada: j.txt, p_roteiro_id: j.roteiro, p_variante: j.variante, p_preco: res.preco ? res.preco.max : null, p_modo: res.modo,
+      // v2.3.16: o Delta guarda se o banner "Ofertar agora" estava ligado e se a variante usada era de oferta (mede o que vende)
+      p_momento: res.momentoOfertar ? res.momentoOfertar.padrao : null, p_oferta: res.momentoOfertar ? (j.variante >= 1 && !String(j.roteiro).startsWith("CENA_") ? res.momentoOfertar.variantes.includes(j.variante - 1) : j.variante === 0 ? res.momentoOfertar.variantes.length > 0 : false) : null });
     registradas.add(chave); salvarRegistradas(); avisoRodape = "Jogada registrada.";
     if (Array.isArray(historico)) historico.unshift({ roteiro_id: j.roteiro, variante: j.variante, em: new Date().toISOString(), local: true }); // local: não some do carrossel nesta janela
   } catch (e) { avisoRodape = faltaFuncao(e) ? "Rode o coach_sql.sql no Supabase para registrar jogadas." : "Não registrou: " + e.message; }
@@ -887,7 +898,7 @@ function contexto() {
   const conv = est.conv, k = conv.perfil ? conv.perfil.toLowerCase() : "";
   return { agora: Date.now(), conta: est.conta, conv, msgs: est.msgs || [], ppvs, ficha, ligacaoSoNome: ligacaoProvavel(), compraTelaEm: (totais.get(k) || {}).compraTelaEm || null, config: (R.config_por_conta || {})[est.conta] || {}, texto, modo,
     perfil: perfis[faId()] || null, cena: (cenaSala.get(conv.sala) || {}).id || null, cenaAjuste: (cenaSala.get(conv.sala) || {}).ajuste || 0, copiado, historico,
-    convVar, cenaFixa: !!(cenaSala.get(conv.sala) || {}).fixa, padrao: est.padrao || null };
+    convVar, cenaFixa: !!(cenaSala.get(conv.sala) || {}).fixa, padrao: est.padrao || null, momentoStats };
 }
 
 function desenhar() {
@@ -927,7 +938,7 @@ function desenharCorpo(a) {
   avisarRisco(res);
   desenharAlertas(res);
   desenharConta(a);
-  carregarPlacar(false); carregarConversao(false); carregarConvVar(false); carregarChatter(false); carregarDia(false);
+  carregarPlacar(false); carregarConversao(false); carregarConvVar(false); carregarMomentoStats(false); carregarChatter(false); carregarDia(false);
   desenharPlacar(a);
   selo(ficha ? "ficha carregada" : fichaErro ? "sem ficha" : "procurando ficha…", ficha ? "verde" : "rosa");
 
@@ -957,7 +968,7 @@ function desenharCorpo(a) {
       el("div", { class: "sub" }, est.conta + (total != null ? " · gastou " + brl(total) + (fichaDin ? " na empresa" : " nesta conta") : "") + (res.ctx.gasto7 != null ? " · " + brl(res.ctx.gasto7) + " nos 7 primeiros dias" : "")),
       selos), rel, dadosLead(res, total)));
   // v2.3.15: Momento de ofertar (coach_regras.json > momento_ofertar). Só destaca e prioriza; não envia nem troca o roteiro.
-  if (res.momentoOfertar) a.append(el("div", { class: "ofertar-agora", role: "status", title: "Padrão lido na conversa: " + res.momentoOfertar.padrao },
+  if (res.momentoOfertar) a.append(el("div", { class: "ofertar-agora", role: "status", title: "Padrão lido na conversa: " + res.momentoOfertar.padrao + " · peso do boost: " + String(Math.round(res.momentoOfertar.peso * 10) / 10).replace(".", ",") + (res.momentoOfertar.pesoAprendido ? " (aprendido com as vendas)" : " (padrão do JSON)") },
     el("b", {}, "🎯 Ofertar agora"), " · " + res.momentoOfertar.motivo + (res.momentoOfertar.variantes.length ? " As variantes de oferta vêm primeiro." : "")));
   if (fichaErro && fichaErro !== "conta_fora") a.append(el("p", { class: "pequeno fraco" }, "Ficha indisponível (" + fichaErro + "). As regras usam só o que está na tela."));
 

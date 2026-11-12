@@ -1693,9 +1693,13 @@
   "fases_barram": ["vulneravel", "objecao"],
   "fases_roteiro": ["hora_de_vender"],
   "roteiros_ids": [],
-  "marcas_oferta": ["{qtd_conteudo}", "{item_maior}", "{premio_desafio}", "r$"],
+  "roteiros_oferta": ["VD_LEGENDA", "VD_PEDIU_PRECO", "VD_FECHAR", "VD_ENTRADA_DOM", "VD_ANCORA", "VD_SUBIR", "VD_CONTINUAR", "VD_PIX_ALTO", "VD_ESCASSEZ_REAL", "VD_POST_FIXADO", "WH_SEQUENCIA", "META7_SEQUENCIA", "MC_FA_QUENTE", "NT_NOBRE", "NT_PICO", "PF_TESAO"],
+  "roteiros_oferta_doc": "v2.3.16: roteiros em que TODAS as variantes são de oferta (vendem o PPV). Ficam de fora de propósito: VD_IMAGINE (aquecimento antes do PPV), FU_* e PPV_ABANDONADO (cobrança de PPV já enviado), FT_* (chamada, vitrine, desafio) e PX_NUDGE (dica de Pix). Atenção: o boost do Thompson só muda a ORDEM quando o roteiro mistura variantes de oferta e de não-oferta; num roteiro 100% de oferta ele não altera nada (o que vale é o registro: o Delta mede se usar roteiro de oferta no momento vende mais).",
+  "marcas_oferta": ["{qtd_conteudo}", "{item_maior}", "r$"],
   "variantes_oferta": {},
-  "peso_thompson": 3
+  "peso_thompson": 3,
+  "aprender_peso": { "ativo": true, "min_usos_grupo": 15, "min_peso": 1, "max_peso": 6,
+   "_doc": "v2.3.16: com pelo menos min_usos_grupo jogadas em CADA grupo (usou oferta no momento x usou outra coisa no momento, últimos 60 dias, coach_momento_stats), o peso do boost vira a razão entre as taxas de venda (com suavização +1/+2), limitada a min_peso..max_peso. Antes disso vale peso_thompson." }
  },
  "compliance_digitando": {
   "_doc": "v2.3.14: enquanto o operador digita, o Delta varre o texto (Aho-Corasick, uma passada só, sem acento e sem diferença de maiúscula) atrás destes termos e mostra um AVISO amarelo (e, com o som ligado, um bipe grave) no painel. Nunca bloqueia nem altera o texto: quem decide é quem envia. Cada termo vale só como palavra/frase inteira. Edite à vontade: id, motivo e termos de cada grupo.",

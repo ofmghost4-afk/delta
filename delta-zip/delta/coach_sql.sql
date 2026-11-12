@@ -89,10 +89,16 @@ revoke all on function central.coach_pode() from public, anon, authenticated;
 -- 3) Gravar uma jogada (o Coach só chama quando você clica "Usei esta jogada")
 --    v2: troca a versão de 8 parâmetros pela de 9 (com p_modo), para não ficar ambígua.
 drop function if exists public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric);
+-- v2.3.16: ganhou p_momento (o padrão do fã que disparou o "Momento de ofertar") e p_oferta (a variante usada era de oferta).
+-- Mudou a lista de parâmetros, então a versão antiga é apagada antes (senão ficariam duas e o PostgREST não saberia qual chamar).
+alter table central.emp_jogadas add column if not exists momento_ofertar text;
+alter table central.emp_jogadas add column if not exists variante_oferta boolean;
+drop function if exists public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text);
 create or replace function public.coach_registrar_jogada(
   p_sala text, p_fa_id text, p_conta text, p_fase text, p_jogada text,
   p_roteiro_id text default null, p_variante smallint default null,
-  p_preco numeric default null, p_modo text default null)
+  p_preco numeric default null, p_modo text default null,
+  p_momento text default null, p_oferta boolean default null)
 returns bigint
 language plpgsql volatile security definer
 set search_path = ''
@@ -111,14 +117,14 @@ begin
   if p_modo is not null and p_modo not in ('normal', 'dominante') then
     raise exception 'modo inválido' using errcode = '22023';
   end if;
-  insert into central.emp_jogadas (sala, fa_id, conta, fase, jogada, roteiro_id, variante, preco_sugerido, modo)
+  insert into central.emp_jogadas (sala, fa_id, conta, fase, jogada, roteiro_id, variante, preco_sugerido, modo, momento_ofertar, variante_oferta)
   values (left(p_sala, 64), left(p_fa_id, 64), p_conta, left(p_fase, 40), left(p_jogada, 300),
-          left(p_roteiro_id, 40), p_variante, p_preco, p_modo)
+          left(p_roteiro_id, 40), p_variante, p_preco, p_modo, left(p_momento, 40), p_oferta)
   returning id into v_id;
   return v_id;
 end $$;
-revoke all on function public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text) from public, anon;
-grant execute on function public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text) to authenticated;
+revoke all on function public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text, text, boolean) from public, anon;
+grant execute on function public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text, text, boolean) to authenticated;
 
 -- 3b) Nomes da conta (interna, não é chamada pelo Delta). emp_ppvs guarda a conta
 --     como em central.emp_contas.conta (ex.: "Luna"); o Delta e emp_jogadas usam o
@@ -623,3 +629,49 @@ begin
 end $$;
 revoke all on function public.coach_recall_fatos(bigint, text, int) from public, anon;
 grant execute on function public.coach_recall_fatos(bigint, text, int) to authenticated;
+
+-- 17) Momento de ofertar: quanto vendeu cada grupo nos últimos 60 dias (v2.3.16). Mesma regra de venda da conversão (cada compra vai
+--     para a jogada mais recente antes dela, em até 60 min). Grupos: 'oferta_no_momento' (usou roteiro de oferta com o banner ligado),
+--     'outra_no_momento' (banner ligado, usou outro roteiro) e 'sem_momento'. O Delta usa os dois primeiros para aprender o peso do boost.
+create or replace function public.coach_momento_stats(p_conta text default null)
+returns table (grupo text, usos bigint, vendas bigint)
+language plpgsql stable security definer
+set search_path = ''
+as $$
+declare
+  v_nomes text[] := case when p_conta is null then null else central.coach_nomes_conta(p_conta) end;
+begin
+  if not central.coach_pode() then
+    raise exception 'sem permissão' using errcode = '42501';
+  end if;
+  if to_regclass('central.emp_ppvs') is null then
+    return query
+      select x.g, count(*)::bigint, 0::bigint
+        from (select case when j.momento_ofertar is null then 'sem_momento' when j.variante_oferta then 'oferta_no_momento' else 'outra_no_momento' end as g
+                from central.emp_jogadas j
+               where j.em >= now() - interval '60 days' and j.roteiro_id is not null and (p_conta is null or j.conta = any(v_nomes))) x
+       group by x.g;
+    return;
+  end if;
+  return query execute
+    'select j.g, count(*)::bigint, count(v.preco)::bigint
+       from (select j0.id, j0.sala, j0.conta, j0.em,
+                    case when j0.momento_ofertar is null then ''sem_momento'' when j0.variante_oferta then ''oferta_no_momento'' else ''outra_no_momento'' end as g
+               from central.emp_jogadas j0
+              where j0.em >= now() - interval ''60 days'' and j0.roteiro_id is not null and ($1 is null or j0.conta = any($2))) j
+       left join lateral (
+         select p.preco from central.emp_ppvs p
+          where p.sala = j.sala and p.conta = any(central.coach_nomes_conta(j.conta)) and p.comprado
+            and p.comprado_em >= j.em and p.comprado_em <= j.em + interval ''60 minutes''
+            and not exists (
+              select 1 from central.emp_jogadas j2
+               where j2.sala = j.sala and j2.conta = j.conta and j2.roteiro_id is not null
+                 and j2.id <> j.id
+                 and (j2.em > j.em or (j2.em = j.em and j2.id > j.id))
+                 and j2.em <= p.comprado_em)
+          order by p.comprado_em limit 1) v on true
+      group by j.g'
+    using p_conta, v_nomes;
+end $$;
+revoke all on function public.coach_momento_stats(text) from public, anon;
+grant execute on function public.coach_momento_stats(text) to authenticated;

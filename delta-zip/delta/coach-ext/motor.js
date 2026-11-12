@@ -222,7 +222,7 @@
       primeiraCompraEm, ppvAband, tentativas, compraNestaConta, modo: R._modo || "normal",
       comprasT, compraSutil, rajada, ruim, longo, atrasoMed, perfilManual: ctx.perfil || null, cenaId: ctx.cena || null, cenaAjuste: Number(ctx.cenaAjuste) || 0, copiado: ctx.copiado || "", hist: ctx.historico || null,
       agora, msgs, doFa, daConta, ppvs, fontePpv, ultPpv, msgsFaDesdePpv, ultFa, ultConta, ultima, sinais, objecoes,
-      total, ultCompraEm, ultCompraValor, gasto7, porConta, qual, nuncaPagou, recusas, fu, ficha: f, soNome, notasTxt, padrao: typeof ctx.padrao === "string" ? ctx.padrao : null,
+      total, ultCompraEm, ultCompraValor, gasto7, porConta, qual, nuncaPagou, recusas, fu, ficha: f, soNome, notasTxt, padrao: typeof ctx.padrao === "string" ? ctx.padrao : null, momentoStats: Array.isArray(ctx.momentoStats) ? ctx.momentoStats : null,
       gapFa_s: ultFa ? Math.round((agora - ultFa.t) / 1000) : null,
       ultimaEhFa: !!(ultima && ultima.de_fa), msgsFaTotal: doFa.length, salaSemConta: daConta.length === 0,
       cfg: ctx.config || {}, nome: ((ctx.conv && ctx.conv.nome) || (f && f.fa && f.fa.nome) || "").split(/\s+/)[0] || ""
@@ -860,9 +860,21 @@
     if (min > 0 && !((Number(c.total) || 0) >= min || (Number(c.ultCompraValor) || 0) > 0)) return null;
     return { padrao: c.padrao, motivo: (MO.motivos || {})[c.padrao] || "Bom momento para ofertar." };
   }
+  // peso do boost: o do JSON, ou (com dados) a razão entre as taxas de venda de "usou oferta no momento" e "usou outra coisa no momento"
+  function pesoOferta(R, stats) {
+    const MO = R && R.momento_ofertar, base = Number(MO && MO.peso_thompson) || 1, AP = MO && MO.aprender_peso;
+    const fonte = { peso: base, aprendido: false };
+    if (!AP || AP.ativo === false || !Array.isArray(stats)) return fonte;
+    const g = (n) => { const x = stats.find((y) => y.grupo === n); return x ? { u: Number(x.usos) || 0, v: Math.min(Number(x.usos) || 0, Number(x.vendas) || 0) } : { u: 0, v: 0 }; };
+    const A = g("oferta_no_momento"), B = g("outra_no_momento"), min = Number(AP.min_usos_grupo) || 15;
+    if (A.u < min || B.u < min) return fonte;
+    const razao = ((A.v + 1) / (A.u + 2)) / ((B.v + 1) / (B.u + 2));
+    return { peso: Math.min(Number(AP.max_peso) || 6, Math.max(Number(AP.min_peso) || 1, razao)), aprendido: true, oferta: A, outra: B };
+  }
   // índices (a partir de 0) das variantes de OFERTA de um roteiro de venda
   function variantesOferta(rot, lista, R) {
     const MO = R && R.momento_ofertar, out = new Set(); if (!MO || !rot || !Array.isArray(lista)) return out;
+    if ((MO.roteiros_oferta || []).includes(rot.id) && !Array.isArray((MO.variantes_oferta || {})[rot.id])) { lista.forEach((_, i) => out.add(i)); return out; } // roteiro 100% de oferta
     if (!((MO.fases_roteiro || []).includes(rot.fase) || (MO.roteiros_ids || []).includes(rot.id))) return out;
     const exp = (MO.variantes_oferta || {})[rot.id], marcas = (MO.marcas_oferta || []).map(norm).filter(Boolean);
     lista.forEach((tx, i) => { if (Array.isArray(exp) ? exp.includes(i + 1) : marcas.some((m) => norm(tx).includes(m))) out.add(i); });
@@ -942,7 +954,8 @@
     const rot = ROT ? (ROT.roteiros || []).find((r) => r.id === jg.roteiro) || null : null;
     const todas = rot ? (dom && rot.dominante && rot.dominante.length ? rot.dominante : rot.variantes) : [];
     const dSP = diaSP(c.agora), mo = momentoOfertar(c, R, fz), marcOf = mo && rot ? variantesOferta(rot, todas, R) : new Set();
-    const ov = ordenarVariantes(todas.length, rot ? rot.id : null, c.convVar, c.hist, R, [c.conv && c.conv.sala, rot && rot.id, dSP.y, dSP.m, dSP.d, R._modo].join("|"), marcOf.size ? { marcadas: marcOf, peso: R.momento_ofertar.peso_thompson } : null), variantes = ov.ordem.map((i) => todas[i]);
+    const po = mo ? pesoOferta(R, c.momentoStats) : null;
+    const ov = ordenarVariantes(todas.length, rot ? rot.id : null, c.convVar, c.hist, R, [c.conv && c.conv.sala, rot && rot.id, dSP.y, dSP.m, dSP.d, R._modo].join("|"), marcOf.size ? { marcadas: marcOf, peso: po.peso } : null), variantes = ov.ordem.map((i) => todas[i]);
     const m7 = meta7(c, R), tr = tier(c, R), pv = previsao(c, R);
     if (pv && pv.cara && !tem(sl, "baleia")) sl.unshift({ id: "cara_baleia", txt: "🐋 Cara de Baleia · proj. R$ " + Math.round(pv.previsao_30d_brl).toLocaleString("pt-BR") + "/mês", origem: "BASE", dica: pv.motivo + " (gasto dos 7 primeiros dias × " + String(pv.fator).replace(".", ",") + ")" });
     if (fz.tipo === "freio_gasto") sl.push({ id: "freio", txt: "Freio", origem: "CONSENSO", dica: "ele disse que gastou demais: segura o preço" });
@@ -952,11 +965,11 @@
     const comprando = fz.id === "pos_compra" || pr.tipo === "sequencia" || !!(c.ultCompraEm && c.agora - c.ultCompraEm <= 6 * HORA);
     extras.dados = dadosFa(c.notasTxt, c.doFa.map((m) => m.texto).join(" \n "));
     extras.escada = fz.id !== "vulneravel" && fz.tipo !== "freio_gasto" && (dom || comprando) ? escada(pr, c, R, 3) : null;
-    extras.momentoOfertar = mo ? Object.assign({}, mo, { variantes: [...marcOf] }) : null; extras.previsao = pv; extras.variantesIdx = ov.ordem; extras.variantesInfo = { melhor: ov.melhor, ocultas: ov.ocultas, total: todas.length }; extras.boasVindas = c.soBoasVindas;
+    extras.momentoOfertar = mo ? Object.assign({}, mo, { variantes: [...marcOf], peso: po.peso, pesoAprendido: po.aprendido }) : null; extras.previsao = pv; extras.variantesIdx = ov.ordem; extras.variantesInfo = { melhor: ov.melhor, ocultas: ov.ocultas, total: todas.length }; extras.boasVindas = c.soBoasVindas;
     extras.ppvEstadoTela = c.fontePpv === "tela" && !!c.ppvs && c.ppvs.some((p) => p.comprado !== null);
     return Object.assign(extras, { modo: R._modo, fase: fz, rotuloFase, selos: sl, jogada: jg, roteiro: rot, variantes, preco: pr, recursos: rc, alertas: al, relogio: rl, hud: hud(c, R, sl, rl, m7, fz), meta7: m7, tier: tr ? { id: tr.id, rotulo: tr.rotulo } : null, ppvFonte: c.fontePpv, nome: c.nome, ctx: { msgsFaDesdePpv: c.msgsFaDesdePpv, gapFa_s: c.gapFa_s, total: c.total, gasto7: c.gasto7, ultCompraValor: c.ultCompraValor } });
   }
 
-  const API = { momentoOfertar, variantesOferta, construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
+  const API = { momentoOfertar, variantesOferta, pesoOferta, construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else raiz.CoachMotor = API;
 })(typeof self !== "undefined" ? self : this);

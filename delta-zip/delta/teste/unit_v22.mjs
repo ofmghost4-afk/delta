@@ -187,6 +187,20 @@ console.log("== Momento de ofertar (v2.3.15) ==");
   confere("boost no Thompson: a de oferta vem 1ª em ~1/3 sem boost e em quase sempre com boost", sem > 120 && sem < 280 && com > 500, [sem, com]);
   confere("sem dados para sortear: variantes de oferta só sobem, mantendo a ordem original", JSON.stringify(M.ordenarVariantes(4, "R", null, null, RR, "x", { marcadas: new Set([1, 3]), peso: 3 }).ordem) === "[1,3,0,2]", null);
   confere("sem momento de ofertar a ordem original é a de sempre", JSON.stringify(M.ordenarVariantes(4, "R", null, null, RR, "x", null).ordem) === "[0,1,2,3]", null);
+  // v2.3.16: roteiros 100% de oferta e peso aprendido
+  const rotPed = ROT.roteiros.find((x) => x.id === "VD_PEDIU_PRECO"), rotImg = ROT.roteiros.find((x) => x.id === "VD_IMAGINE"), rotFu = ROT.roteiros.find((x) => x.id === "FU_1");
+  confere("roteiro listado em roteiros_oferta: todas as variantes são de oferta", M.variantesOferta(rotPed, rotPed.variantes, R).size === rotPed.variantes.length, null);
+  confere("aquecimento (VD_IMAGINE), follow-up (FU_1) e cobrança não são de oferta", M.variantesOferta(rotImg, rotImg.variantes, R).size === 0 && M.variantesOferta(rotFu, rotFu.variantes, R).size === 0, null);
+  confere("os ids de roteiros_oferta existem todos em coach_roteiros.json", MO.roteiros_oferta.every((id) => ROT.roteiros.some((x) => x.id === id)), MO.roteiros_oferta.filter((id) => !ROT.roteiros.some((x) => x.id === id)));
+  confere("peso sem dados suficientes: usa o do JSON", M.pesoOferta(R, null).peso === MO.peso_thompson && M.pesoOferta(R, [{ grupo: "oferta_no_momento", usos: 5, vendas: 5 }, { grupo: "outra_no_momento", usos: 40, vendas: 2 }]).aprendido === false, null);
+  const st = (au, av, bu, bv) => [{ grupo: "oferta_no_momento", usos: au, vendas: av }, { grupo: "outra_no_momento", usos: bu, vendas: bv }, { grupo: "sem_momento", usos: 99, vendas: 1 }];
+  let pw = M.pesoOferta(R, st(20, 10, 20, 2));
+  confere("oferta vendeu 50% x 10%: aprende um peso alto (razão ~3,6) e marca como aprendido", pw.aprendido && pw.peso > 3 && pw.peso < 4, pw);
+  pw = M.pesoOferta(R, st(20, 2, 20, 10));
+  confere("oferta vendeu MENOS que o resto: o peso cai para o mínimo (1), nunca abaixo", pw.aprendido && pw.peso === MO.aprender_peso.min_peso, pw);
+  pw = M.pesoOferta(R, st(20, 20, 20, 0));
+  confere("razão enorme é cortada no máximo", pw.peso === MO.aprender_peso.max_peso, pw);
+  confere("aprender_peso.ativo:false volta ao peso do JSON", M.pesoOferta(Object.assign({}, R, { momento_ofertar: Object.assign({}, MO, { aprender_peso: Object.assign({}, MO.aprender_peso, { ativo: false }) }) }), st(20, 10, 20, 2)).peso === MO.peso_thompson, null);
   // integração: calcular() entrega o banner e coloca a variante de oferta na frente
   const venda = { msgs: papo.concat([[100, true, "tô aqui"], [80, true, "pensando"], [60, true, "em você"], [20, true, "o que você tem de novo pra mim?"]]) };
   r = calc(Object.assign({}, venda, { padrao: "mencionou_preco" }));

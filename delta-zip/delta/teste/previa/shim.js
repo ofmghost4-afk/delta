@@ -68,7 +68,7 @@
     coach_radar: (a) => ["arrudafree", "xlunavitaligratis", "louisefree"].map((x, i) => x === a.p_conta ? { conta: x, estado: a.p_estado || {}, atualizado_em: new Date().toISOString(), offline: false }
       : !palco && i === 2 ? { conta: x, estado: {}, atualizado_em: null, offline: true }
       : { conta: x, estado: [{ vips_esperando: 0, maior_espera_s: 95, baleias_online: 0, fu_vencidos: 0, nao_lidas: 3, chats_h: 9 }, { vips_esperando: 2, maior_espera_s: 250, baleias_online: 1, fu_vencidos: 0, nao_lidas: 7, chats_h: 12 }, { vips_esperando: 0, maior_espera_s: 40, baleias_online: 0, fu_vencidos: 0, nao_lidas: 4, chats_h: 5 }][i], atualizado_em: new Date().toISOString(), offline: false }),
-    coach_registrar_jogada: () => 4242, coach_memoria: () => 2, coach_ex_assinantes: () => [{ fa_id: 1, nome: "Ex Baleia", perfil: "ex1", total: 3000, na_conta: 900, compras: 7, ultima: "2026-08-01", dias: 101 }],
+    coach_registrar_jogada: (a) => { (window.__rpcLog = window.__rpcLog || []).push(a); return 4242; }, coach_momento_stats: () => [{ grupo: "oferta_no_momento", usos: 20, vendas: 10 }, { grupo: "outra_no_momento", usos: 20, vendas: 2 }, { grupo: "sem_momento", usos: 22, vendas: 2 }], coach_memoria: () => 2, coach_ex_assinantes: () => [{ fa_id: 1, nome: "Ex Baleia", perfil: "ex1", total: 3000, na_conta: 900, compras: 7, ultima: "2026-08-01", dias: 101 }],
     coach_relatorio_turno: (a) => ({ horas: a.p_horas, inicio: new Date(Date.now() - 8 * 3600e3).toISOString(), fim: new Date().toISOString(), jogadas: 22, salas: 9, vendas: 6, receita: 310, ppvs: 15, top_roteiros: [{ roteiro_id: "VD_ENTRADA_DOM", usos: 6, vendas: 3, receita: 180 }], grandes: [{ nome: "Carlos", total: 1840.5, baleia: false }] })
   };
   const fetch0 = window.fetch.bind(window);
