@@ -13,10 +13,10 @@
 - **Tudo em cartão**: cartão dentro de cartão dentro de cartão. Um nível de cartão por bloco.
 - **Pílula para tudo**: chip só para estado curto (fase, tier, selo). Botão secundário é texto/fantasma.
 - **CAIXA ALTA espaçada** em mais de um rótulo por bloco.
-- **Glassmorphism**, blur de fundo, ruído, "bento grid".
+- **Glassmorphism**, blur de fundo, ruído, "bento grid" de tamanhos misturados (a grade 2×2 de cartões iguais do painel é a exceção aprovada).
 
 ## Preferir
 - Superfícies quase pretas levemente quentes, identidade **vermelha** (não rosa: pedido do usuário em 12/11/2026), a cor da conta só no seletor de modelo.
-- Linhas finas (1 px, 6–8% de branco) em vez de caixas.
+- Cartões de um nível só, com borda fina (1 px, 7% de branco) e fundo um tom acima; nada de linhas finas soltas que pareçam tela de configurações.
 - Alinhamento à esquerda e espaço em branco no lugar de divisórias.
 - Números com `tabular-nums`.
