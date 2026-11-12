@@ -656,13 +656,24 @@ function barraDoca(a, res, acao, semConversa) {
 // ---------- radar periférico de urgência (borda pulsando + bipe opcional) ----------
 // Com 3 janelas lado a lado, a borda de cima pulsa em OURO quando um VIP/Baleia espera resposta e em VERMELHO
 // quando o relógio passou do limite ou um follow-up venceu. Só visual/som na janelinha do Delta.
+// v2.3.14: termo de risco digitado (compliance_digitando): bipe grave UMA vez por termo novo na sala; só aviso, nunca bloqueia.
+const riscoVisto = new Map(); // sala -> Set("grupo|termos")
+function avisarRisco(res) {
+  const sala = est && est.conv ? est.conv.sala : null, CD = R && R.compliance_digitando; if (!sala || !CD) return;
+  const hits = ((res && res.alertas) || []).filter((x) => x.digitando), vistos = riscoVisto.get(sala) || new Set();
+  if (!hits.length) { riscoVisto.delete(sala); return; }
+  let novo = false;
+  hits.forEach((x) => { const k = x.id + "|" + x.gatilho; if (!vistos.has(k)) { vistos.add(k); novo = true; } });
+  riscoVisto.set(sala, vistos);
+  if (novo && CD.som !== false) bipe("risco");
+}
 function bipe(tipo) {
   if (!som) return;
   try {
     audio = audio || new (window.AudioContext || window.webkitAudioContext)();
     if (audio.state === "suspended") audio.resume();
     const t0 = audio.currentTime + 0.01;
-    (tipo === "vip" ? [880, 1320] : [660, 660]).forEach((f, i) => {
+    (tipo === "vip" ? [880, 1320] : tipo === "risco" ? [440, 330] : [660, 660]).forEach((f, i) => {
       const o = audio.createOscillator(), g = audio.createGain(), t = t0 + i * 0.16;
       o.type = "sine"; o.frequency.value = f;
       g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.2, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
@@ -913,6 +924,7 @@ function desenharCorpo(a) {
   // cena fixada que chegou ao fim (passou do último degrau): desafixa sozinha e volta ao roteiro normal
   if (res.cena && res.cena.fim && (cenaSala.get(est.conv.sala) || {}).fixa) { cenaSala.set(est.conv.sala, Object.assign({}, cenaSala.get(est.conv.sala), { fixa: false })); salvarEstadoSalas(); }
   radar(res);
+  avisarRisco(res);
   desenharAlertas(res);
   desenharConta(a);
   carregarPlacar(false); carregarConversao(false); carregarConvVar(false); carregarChatter(false); carregarDia(false);

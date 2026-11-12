@@ -1679,6 +1679,20 @@
   ],
   "taxa_base_pct": 1
  },
+ "compliance_digitando": {
+  "_doc": "v2.3.14: enquanto o operador digita, o Delta varre o texto (Aho-Corasick, uma passada só, sem acento e sem diferença de maiúscula) atrás destes termos e mostra um AVISO amarelo (e, com o som ligado, um bipe grave) no painel. Nunca bloqueia nem altera o texto: quem decide é quem envia. Cada termo vale só como palavra/frase inteira. Edite à vontade: id, motivo e termos de cada grupo.",
+  "ativo": true,
+  "som": true,
+  "origem": "HIPOTESE",
+  "grupos": [
+   { "id": "garantia_promessa", "nivel": "aviso", "motivo": "Prometer garantia ou certeza vira cobrança e reclamação (conteúdo enganoso). Diga o que você entrega de verdade, sem prometer resultado.",
+     "termos": ["garanto", "te garanto", "garantido", "garantida", "garantia", "garantias", "100% garantido", "satisfacao garantida", "sem risco", "prometo", "te prometo", "dinheiro de volta", "reembolso", "devolvo seu dinheiro"] },
+   { "id": "preco_final", "nivel": "aviso", "motivo": "\"Preço final / última oferta\" fecha a porta da negociação e depois você precisa voltar atrás. Se o preço é fixo, diga só o valor.",
+     "termos": ["preco final", "valor final", "ultimo preco", "ultimo valor", "ultima oferta", "melhor preco", "menor preco", "preco fechado", "nao abaixo disso", "nao baixo mais"] },
+   { "id": "desconto_agressivo", "nivel": "aviso", "motivo": "Desconto agressivo ensina o fã a esperar preço baixo e derruba o ticket. Ofereça um item MENOR, nunca o mesmo mais barato.",
+     "termos": ["quase de graca", "metade do preco", "pela metade", "preco de custo", "preco de banana", "queima de estoque", "liquidacao", "saldao", "leve dois", "50% off", "70% off", "qualquer valor serve", "aceito qualquer valor", "por qualquer valor", "faz uma oferta"] }
+  ]
+ },
  "variantes_auto": {
   "_doc": "Ordenação automática das variantes do roteiro pela conversão medida (jogada 'Usei' x PPV comprado em 60 min). Só vale com min_usos do roteiro na conta nos últimos 'dias'. Variante já usada com o fã (coach_historico) sai do carrossel; se todas já foram usadas, voltam todas.",
   "algoritmo": "thompson",

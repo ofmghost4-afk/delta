@@ -19,6 +19,51 @@
     const n = norm(texto), cru = String(texto || "");
     return (lista || []).filter((t) => (t.startsWith("re:") ? reTermo(t).test(cru) : reTermo(t).test(n)));
   }
+  // ---------- v2.3.14 · compliance enquanto digita: Aho-Corasick em JS puro ----------
+  // Uma varredura só no texto digitado acha TODOS os termos de risco de todos os grupos ao mesmo tempo, sem uma regex por
+  // termo. Os grupos e os termos ficam em coach_regras.json > compliance_digitando (nada chumbado aqui). Só aviso: nunca bloqueia.
+  function construirAC(termos) {
+    const nos = [{ f: new Map(), fail: 0, out: [] }];
+    for (const t of termos) {
+      let n = 0;
+      for (let k = 0; k < t.length; k++) { let nx = nos[n].f.get(t[k]); if (nx === undefined) { nx = nos.length; nos.push({ f: new Map(), fail: 0, out: [] }); nos[n].f.set(t[k], nx); } n = nx; }
+      nos[n].out.push(t);
+    }
+    const fila = [...nos[0].f.values()];
+    while (fila.length) {
+      const u = fila.shift();
+      for (const [ch, v] of nos[u].f) {
+        let f = nos[u].fail; while (f && !nos[f].f.has(ch)) f = nos[f].fail;
+        const alvo = nos[f].f.get(ch); nos[v].fail = alvo !== undefined && alvo !== v ? alvo : 0;
+        nos[v].out = nos[v].out.concat(nos[nos[v].fail].out); fila.push(v);
+      }
+    }
+    return nos;
+  }
+  // devolve os termos achados (só os que começam e terminam numa palavra inteira, como o resto dos alertas)
+  function buscarAC(nos, texto) {
+    const ach = new Set(), ehLetra = (c) => c !== undefined && /[a-z0-9@]/.test(c); let n = 0;
+    for (let i = 0; i < texto.length; i++) {
+      while (n && !nos[n].f.has(texto[i])) n = nos[n].fail;
+      const nx = nos[n].f.get(texto[i]); n = nx === undefined ? 0 : nx;
+      for (const t of nos[n].out) if (!ehLetra(texto[i - t.length]) && !ehLetra(texto[i + 1])) ach.add(t);
+    }
+    return [...ach];
+  }
+  const cacheAC = new WeakMap();
+  function varrerRisco(texto, CD) {
+    if (!CD || CD.ativo === false || !Array.isArray(CD.grupos) || !texto || !String(texto).trim()) return [];
+    let pre = cacheAC.get(CD);
+    if (!pre) {
+      const porTermo = new Map();
+      CD.grupos.forEach((g) => (g.termos || []).forEach((t) => { const k = norm(t); if (k) porTermo.set(k, (porTermo.get(k) || []).concat(g.id)); }));
+      pre = { nos: construirAC([...porTermo.keys()]), porTermo }; cacheAC.set(CD, pre);
+    }
+    const todos = buscarAC(pre.nos, norm(texto)), out = [];
+    const achados = todos.filter((t) => !todos.some((u) => u !== t && u.includes(t))); // "te garanto" já cobre "garanto": mostra só o maior
+    for (const g of CD.grupos) { const hit = achados.filter((t) => (pre.porTermo.get(t) || []).includes(g.id)); if (hit.length) out.push({ id: g.id, nivel: g.nivel || "aviso", motivo: g.motivo || "", termos: hit }); }
+    return out;
+  }
   const r2 = (v) => Math.round(v * 100) / 100;
   const arred90 = (v) => Math.max(14.9, Math.round(v - 0.9) + 0.9);
   // Modo Dominante: piso arredonda PRA CIMA (nunca abaixo da última compra) e teto PRA BAIXO (nunca acima do dobro)
@@ -524,6 +569,7 @@
       const hit = casa(texto, a.padroes);
       if (hit.length) out.push({ id: a.id, nivel: a.nivel, motivo: a.motivo, gatilho: hit.map((h) => (h.startsWith("re:") ? (texto.match(new RegExp(h.slice(3), "i")) || [h])[0] : h)).join(", ") });
     }
+    for (const h of varrerRisco(texto, R.compliance_digitando)) out.push({ id: h.id, nivel: h.nivel === "bloqueio_visual" ? "aviso" : h.nivel, motivo: h.motivo, gatilho: h.termos.join(", "), digitando: true });
     const prot = c && c.cfg && Array.isArray(c.cfg.protecao_termos) ? c.cfg.protecao_termos.filter((x) => x && String(x).trim()) : [];
     if (prot.length) { const hit = casa(texto, prot); const regra = R.alertas_composer.regras.find((x) => x.id === "protecao_modelo"); if (hit.length) out.push({ id: "protecao_modelo", nivel: "bloqueio_visual", motivo: regra ? regra.motivo : "Dado real da modelo.", gatilho: hit.join(", ") }); }
     const vals = valoresReais(texto);
@@ -884,6 +930,6 @@
     return Object.assign(extras, { modo: R._modo, fase: fz, rotuloFase, selos: sl, jogada: jg, roteiro: rot, variantes, preco: pr, recursos: rc, alertas: al, relogio: rl, hud: hud(c, R, sl, rl, m7, fz), meta7: m7, tier: tr ? { id: tr.id, rotulo: tr.rotulo } : null, ppvFonte: c.fontePpv, nome: c.nome, ctx: { msgsFaDesdePpv: c.msgsFaDesdePpv, gapFa_s: c.gapFa_s, total: c.total, gasto7: c.gasto7, ultCompraValor: c.ultCompraValor } });
   }
 
-  const API = { previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
+  const API = { construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else raiz.CoachMotor = API;
 })(typeof self !== "undefined" ? self : this);

@@ -137,6 +137,28 @@ confere("todas já usadas: volta a mostrar todas, com o aviso de repetido", r.va
 r = calc(Object.assign({}, vend, { historico: [{ roteiro_id: rid, variante: 1, em: new Date(AG).toISOString(), local: true }] }));
 confere("a que acabei de marcar nesta janela não some debaixo do dedo", r.variantes.length === n3, r.variantesIdx);
 
+console.log("== compliance enquanto digita · Aho-Corasick (v2.3.14) ==");
+{
+  const ac = (termos, texto) => M.buscarAC(M.construirAC(termos), texto).sort();
+  confere("Aho-Corasick: termos que terminam juntos (sufixos) saem todos de uma passada só", JSON.stringify(ac(["a-b-c", "b-c", "c", "x-y"], "oi a-b-c ok")) === JSON.stringify(["a-b-c", "b-c", "c"]), ac(["a-b-c", "b-c", "c", "x-y"], "oi a-b-c ok"));
+  confere("Aho-Corasick: termo que quebra no meio e recomeça ('aab' em 'aaab')", ac(["aab"], "aaab").length === 0 && ac(["aab"], "aaab aab").length === 1, ac(["aab"], "aaab aab"));
+  confere("só vale palavra inteira: 'garanto' não acha dentro de 'garantorum'", ac(["garanto"], "garantorum").length === 0 && ac(["garanto"], "eu te garanto.").length === 1, null);
+  const CD = R.compliance_digitando;
+  confere("a lista vem do coach_regras.json (3 grupos, ativo)", CD && CD.ativo === true && CD.grupos.length === 3 && CD.grupos.every((g) => g.termos.length >= 8), CD && CD.grupos.map((g) => g.id));
+  let h = M.varrerRisco("Amor, te garanto que vale a pena. É o PREÇO FINAL, ta?", CD);
+  confere("acha garantia e preço final, sem acento e sem diferença de maiúscula", h.map((x) => x.id).sort().join() === "garantia_promessa,preco_final" && h.every((x) => x.nivel === "aviso"), h);
+  h = M.varrerRisco("faço quase de graça pra você, é queima de estoque", CD);
+  confere("termo dentro de outro achado não aparece duas vezes ('te garanto' cobre 'garanto')", M.varrerRisco("te garanto", CD)[0].termos.join() === "te garanto", M.varrerRisco("te garanto", CD));
+  confere("acha desconto agressivo", h.length === 1 && h[0].id === "desconto_agressivo" && h[0].termos.length === 2, h);
+  confere("texto normal não dispara nada", M.varrerRisco("oi amor, como foi seu dia? tenho um vídeo novo pra te mostrar", CD).length === 0 && M.varrerRisco("", CD).length === 0, null);
+  confere("ativo:false desliga", M.varrerRisco("te garanto", Object.assign({}, CD, { ativo: false })).length === 0, null);
+  r = calc(Object.assign({}, vend, { texto: "te garanto, é o preço final" }));
+  const dig = r.alertas.filter((x) => x.digitando);
+  confere("entra nos alertas do painel como AVISO (nunca bloqueio) e marcado como 'digitando'", dig.length === 2 && dig.every((x) => x.nivel === "aviso" && x.gatilho), r.alertas.map((x) => x.id + ":" + x.nivel));
+  confere("sem texto digitado: nenhum alerta de digitação", calc(vend).alertas.filter((x) => x.digitando).length === 0, null);
+  const CD2 = { ativo: true, grupos: [{ id: "x", nivel: "bloqueio_visual", motivo: "m", termos: ["teste"] }] };
+  confere("mesmo que a lista peça bloqueio_visual, o painel rebaixa para aviso", M.alertas("isto é um teste", {}, Object.assign({}, R, { compliance_digitando: CD2 })).filter((x) => x.digitando).every((x) => x.nivel === "aviso"), null);
+}
 console.log("== mensagem em massa do dia (item 12) ==");
 const contas = R.contas_atendidas, dia = 86400000, vistos = new Set();
 for (let i = 0; i < ROT.massa_dia.mensagens.length; i++) vistos.add(M.massaDoDia(ROT, AG + i * dia, "arrudafree", contas).texto);
