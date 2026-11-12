@@ -1,7 +1,7 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.6.0**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.6.1**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
 - `coach-ext/` → a extensão: `painel.js` (~1.190 linhas: use Grep, não leia inteiro) + 4 módulos que carregam ANTES dele: `painel-gestor.js` (visão de gestor, `painel.html?gestor=1`), `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar, com a IA no automático), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
@@ -19,7 +19,7 @@ Versão atual: **2.6.0**. Responda em português, curto, com no máximo 3 passos
 - Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`, `delta_coach_v2_3_9_nomes_conta`, `delta_coach_v2_3_10_recall_fatos`, `delta_coach_v2_3_11_extensoes_busca`, `delta_coach_v2_3_11_recall_sem_acento`, `delta_coach_v2_3_12_sumidos_ritmo`, `delta_coach_v2_3_16_momento_ofertar`.
 - Função `coach-ia` publicada: versão 9 (Grok `grok-4.20-0309-non-reasoning`, reserva `grok-4.7`; secret `AI_API_KEY` no Supabase).
 - Contas: `arrudafree` (Chrome Profile 30), `xlunavitaligratis` (Profile 31; no banco a conta se chama **"Luna"**), `louisefree` (Profile 34).
-- Modo Palco: Privacy 740×860 à esquerda + Delta 700×860 à direita (o painel vira 2 colunas a partir de 700 px), as 3 contas empilhadas; troca pelo nome no topo do Delta ou Alt+1/2/3.
+- Modo Palco: Privacy 827×860 à esquerda + Delta colado ao lado ocupando o resto da tela (613 px em 1440; vira 2 colunas a partir de 600 px), as 3 contas empilhadas; troca pelo nome no topo do Delta ou Alt+1/2/3.
 - O Delta grava no banco: jogadas (`emp_jogadas`), PPVs vistos (`painel_ppvs`), conversas (`painel_msgs` → `emp_mensagens`), radar. Usa as funções `painel_*` do Aura (sem alterá-las). A extensão Aura não é mais necessária.
 
 ## Regras que não podem ser quebradas

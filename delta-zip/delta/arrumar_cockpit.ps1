@@ -3,9 +3,9 @@
 #  - Nao abre nada, nao fecha nada, nao recarrega e nao navega.
 #  - So muda o lugar e o tamanho das janelas cujo titulo comeca com "Privacy | Chat".
 #  - MODO PALCO (padrao, v2.3): as 3 Privacy ficam EMPILHADAS no mesmo lugar, a esquerda,
-#    com a largura da tela menos 700 px (740 px numa tela de 1440) e a altura toda.
+#    com 827 px de largura e a altura toda.
 #    Nessa largura a Privacy mostra a lista de conversas E a conversa aberta juntas.
-#    O Delta de cada modelo encaixa sozinho na coluna de 700 px da direita.
+#    O Delta de cada modelo cola sozinho ao lado e ocupa o que sobra da tela.
 #    Depois de arrumar, esta janela vira o AJUDANTE da troca de modelo (trocar_modelo.ps1):
 #    clique no nome da modelo no topo do Delta, ou Alt+1 / Alt+2 / Alt+3.
 #  - Modo antigo (Cockpit 3x2): powershell -File arrumar_cockpit.ps1 -Modo 3x2
@@ -14,7 +14,7 @@
 #  (Sem acentos de proposito: o PowerShell do Windows le este arquivo em ANSI.)
 # =====================================================================
 param([ValidateSet("palco", "3x2")][string]$Modo = "palco", [switch]$SemAjudante)
-$LARG_DELTA = 700   # coluna do Delta no Modo Palco (igual a LARG_NORMAL do coach-ext\fundo.js)
+$LARG_PRIVACY = 827  # largura da janela da Privacy no Modo Palco; o Delta cola ao lado e pega o resto da tela
 $ALT_DOCA = 195     # faixa das docas no Cockpit 3x2 (igual a ALT_MINI do fundo.js)
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type @"
@@ -56,7 +56,7 @@ $n = [Math]::Min(3, $ord.Count)
 
 if ($Modo -eq "palco") {
   $n = $ord.Count   # no palco todas ficam no mesmo lugar: arruma todos os Web Apps da Privacy abertos
-  $larg = $area.Width - $LARG_DELTA
+  $larg = $LARG_PRIVACY
   if ($larg -lt 1000) { Write-Host ("Aviso: a tela tem {0} px de largura; sobram {1} px para a Privacy. O Delta so entra no Modo Palco com 1000 px ou mais." -f $area.Width, $larg) }
   for ($i = 0; $i -lt $n; $i++) {
     $h = $ord[$i].h
@@ -67,7 +67,7 @@ if ($Modo -eq "palco") {
     Write-Host ("  janela {0}: x={1} largura={2} altura={3}" -f ($i + 1), $r.L, ($r.R - $r.L), ($r.B - $r.T))
   }
   Write-Host ""
-  Write-Host ("Pronto: {0} janela(s) da Privacy no palco ({1} x {2}). O Delta de cada modelo fica nos {3} px da direita." -f $n, $larg, $area.Height, $LARG_DELTA)
+  Write-Host ("Pronto: {0} janela(s) da Privacy no palco ({1} x {2}). O Delta de cada modelo cola ao lado e pega os {3} px que sobram." -f $n, $larg, $area.Height, ($area.Width - $larg))
   Write-Host "Se algum Delta nao encaixou: clique no icone do Delta naquela janela (ou feche e abra o Delta de novo)."
 } else {
   $larg = [int][Math]::Floor($area.Width / 3)

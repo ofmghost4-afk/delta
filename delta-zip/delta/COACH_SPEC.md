@@ -611,6 +611,14 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Defeito pego na prévia**: tentei `flex-wrap:nowrap` na barra do roteiro achando que na coluna larga caberia tudo numa linha. Não cabe — a coluna da esquerda tem ~370 px (56% de 700), quase o mesmo de antes, e o Copiar saía da coluna. A regra foi removida e a barra continua quebrando.
 - **Conferido**: Palco a 1440×860 (duas colunas, Copiar inteiro dentro da coluna), 410 px (continua uma coluna, nada mudou) e doca 466×157 (sem rolagem). `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok. Reversível: é um número nos dois `.ps1`.
 
+## 20ai. v2.6.1 (o Delta cola na Privacy e ocupa o que sobra)
+
+- **O que o teste do usuário mostrou** (janelas medidas no Windows em 12/11/2026): Luna e Louise ficaram certas (Privacy 740 + Delta 700), mas a **Arruda estava com 827 px** e o Delta dela caiu no **compacto de 300×195 por dentro da janela**. Causa: largura fixa. Com a Privacy em 827, `827 + 700 = 1527 > 1440`, o `cabeAoLado` dava falso e o painel ia para o modo de janela estreita.
+- **A correção certa não é outro número fixo, é adaptativo**: no Modo Palco o Delta **cola na borda direita da Privacy e estica até a borda da tela** — `sobra = dir - (w.left + w.width)`, com `LARG_NORMAL` (410) virando apenas o **mínimo**. Qualquer largura de Privacy passa a funcionar.
+- **Limiar das duas colunas 700 → 600 px**: com a Privacy em 827 numa tela de 1440 sobram 613 para o Delta; com 700 o painel voltaria para uma coluna justamente no caso real do usuário.
+- **Scripts**: `$LARG_DELTA` virou **`$LARG_PRIVACY = 827`** (a Privacy é que tem largura própria; o Delta pega o resto). Sintaxe dos dois `.ps1` validada pelo parser do PowerShell e ASCII conferido.
+- **Conferido na prévia** a 827 + 613: duas colunas, coluna da esquerda com 321 px, Copiar inteiro dentro dela, Privacy com lista + conversa + campo. `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

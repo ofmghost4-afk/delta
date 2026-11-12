@@ -4,9 +4,9 @@
 // gruda na SUA janela e acompanha quando ela mexe: janela larga → do lado direito (410 px);
 // janela estreita (layout de 3 em terços) → compacta (300 px) por dentro da borda direita dela.
 // Só mexe na janelinha do Coach: nunca move, redimensiona, recarrega ou navega a janela/aba da Privacy.
-// v2.6.0: o Delta passou de 410 para 700 px (duas colunas) e a Privacy do Palco, de 1030 para 740 — meio a meio
-// numa tela de 1440. PRIV_MIN é a largura mínima da janela da Privacy para valer o Modo Palco.
-const LARG_COMPACTA = 300, LARG_NORMAL = 700, PRIV_MIN = 700, BARRA_CHROME = 80, BARRA_APP = 34, ALT_MINI = 195, LARG_DOCA_MAX = 480;
+// v2.6.1: LARG_NORMAL virou a largura MÍNIMA do Delta acoplado — no Modo Palco ele cola na Privacy e
+// estica até a borda da tela (o que sobrar). PRIV_MIN é a largura mínima da Privacy para valer o Palco.
+const LARG_COMPACTA = 300, LARG_NORMAL = 410, PRIV_MIN = 700, BARRA_CHROME = 80, BARRA_APP = 34, ALT_MINI = 195, LARG_DOCA_MAX = 480;
 // Modo mini (botão ▴ no topo do painel): a janelinha fica com 195 px de altura.
 // v2.1 (Cockpit 3x2): se sobra espaço na tela ABAIXO da janela da Privacy, o mini vira uma Doca Inferior
 // exatamente embaixo dela (mesma largura, até 480 px). Assim clicar na Privacy nunca esconde o Delta.
@@ -23,7 +23,7 @@ async function posAcoplada(janelaOrigem) {
   const t = tela && tela.larg > 0 && meio >= tela.esq && meio <= tela.esq + tela.larg ? tela : null;
   const dir = t ? t.esq + t.larg : null;
   const cabeAoLado = !t || w.left + w.width + LARG_NORMAL <= dir + 8;
-  // v2.3 · Modo Palco: Privacy larga (≥700 px, ex.: 740 em tela de 1440) com 700 px livres à direita.
+  // v2.3 · Modo Palco: Privacy larga (≥700 px) com espaço livre à direita; o Delta pega esse espaço todo.
   // O Delta ocupa essa coluna inteira (700 × altura da Privacy, em duas colunas) e nunca fica em mini.
   const palco = w.width >= PRIV_MIN && cabeAoLado;
   let p;
@@ -37,7 +37,12 @@ async function posAcoplada(janelaOrigem) {
       p.top = Math.max(t.topo, p.top);
       p.height = Math.max(500, Math.min(p.height, t.topo + t.alt - p.top));
     }
-  } else p = { left: w.left + w.width, top: w.top, width: LARG_NORMAL, height: Math.max(500, w.height), janela, palco };
+  } else {
+    // v2.6.1: o Delta COLA na Privacy e ocupa o RESTO da tela, seja qual for a largura dela
+    // (antes era fixo em LARG_NORMAL, e uma Privacy fora da medida jogava o painel no compacto).
+    const sobra = dir != null ? dir - (w.left + w.width) : LARG_NORMAL;
+    p = { left: w.left + w.width, top: w.top, width: Math.max(LARG_NORMAL, sobra), height: Math.max(500, w.height), janela, palco };
+  }
   if (mini === true && !palco) {
     const alt = miniAltura || ALT_MINI;
     if (t && w.top + w.height + alt <= t.topo + t.alt + 8) {
