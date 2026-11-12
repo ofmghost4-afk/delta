@@ -674,3 +674,8 @@ body[data-gestor] h4{font-size:var(--t-s);color:var(--tx3);font-weight:600;margi
 .roteiro.ia-risco{border-color:var(--perigo)}
 .ia-bloq{margin-top:var(--e2);padding:var(--e2);border-radius:var(--r-s);background:var(--perigo-bg);color:var(--perigo);font-size:var(--t-s)}
 .ia-bloq small{color:var(--tx3);display:block;margin-top:2px}
+/* v2.5.0: com o "Campo" na barra, o Copiar não pode ser espremido para fora em 410 px */
+.roteiro .barra{flex-wrap:wrap;row-gap:var(--e1)}
+.roteiro .barra .btn.campo{flex:none;min-height:30px}
+/* quando a barra quebra, o Copiar continua sendo o canto direito (a ação dominante nao muda de lugar) */
+.roteiro .barra .btn.copiar{margin-left:auto}

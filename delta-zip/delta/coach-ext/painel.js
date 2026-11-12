@@ -1042,7 +1042,7 @@ function desenharCorpo(a) {
         el("span", { class: "esp" }),
         botaoUsei(res, true),
         // v2.5.0: põe o texto no campo da Privacy para você revisar e enviar na mão (tecla V). Não envia.
-        el("button", { class: "btn mini campo", type: "button", title: "Colocar este texto no campo da Privacy (tecla V). Não envia: você revisa e aperta Enter.", onclick: preencherNaPrivacy }, "No campo"),
+        el("button", { class: "btn mini campo", type: "button", title: "Colocar este texto no campo da Privacy (tecla V). Não envia: você revisa e aperta Enter.", onclick: preencherNaPrivacy }, "Campo"),
         el("button", { class: "btn mini rosa copiar", type: "button", title: "Copiar e já marcar como usado (tecla C ou Enter)", onclick: (ev) => copiarAtual(ev) }, rotuloCopiar(p.texto))),
       avisoAcao ? el("div", { class: "nota reg" + (/^Não deu/.test(avisoAcao) ? " falhou" : " ok") }, avisoAcao) : null,
       blocoIA(res),

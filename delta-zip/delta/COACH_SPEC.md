@@ -596,6 +596,12 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Entrega 5 (IA)**: `adaptar()` não descarta mais a versão que bate num `bloqueio_visual`. As 3 versões aparecem (as limpas primeiro), a marcada ganha contorno vermelho no cartão e a faixa "Alerta: <motivo>" com "leia antes de copiar". O motivo do bloqueio passou a ser guardado em `versoes[].motivos`, que antes se perdia.
 - **Conferido**: `estatico.mjs` tudo ok (com as travas novas), `unit_v22.mjs` 137 ok, prévia a 410×900 sem erro no console, com o botão "No campo", 3 linhas clicáveis na Fila e o aviso do próximo clicável. **Não dá para testar as duas ações na prévia** (não há Privacy nem content script): isso só no Chrome real.
 
+## 20ag. v2.5.1 (correção de largura da barra do roteiro)
+
+- **O defeito**: com o botão novo na barra (⚡ ‹ 1/3 › · ✓ Usei · No campo · Copiar), em 410 px o **Copiar ficava cortado** pela direita — a ação dominante saindo da tela, que é o pior defeito possível pelo `skills/design-hierarchy.md`. Visto na prévia, não nos testes (teste estático não mede largura).
+- **A correção**: rótulo "No campo" → **"Campo"**, `flex-wrap` na `.roteiro .barra` e `margin-left:auto` no Copiar, para que, quando a barra quebrar, ele continue no canto direito. Resultado: o Copiar ganha uma linha só para ele, inteiro e ainda mais evidente.
+- **Doca intacta**: 466×157 sem rolagem, Copiar no canto de baixo à direita (o "Campo" não entra na doca, por causa do limite de 4 linhas).
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.
