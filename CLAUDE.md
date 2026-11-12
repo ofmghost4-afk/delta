@@ -1,10 +1,10 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.3.6**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.3.7**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
-- `coach-ext/` → a extensão: `painel.js` (~1.500 linhas: use Grep, não leia inteiro), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
+- `coach-ext/` → a extensão: `painel.js` (~1.330 linhas: use Grep, não leia inteiro), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais; carrega ANTES do painel.js), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
 - `coach-ext/data/` → ÚNICO lugar dos dados: `coach_regras.json` (números e chaves), `coach_roteiros.json`, `coach_cenas.json`, `coach_exemplos.json` (exemplos reais da momoi para a IA).
 - `coach_sql.sql` → SQL do banco (fonte). `supabase/functions/coach-ia/index.ts` → função da IA.
 - Scripts Windows: `abrir_3_perfis.bat/.ps1` (abre as 3 contas no Modo Palco), `arrumar_cockpit.bat/.ps1` (arruma as janelas abertas), `trocar_modelo.ps1` (ajudante Alt+1/2/3). Mac: `.command/.sh` (antigos).

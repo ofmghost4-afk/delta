@@ -12,7 +12,10 @@ const achar = (txt, re) => { const r = []; let m; while ((m = re.exec(txt))) r.p
 
 const leitor = semComentario(ler("leitor.js"));
 const fundo = semComentario(ler("fundo.js"));
-const painel = semComentario(ler("painel.js"));
+// painel.js e seus modulos (painel-*.js): TODOS entram nas conferencias abaixo.
+const ARQS_PAINEL = fs.readdirSync(EXT).filter((f) => /^painel.*\.js$/.test(f)).sort();
+const PAINEL = Object.fromEntries(ARQS_PAINEL.map((f) => [f, semComentario(ler(f))]));
+const painel = Object.values(PAINEL).join("\n");
 const motor = semComentario(ler("motor.js"));
 const manifest = JSON.parse(ler("manifest.json"));
 
@@ -23,11 +26,15 @@ const ouvintes = achar(leitor, /addEventListener\(\s*"[^"]+"/g);
 confere("leitor.js só escuta input e visibilitychange", ouvintes.every((x) => /"(input|visibilitychange)"/.test(x)), ouvintes);
 
 // 2) Nenhuma escrita em abas, em nenhum arquivo da extensão.
-const tudo = { "leitor.js": leitor, "fundo.js": fundo, "painel.js": painel, "motor.js": motor };
+const tudo = { "leitor.js": leitor, "fundo.js": fundo, ...PAINEL, "motor.js": motor };
 for (const [f, t] of Object.entries(tudo)) {
   const abas = achar(t, /chrome\.(tabs\.(update|create|remove|reload|move|duplicate|discard|goBack|goForward|group|ungroup|highlight|setZoom\w*|executeScript|insertCSS)|scripting\.\w+|debugger\.\w+)/g);
   confere(f + ": nenhuma escrita em abas / scripting / debugger", abas.length === 0, abas);
 }
+// 2b) Todo modulo painel*.js tem que estar declarado no painel.html (senao fica codigo morto).
+const html = ler("painel.html");
+for (const f of ARQS_PAINEL) confere(f + ": declarado no painel.html", html.includes(`src="${f}"`), f);
+
 // 3) chrome.windows.update só na janela do Delta; windows.create só do painel.html; nada de remove.
 const upd = achar(fundo + "\n" + painel, /chrome\.windows\.update\(\s*[^,)]+/g);
 confere("chrome.windows.update só com a janela do Delta (coachJanela / eu.id)", upd.length > 0 && upd.every((x) => /\(\s*(coachJanela|eu\.id)$/.test(x)), upd);
