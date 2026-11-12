@@ -37,6 +37,27 @@ function exemplosPara(res) {
   const ini = h % lista.length, sel = Array.from({ length: n }, (_, i) => lista[(ini + i) % lista.length]);
   return { situacao: s, descricao: (EX.situacoes || {})[s] || "", itens: sel.map((e) => ({ fa: e.fa || "", conta: e.conta || "", msg: e.msg })) };
 }
+// v2.3.10: lembranças antigas dele (coach_recall_fatos). Pega as palavras mais fortes das últimas falas dele, procura
+// no que ele já escreveu antes e devolve só o que NÃO está na conversa que já vai para a IA. Sem a função no banco: [].
+let recallDisp = true;
+async function lembrancasPara(todas, idsUsados) {
+  const cf = (R.ia && R.ia.recall) || {};
+  if (!recallDisp || cf.ativo === false || !ficha || !ficha.fa || !ficha.fa.id) return [];
+  const ign = new Set((cf.ignorar || []).map((x) => String(x).toLowerCase()));
+  const vistas = new Set(), palavras = [];
+  todas.filter((m) => m.de_fa).slice(-3).reverse().forEach((m) => {
+    String(m.texto || "").toLowerCase().split(/[^a-zà-ú0-9]+/).forEach((w) => { if (w.length >= (cf.min_letras || 4) && !ign.has(w) && !vistas.has(w)) { vistas.add(w); palavras.push(w); } });
+  });
+  const alvo = palavras.sort((a, b) => b.length - a.length).slice(0, cf.max_palavras || 4);
+  if (!alvo.length) return [];
+  try {
+    const rs = await Promise.all(alvo.map((w) => rpc("coach_recall_fatos", { p_fa: ficha.fa.id, p_busca: w, p_limite: 3 }).catch((e) => { if (faltaFuncao(e)) recallDisp = false; return []; })));
+    const porMsg = new Map();
+    rs.forEach((r) => (Array.isArray(r) ? r : []).forEach((x) => { if (x && x.msg_id && !idsUsados.has(x.msg_id) && x.texto) porMsg.set(x.msg_id, x); }));
+    return [...porMsg.values()].sort((a, b) => Date.parse(b.em) - Date.parse(a.em)).slice(0, cf.max_itens || 5)
+      .map((x) => ({ ha_min: x.em ? Math.max(0, Math.round((Date.now() - Date.parse(x.em)) / 60000)) : null, texto: String(x.texto).slice(0, cf.max_chars || 300) }));
+  } catch (_) { return []; }
+}
 async function adaptar(res, base) {
   const chave = chaveIA(res), cfg = R.ia || {};
   if (ia && ia.chave === chave && ia.carregando) return;
@@ -47,6 +68,7 @@ async function adaptar(res, base) {
   (await conversaSalva(maxMsgs)).forEach((s) => { if (s && s.msg_id) porId.set(s.msg_id, { id: s.msg_id, de_fa: !!s.de_fa, em: s.em ? Date.parse(s.em) : null, tipo: s.tipo, texto: s.texto, salva: true }); });
   (est.msgs || []).forEach((m) => porId.set(m.id || "tela:" + porId.size, m));
   const todas = [...porId.values()].sort((a, b) => (a.em || 0) - (b.em || 0)).slice(-maxMsgs);
+  const lembrancas = await lembrancasPara(todas, new Set(todas.map((m) => m.id).filter(Boolean)));
   if (!ia || ia.chave !== chave) return;
   const corpo = {
     conta: est.conta, modo: res.modo, fase: res.fase.id + (res.fase.tipo ? ":" + res.fase.tipo : ""), jogada: res.jogada.txt,
@@ -64,7 +86,8 @@ async function adaptar(res, base) {
     termometro: res.termometro ? res.termometro.n : null,
     dados: res.dados || null, fase_motivo: res.fase.motivo || "",
     usados: Array.isArray(historico) ? historico.slice(0, 8).map((h) => h.roteiro_id) : [],
-    exemplos: exemplosPara(res)
+    exemplos: exemplosPara(res),
+    lembrancas
   };
   const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), cfg.timeout_ms || 12000);
   try {

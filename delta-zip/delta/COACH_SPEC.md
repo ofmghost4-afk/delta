@@ -463,6 +463,12 @@ Começa a quebrar o `painel.js` (1.571 linhas num arquivo só) em módulos. **Ne
 - **`painel.js`**: `cenaSala` e `varsSala` ficam salvos em `chrome.storage.local` (`estadoSalas`, com a data do dia, igual `registradas`) por `salvarEstadoSalas()`; restaurados na abertura se for o mesmo dia.
 - **`supabase/functions/coach-ia/index.ts`**: modelo padrão `claude-haiku-4-5` (função ainda NÃO republicada).
 
+## 20p. v2.3.10 (lembranças antigas dele na IA)
+- **Banco**: nova `public.coach_recall_fatos(p_fa, p_busca, p_limite)` (migração `delta_coach_v2_3_10_recall_fatos`): só LEITURA das mensagens DELE em `emp_mensagens` (busca de texto em português), até 10, mais novas primeiro. `security definer`, `coach_pode()`, sem anon.
+- **`painel-ia.js`**: antes do ⚡, pega as palavras mais fortes das últimas 3 falas dele, chama a função para cada uma (até 4) e manda até 5 lembranças que NÃO estão na conversa enviada (`lembrancas`). Sem a função no banco ou `recall.ativo:false` em `coach_regras.json` (`ia.recall`): como antes.
+- **`coach-ia` v9 (publicada)**: o pedido ganhou o bloco "LEMBRANÇAS ANTIGAS DELE", só usado se encaixar. Modelo padrão da Anthropic continua `claude-haiku-5-5` (Grok não mudou).
+- **Não feito**: busca "híbrida" por significado (precisaria de embeddings/pgvector e outro provedor).
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

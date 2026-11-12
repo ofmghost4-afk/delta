@@ -17,7 +17,7 @@ const json = (corpo: unknown, status = 200) =>
   new Response(JSON.stringify(corpo), { status, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
 
 const CONTAS = ["arrudafree", "xlunavitaligratis", "louisefree"];
-const MODELO = Deno.env.get("AI_MODEL") ?? "claude-haiku-4-5";
+const MODELO = Deno.env.get("AI_MODEL") ?? "claude-haiku-5-5";
 const corta = (v: unknown, n: number) => String(v ?? "").slice(0, n);
 
 // Formato da resposta (saída estruturada: o modelo é obrigado a devolver este JSON).
@@ -162,6 +162,11 @@ Deno.serve(async (req) => {
   };
   const msgs = lista.map(linha).join("\n");
   const ultimasFa = lista.filter((m: any) => m?.fa).slice(-3).map((m: any) => "- " + corta(m?.texto, 600)).join("\n");
+  // v9: lembranças antigas dele (coach_recall_fatos, buscadas pelo painel): coisas que ele disse e já saíram da conversa
+  const lembrancas = (Array.isArray(e.lembrancas) ? e.lembrancas : []).slice(0, 5).map((m: any) => {
+    const h = Number(m?.ha_min), q = Number.isFinite(h) && m?.ha_min != null ? ` [há ${h >= 1440 ? Math.round(h / 1440) + " d" : h >= 60 ? Math.round(h / 60) + " h" : h + " min"}]` : "";
+    return `-${q} ${corta(m?.texto, 300)}`;
+  }).join("\n");
   const notas = (Array.isArray(e.notas) ? e.notas : []).slice(0, 30).map((n: unknown) => "- " + corta(n, 200)).join("\n");
   const compras = (Array.isArray(e.compras) ? e.compras : []).slice(0, 10)
     .map((c: any) => `- ${corta(c?.data, 10)} · R$ ${Number(c?.valor) || 0}${c?.tipo ? " · " + corta(c.tipo, 30) : ""}`).join("\n");
@@ -184,6 +189,7 @@ Deno.serve(async (req) => {
     jeito ? `JEITO DELE ESCREVER: ${jeito}` : "",
     `O QUE ELE DISSE POR ÚLTIMO:\n${ultimasFa || "(nada dele na tela)"}`,
     `CONVERSA NA TELA (${lista.length} mensagens, a mais recente por último):\n${msgs || "(vazia)"}`,
+    lembrancas ? `LEMBRANÇAS ANTIGAS DELE (coisas que ELE disse antes e já saíram da conversa; use só se encaixar de verdade, sem forçar nem citar a data):\n${lembrancas}` : "",
     `NOTAS DA FICHA:\n${notas || "(nenhuma)"}`,
     `ÚLTIMAS COMPRAS:\n${compras || "(nenhuma)"}`,
     usados ? `ROTEIROS JÁ USADOS COM ELE: ${usados}` : "",
