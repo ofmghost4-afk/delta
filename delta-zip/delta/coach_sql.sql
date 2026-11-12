@@ -419,8 +419,9 @@ grant execute on function public.coach_placar_chatter() to authenticated;
 -- 12) Ex-assinantes / sumidos para reengajar quando sair conteúdo novo: quem já
 --     comprou nesta conta, está há 30+ dias sem comprar, ordenado pelo maior
 --     total gasto na empresa (LTV). Só leitura de emp_compras + emp_fas.
-create or replace function public.coach_ex_assinantes(p_conta text)
-returns table (fa_id bigint, nome text, perfil text, total numeric, na_conta numeric, compras bigint, ultima date, dias integer)
+drop function if exists public.coach_ex_assinantes(text);  -- v2.3.12: ganhou a coluna "atraso" (muda o tipo de retorno)
+create function public.coach_ex_assinantes(p_conta text)
+returns table (fa_id bigint, nome text, perfil text, total numeric, na_conta numeric, compras bigint, ultima date, dias integer, atraso numeric)
 language plpgsql stable security definer
 set search_path = ''
 as $$
@@ -437,18 +438,23 @@ begin
     from (select p_conta as x union all select e.conta from central.emp_contas e where e.profile_name = p_conta or e.conta = p_conta
           union all select e.profile_name from central.emp_contas e where e.conta = p_conta) z;
   return query
-    select f.id, f.nome, f.codigo_perfil, t.total, t.na_conta, t.n, t.ultima, (current_date - t.ultima)::int
-      from (select c.codigo_comprador,
-                   sum(c.valor) as total,
-                   sum(c.valor) filter (where c.conta = any (v_nomes)) as na_conta,
-                   count(*) filter (where c.conta = any (v_nomes)) as n,
-                   max(c.data) filter (where c.conta = any (v_nomes)) as ultima
-              from central.emp_compras c
-             where c.situacao = 'Pagamento confirmado' and c.codigo_comprador is not null
-             group by c.codigo_comprador) t
-      join central.emp_fas f on f.codigo_comprador = t.codigo_comprador
-     where t.na_conta > 0 and t.ultima <= current_date - 30
-     order by t.total desc
+    select x.id, x.nome, x.codigo_perfil, x.total, x.na_conta, x.n, x.ultima, x.dias, round(x.atraso, 1)
+      from (select f.id, f.nome, f.codigo_perfil, t.total, t.na_conta, t.n, t.ultima, (current_date - t.ultima)::int as dias,
+                   -- ritmo: com 3+ compras nesta conta, quantos "intervalos dele" já passaram desde a última (1 = no ritmo, 3 = bem atrasado)
+                   case when t.n >= 3 then (current_date - t.ultima)::numeric / greatest(1, (t.ultima - t.primeira)::numeric / (t.n - 1)) end as atraso
+              from (select c.codigo_comprador,
+                           sum(c.valor) as total,
+                           sum(c.valor) filter (where c.conta = any (v_nomes)) as na_conta,
+                           count(*) filter (where c.conta = any (v_nomes)) as n,
+                           max(c.data) filter (where c.conta = any (v_nomes)) as ultima,
+                           min(c.data) filter (where c.conta = any (v_nomes)) as primeira
+                      from central.emp_compras c
+                     where c.situacao = 'Pagamento confirmado' and c.codigo_comprador is not null
+                     group by c.codigo_comprador) t
+              join central.emp_fas f on f.codigo_comprador = t.codigo_comprador
+             where t.na_conta > 0 and t.ultima <= current_date - 30) x
+     -- mais fácil de recuperar primeiro: parou há 1 a 3 intervalos dele (peso 1,5); parou há mais de 8 (provável sumiço de vez) vale 0,4
+     order by x.total * case when x.atraso between 1 and 3 then 1.5 when x.atraso > 8 then 0.4 else 1 end desc
      limit 60;
 end $$;
 revoke all on function public.coach_ex_assinantes(text) from public, anon;

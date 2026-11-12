@@ -1681,6 +1681,10 @@
  },
  "variantes_auto": {
   "_doc": "Ordenação automática das variantes do roteiro pela conversão medida (jogada 'Usei' x PPV comprado em 60 min). Só vale com min_usos do roteiro na conta nos últimos 'dias'. Variante já usada com o fã (coach_historico) sai do carrossel; se todas já foram usadas, voltam todas.",
+  "algoritmo": "thompson",
+  "algoritmo_doc": "v2.3.12: 'thompson' sorteia uma taxa Beta(vendas+1, falhas+1) por variante e põe a maior na frente (explora as com pouco dado, favorece as que vendem). A ordem fica fixa no dia (semente = sala + roteiro + dia). 'guloso' = regra antiga: a de maior conversão com pelo menos min_usos_variante usos.",
+  "forca_prior": 4,
+  "forca_prior_doc": "Peso (em usos) da crença inicial de cada variante = a taxa média do roteiro. Maior = mais cauteloso com variante sem dado; 0 = chute de 50% (explora demais).",
   "min_usos": 10,
   "min_usos_variante": 3,
   "dias": 7,

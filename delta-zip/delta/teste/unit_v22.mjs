@@ -105,10 +105,31 @@ const vend = { msgs: papo.concat([[100, true, "tô aqui"], [80, true, "pensando"
 r = calc(vend);
 const rid = r.jogada.roteiro, n3 = r.variantes.length;
 confere("sem dados: ordem original", JSON.stringify(r.variantesIdx) === JSON.stringify([0, 1, 2].slice(0, n3)), r.variantesIdx);
+R.variantes_auto.algoritmo = "guloso"; // regra antiga (teste determinístico); o Thompson tem testes próprios abaixo
 r = calc(Object.assign({}, vend, { convVar: [{ roteiro_id: rid, modo: "dominante", variante: 1, usos: 5, vendas: 0 }, { roteiro_id: rid, modo: "dominante", variante: 3, usos: 6, vendas: 3 }, { roteiro_id: rid, modo: "dominante", variante: 2, usos: 4, vendas: 1 }] }));
 confere("15 usos na semana: a variante 3 (50%) vira a 1ª", r.variantesIdx[0] === 2 && r.variantesInfo.melhor.i === 2 && r.variantes[0] === (rot(rid).dominante || rot(rid).variantes)[2], r.variantesIdx);
 r = calc(Object.assign({}, vend, { convVar: [{ roteiro_id: rid, modo: "dominante", variante: 3, usos: 6, vendas: 3 }] }));
 confere("menos de 10 usos: não reordena", r.variantesIdx[0] === 0, r.variantesIdx);
+R.variantes_auto.algoritmo = "thompson";
+console.log("== Thompson Sampling (v2.3.12) ==");
+{
+  const rnd = M.aleatorio(M.semente("teste"));
+  const media = (a, b) => { let t = 0; for (let k = 0; k < 4000; k++) t += M.amostrarBeta(a, b, rnd); return t / 4000; };
+  confere("Beta(1,1) tem média ~0,5", Math.abs(media(1, 1) - 0.5) < 0.03, media(1, 1));
+  confere("Beta(4,4) tem média ~0,5 e Beta(2,8) ~0,2", Math.abs(media(4, 4) - 0.5) < 0.03 && Math.abs(media(2, 8) - 0.2) < 0.03, [media(4, 4), media(2, 8)]);
+  confere("Beta com forma < 1 fica entre 0 e 1", (() => { for (let k = 0; k < 500; k++) { const v = M.amostrarBeta(0.5, 0.7, rnd); if (!(v >= 0 && v <= 1)) return false; } return true; })(), null);
+  const dados = [{ roteiro_id: "R", modo: "normal", variante: 1, usos: 20, vendas: 1 }, { roteiro_id: "R", modo: "normal", variante: 2, usos: 20, vendas: 10 }, { roteiro_id: "R", modo: "normal", variante: 3, usos: 0, vendas: 0 }];
+  const RR = Object.assign({}, R, { _modo: "normal" });
+  let primeiro = [0, 0, 0];
+  for (let k = 0; k < 600; k++) primeiro[M.ordenarVariantes(3, "R", dados, null, RR, "sala" + k + "|R").ordem[0]]++;
+  confere("a variante que vende (50%) vem 1ª na grande maioria", primeiro[1] > 400, primeiro);
+  confere("a que não vendeu (5%) quase nunca vem 1ª", primeiro[0] < 30, primeiro);
+  confere("a sem dado ainda aparece na frente de vez em quando (explora)", primeiro[2] > 20, primeiro);
+  confere("mesma semente = mesma ordem (não embaralha a cada redesenho)", JSON.stringify(M.ordenarVariantes(3, "R", dados, null, RR, "s|R|2026|11|10").ordem) === JSON.stringify(M.ordenarVariantes(3, "R", dados, null, RR, "s|R|2026|11|10").ordem), null);
+  confere("com menos de 10 usos do roteiro não mexe na ordem", JSON.stringify(M.ordenarVariantes(3, "R", [{ roteiro_id: "R", modo: "normal", variante: 2, usos: 4, vendas: 4 }], null, RR, "x").ordem) === "[0,1,2]", null);
+  const ord = M.ordenarVariantes(3, "R", dados, [{ roteiro_id: "R", variante: 2, em: "2026-11-09" }], RR, "s2|R");
+  confere("variante já usada com o fã continua saindo do carrossel", !ord.ordem.includes(1) && ord.ocultas.length === 1, ord);
+}
 r = calc(Object.assign({}, vend, { historico: [{ roteiro_id: rid, variante: 1, em: new Date(AG - 86400000).toISOString() }] }));
 confere("variante já usada com este fã sai do carrossel", r.variantes.length === n3 - 1 && !r.variantesIdx.includes(0) && JSON.stringify(r.variantesInfo.ocultas) === "[0]", r.variantesIdx);
 r = calc(Object.assign({}, vend, { historico: [1, 2, 3].map((v) => ({ roteiro_id: rid, variante: v, em: new Date(AG - 86400000).toISOString() })) }));

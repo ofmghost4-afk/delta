@@ -1,18 +1,19 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.3.10**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.3.12**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
 - `coach-ext/` → a extensão: `painel.js` (~1.185 linhas: use Grep, não leia inteiro) + 3 módulos que carregam ANTES dele: `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
 - `coach-ext/data/` → ÚNICO lugar dos dados: `coach_regras.json` (números e chaves), `coach_roteiros.json`, `coach_cenas.json`, `coach_exemplos.json` (exemplos reais da momoi para a IA).
 - `coach_sql.sql` → SQL do banco (fonte). `supabase/functions/coach-ia/index.ts` → função da IA.
+- `teste/ia/` → regressão da IA com promptfoo (manual, precisa de chave xAI sua; ver o cabeçalho do `promptfooconfig.yaml`). Só conversas inventadas.
 - Scripts Windows: `abrir_3_perfis.bat/.ps1` (abre as 3 contas no Modo Palco), `arrumar_cockpit.bat/.ps1` (arruma as janelas abertas), `trocar_modelo.ps1` (ajudante Alt+1/2/3). Mac: `.command/.sh` (antigos).
 - Documentação: `COACH_SPEC.md` (seções 20c–20m = mudanças recentes), `LEIA-ME.txt` (para o usuário), `GUIA_PARA_OUTRO_CODE.md` (histórico longo: só se precisar).
 - `aura-zip/` → cópia de CONSULTA do Aura (outra extensão). Não editar.
 
 ## Ambiente
-- Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`, `delta_coach_v2_3_9_nomes_conta`, `delta_coach_v2_3_10_recall_fatos`, `delta_coach_v2_3_11_extensoes_busca`, `delta_coach_v2_3_11_recall_sem_acento`.
+- Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`, `delta_coach_v2_3_9_nomes_conta`, `delta_coach_v2_3_10_recall_fatos`, `delta_coach_v2_3_11_extensoes_busca`, `delta_coach_v2_3_11_recall_sem_acento`, `delta_coach_v2_3_12_sumidos_ritmo`.
 - Função `coach-ia` publicada: versão 9 (Grok `grok-4.20-0309-non-reasoning`, reserva `grok-4.7`; secret `AI_API_KEY` no Supabase).
 - Contas: `arrudafree` (Chrome Profile 30), `xlunavitaligratis` (Profile 31; no banco a conta se chama **"Luna"**), `louisefree` (Profile 34).
 - Modo Palco: Privacy 1030×860 à esquerda + Delta 410×860 à direita, as 3 contas empilhadas; troca pelo nome no topo do Delta ou Alt+1/2/3.
@@ -30,7 +31,7 @@ Versão atual: **2.3.10**. Responda em português, curto, com no máximo 3 passo
 
 ## Como testar e mostrar
 - `node delta-zip/delta/teste/estatico.mjs delta-zip/delta/coach-ext` → "tudo ok".
-- `node delta-zip/delta/teste/unit_v22.mjs delta-zip/delta/coach-ext` → 61 ok (some 1 por teste novo que você criar).
+- `node delta-zip/delta/teste/unit_v22.mjs delta-zip/delta/coach-ext` → 70 ok (some 1 por teste novo que você criar).
 - Prévia sem abrir Chrome: servidor `delta-previa` (`.claude/launch.json`) → `http://127.0.0.1:4391/` (painel com dados de mentira; Palco em `/teste/previa/palco.html`).
 - Conferir no real de preferência pelo banco e pelos registros do Supabase (barato); captura de tela só se precisar.
 - Depois de mudar a extensão: subir `version` no `manifest.json`, registrar na `COACH_SPEC.md`, e pedir ao usuário para recarregar o Delta nos 3 perfis (`chrome://extensions`) + F5 na Privacy.

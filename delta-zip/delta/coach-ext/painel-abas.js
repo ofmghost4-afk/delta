@@ -155,7 +155,7 @@ function paneSumidos(a) {
   else if (exAss == null || exAssConta !== est.conta) a.append(el("button", { class: "btn mini", type: "button", onclick: carregarExAss }, "Carregar ex-assinantes da " + est.conta));
   else if (typeof exAss === "string") a.append(el("p", { class: "vazio" }, exAss));
   else if (!exAss.length) a.append(el("p", { class: "vazio" }, "Ninguém nesta situação."));
-  else a.append(el("ul", { class: "lista" }, exAss.map((x) => el("li", { class: Number(x.total) >= 1000 ? "forte" : "" }, el("span", {}, el("b", {}, (Number(x.total) >= 2300 ? "🐋 " : "") + (x.nome || "(sem nome)")), el("small", { class: "fraco" }, x.dias + " dias sem comprar · " + x.compras + (Number(x.compras) === 1 ? " compra" : " compras") + " aqui (" + brl(x.na_conta) + ")" + (x.perfil ? " · @" + x.perfil : ""))), el("b", {}, brl(x.total))))));
+  else a.append(el("ul", { class: "lista" }, exAss.map((x) => el("li", { class: Number(x.total) >= 1000 ? "forte" : "" }, el("span", {}, el("b", {}, (Number(x.total) >= 2300 ? "🐋 " : "") + (x.nome || "(sem nome)")), el("small", { class: "fraco" }, x.dias + " dias sem comprar" + (Number(x.atraso) >= 1.5 && Number(x.atraso) <= 8 ? " (" + String(x.atraso).replace(".", ",") + "× o ritmo dele)" : "") + " · " + x.compras + (Number(x.compras) === 1 ? " compra" : " compras") + " aqui (" + brl(x.na_conta) + ")" + (x.perfil ? " · @" + x.perfil : ""))), el("b", {}, brl(x.total))))));
 }
 function paneMais(a) {
   // mensagem em massa do dia

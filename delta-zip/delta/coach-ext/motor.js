@@ -801,11 +801,29 @@
     const dias = Math.floor((c.agora - c.primeiraCompraEm) / DIA) + 1, proj = Math.max(r2(c.gasto7 * fator), r2(c.total || 0));
     return { gasto7: r2(c.gasto7), fator, previsao_30d_brl: proj, dia: dias, ativo: dias <= 30, cara: !!regra && c.total < corte && dias <= 30, pct: regra ? regra.pct : null, motivo: regra ? regra.motivo : "", corte };
   }
+  // ---------- v2.3.12 · Thompson Sampling (sorteio Beta, JS puro) ----------
+  // Cada variante é um "braço": vendas = acertos, usos - vendas = erros. Sorteia-se uma taxa de cada Beta(vendas+a0, falhas+b0)
+  // e a maior sorteada vai na frente. Quem tem pouco dado ainda aparece de vez em quando (explora); quem prova que vende
+  // passa a vir quase sempre primeiro. O sorteio usa semente (sala + roteiro + dia): a ordem NÃO muda a cada redesenho.
+  function semente(txt) { let h = 2166136261 >>> 0; for (let i = 0; i < txt.length; i++) { h ^= txt.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h; }
+  function aleatorio(seed) { let a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function normal(rnd) { return Math.sqrt(-2 * Math.log(1 - rnd())) * Math.cos(2 * Math.PI * rnd()); }
+  // Gamma(forma, 1) pelo método de Marsaglia-Tsang
+  function gama(forma, rnd) {
+    if (forma < 1) return gama(forma + 1, rnd) * Math.pow(1 - rnd(), 1 / forma);
+    const d = forma - 1 / 3, c = 1 / Math.sqrt(9 * d);
+    for (;;) {
+      let x, v; do { x = normal(rnd); v = 1 + c * x; } while (v <= 0);
+      v = v * v * v; const u = 1 - rnd();
+      if (u < 1 - 0.0331 * x * x * x * x || Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) return d * v;
+    }
+  }
+  function amostrarBeta(alfa, beta, rnd) { const x = gama(alfa, rnd), y = gama(beta, rnd); return x / (x + y); }
   // ---------- v2.2 · ordem automática das variantes ----------
   // 1) Com min_usos do roteiro na conta em 7 dias, a variante que mais converteu vira a 1ª.
   // 2) Variante já usada com ESTE fã (coach_historico) sai do carrossel; se todas já foram usadas, voltam todas.
   // Devolve os índices originais (é o índice original + 1 que vai para p_variante).
-  function ordenarVariantes(n, rotId, convVar, hist, R) {
+  function ordenarVariantes(n, rotId, convVar, hist, R, seedTxt) {
     let ordem = Array.from({ length: n }, (_, i) => i), melhor = null, ocultas = [];
     const A = R.variantes_auto;
     if (A && Array.isArray(convVar) && rotId) {
@@ -813,6 +831,16 @@
       if (ls.reduce((a, x) => a + (Number(x.usos) || 0), 0) >= A.min_usos) {
         const cand = ls.filter((x) => Number(x.usos) >= (A.min_usos_variante || 1)).map((x) => ({ i: x.variante - 1, usos: Number(x.usos), vendas: Number(x.vendas) || 0, conv: (Number(x.vendas) || 0) / Number(x.usos) })).sort((a, b) => b.conv - a.conv || b.usos - a.usos);
         if (cand.length && cand[0].vendas > 0) { melhor = cand[0]; ordem = [melhor.i].concat(ordem.filter((i) => i !== melhor.i)); }
+        if (A.algoritmo === "thompson") {
+          // Thompson Sampling: TODAS as variantes entram (as sem dado são Beta(1,1) e ainda podem ser sorteadas na frente)
+          // a "crença inicial" de cada variante é a taxa média do roteiro inteiro (peso forca_prior): quem não tem dado
+          // parte da média do roteiro em vez de um chute de 50%, e não passa na frente de quem já provou que vende
+          const rnd = aleatorio(semente(String(seedTxt || rotId))), por = new Map(ls.map((x) => [x.variante - 1, x]));
+          const totU = ls.reduce((a, x) => a + (Number(x.usos) || 0), 0), totV = ls.reduce((a, x) => a + Math.min(Number(x.usos) || 0, Number(x.vendas) || 0), 0);
+          const k = Number.isFinite(A.forca_prior) ? A.forca_prior : 4, p0 = (totV + 1) / (totU + 2), a0 = Math.max(0.05, k * p0), b0 = Math.max(0.05, k * (1 - p0));
+          const sorteio = Array.from({ length: n }, (_, i) => { const x = por.get(i), us = x ? Number(x.usos) || 0 : 0, ve = x ? Math.min(us, Number(x.vendas) || 0) : 0; return { i, v: amostrarBeta(ve + a0, us - ve + b0, rnd) }; });
+          ordem = sorteio.sort((a, b) => b.v - a.v || a.i - b.i).map((x) => x.i);
+        }
       }
     }
     if (Array.isArray(hist) && rotId) {
@@ -841,7 +869,7 @@
     if (dom && c.cfg.mimo_ativo && fz.aftercare === "mimo") rc.push({ id: "mimo_ativo", txt: "Mimo (pedido honesto)", aviso: "Uma vez, como agradecimento. Nada de emergência ou culpa.", roteiro: "FT_MIMO_AGRADECER" });
     const rot = ROT ? (ROT.roteiros || []).find((r) => r.id === jg.roteiro) || null : null;
     const todas = rot ? (dom && rot.dominante && rot.dominante.length ? rot.dominante : rot.variantes) : [];
-    const ov = ordenarVariantes(todas.length, rot ? rot.id : null, c.convVar, c.hist, R), variantes = ov.ordem.map((i) => todas[i]);
+    const dSP = diaSP(c.agora), ov = ordenarVariantes(todas.length, rot ? rot.id : null, c.convVar, c.hist, R, [c.conv && c.conv.sala, rot && rot.id, dSP.y, dSP.m, dSP.d, R._modo].join("|")), variantes = ov.ordem.map((i) => todas[i]);
     const m7 = meta7(c, R), tr = tier(c, R), pv = previsao(c, R);
     if (pv && pv.cara && !tem(sl, "baleia")) sl.unshift({ id: "cara_baleia", txt: "🐋 Cara de Baleia · proj. R$ " + Math.round(pv.previsao_30d_brl).toLocaleString("pt-BR") + "/mês", origem: "BASE", dica: pv.motivo + " (gasto dos 7 primeiros dias × " + String(pv.fator).replace(".", ",") + ")" });
     if (fz.tipo === "freio_gasto") sl.push({ id: "freio", txt: "Freio", origem: "CONSENSO", dica: "ele disse que gastou demais: segura o preço" });
@@ -856,6 +884,6 @@
     return Object.assign(extras, { modo: R._modo, fase: fz, rotuloFase, selos: sl, jogada: jg, roteiro: rot, variantes, preco: pr, recursos: rc, alertas: al, relogio: rl, hud: hud(c, R, sl, rl, m7, fz), meta7: m7, tier: tr ? { id: tr.id, rotulo: tr.rotulo } : null, ppvFonte: c.fontePpv, nome: c.nome, ctx: { msgsFaDesdePpv: c.msgsFaDesdePpv, gapFa_s: c.gapFa_s, total: c.total, gasto7: c.gasto7, ultCompraValor: c.ultCompraValor } });
   }
 
-  const API = { previsao, ordenarVariantes, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
+  const API = { previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else raiz.CoachMotor = API;
 })(typeof self !== "undefined" ? self : this);

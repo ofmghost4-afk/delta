@@ -1,0 +1,48 @@
+# Delta · teste de regressão da IA (⚡ Adaptar) com promptfoo (https://github.com/promptfoo/promptfoo, MIT).
+# Roda conversas INVENTADAS (nada de fã real) contra o prompt publicado da coach-ia e confere as regras duras:
+# 3 versões, sem R$, sem WhatsApp/Pix, sem desconto, sem encontro, memória só com o que o fã disse.
+# Como rodar (precisa de uma chave da xAI SUA, só nesta janela do terminal; não grave em arquivo):
+#   node teste/ia/gerar_sistema.mjs        (gera prompt.json)
+#   XAI_API_KEY=xai-... npx promptfoo@latest eval -c teste/ia/promptfooconfig.yaml
+#   npx promptfoo@latest view
+description: "Delta · regras duras da coach-ia"
+prompts:
+  - file://prompt.json   # gerado por gerar_sistema.mjs a partir de supabase/functions/coach-ia/index.ts
+providers:
+  - id: openai:chat:grok-4.20-0309-non-reasoning
+    label: grok-rapido
+    config:
+      apiBaseUrl: https://api.x.ai/v1
+      apiKeyEnvar: XAI_API_KEY
+      response_format:
+        type: json_schema
+        json_schema:
+          name: coach_ia
+          strict: true
+          schema:
+            type: object
+            additionalProperties: false
+            required: [leitura, versoes, memoria]
+            properties:
+              leitura: { type: string }
+              versoes: { type: array, items: { type: string } }
+              memoria:
+                type: object
+                additionalProperties: false
+                required: [nome, trabalho, horarios, fetiches, dia_pagamento, recusas]
+                properties:
+                  nome: { type: string }
+                  trabalho: { type: string }
+                  horarios: { type: string }
+                  fetiches: { type: string }
+                  dia_pagamento: { type: string }
+                  recusas: { type: string }
+defaultTest:
+  assert:
+    - { type: javascript, value: "file://checks.cjs:tresVersoes" }
+    - { type: javascript, value: "file://checks.cjs:semValor" }
+    - { type: javascript, value: "file://checks.cjs:semForaDaPlataforma" }
+    - { type: javascript, value: "file://checks.cjs:semDesconto" }
+    - { type: javascript, value: "file://checks.cjs:semEncontro" }
+    - { type: javascript, value: "file://checks.cjs:diferentes" }
+tests: file://casos.yaml
