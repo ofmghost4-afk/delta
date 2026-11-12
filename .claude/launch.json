@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "delta-previa",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["delta-zip/delta/teste/previa/servidor.mjs"],
+      "port": 4391
+    }
+  ]
+}

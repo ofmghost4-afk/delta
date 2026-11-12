@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delta 2.1 · Cockpit 3x2 (simulação)</title>
+<!--
+  Simulação da tela 1440x860 (área útil de um monitor 1440x900) com o Cockpit 3x2:
+  3 Web Apps da Privacy em cima (480x665) e 3 Docas do Delta embaixo (480x195).
+  - As docas usam o painel.css DE VERDADE (../coach-ext/painel.css), com as mesmas classes do painel.js.
+  - As conversas, os fãs e os valores são de mentira. Nada aqui fala com a Privacy nem com o banco.
+  Abra com dois cliques. 
+-->
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#07090d;color:#e8e6ea;font:13px/1.45 -apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .cabecalho{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 16px}
+  .cabecalho h1{font-size:15px;margin:0;font-weight:700}
+  .cabecalho p{margin:0;color:#9aa0ab;font-size:12px}
+  .cabecalho .legenda{display:flex;gap:12px;margin-left:auto;font-size:12px;color:#c9c5cf}
+  .cabecalho .legenda i{display:inline-block;width:18px;height:5px;border-radius:3px;vertical-align:middle;margin-right:5px}
+  #moldura{margin:0 auto;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 0 0 1px #2a2f3a,0 12px 40px rgba(0,0,0,.6)}
+  #palco{width:1440px;height:860px;position:relative;transform-origin:0 0;background:linear-gradient(135deg,#1c2b45,#122033 55%,#1a1430)}
+  /* janelas: 7 px de borda invisível dos lados e embaixo, como no Windows 10 */
+  .app,.doca{position:absolute;padding:0 7px 7px}
+  .jan{width:100%;height:100%;display:flex;flex-direction:column;border:1px solid #3a3f4b;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.45);overflow:hidden}
+  .app.foco .jan,.doca.foco .jan{border-color:#7aa2ff;box-shadow:0 8px 26px rgba(0,0,0,.6)}
+  .titulo{flex:none;height:33px;display:flex;align-items:center;gap:8px;padding:0 10px;font-size:12px;background:#202124;color:#e8eaed;user-select:none}
+  .doca .titulo{height:30px;background:#2b2b2e}
+  .titulo .ico{width:14px;height:14px;border-radius:3px;background:#f58220;flex:none}
+  .doca .titulo .ico{background:linear-gradient(135deg,#e85a86,#8b1e3f)}
+  .titulo .bts{margin-left:auto;letter-spacing:10px;color:#9aa0a6;font-size:11px}
+  /* Privacy de mentira */
+  .chat{flex:1;display:flex;flex-direction:column;min-height:0;background:#fff;color:#1d1d1f}
+  .chat-cab{flex:none;display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #ececf0}
+  .chat-cab .av{width:36px;height:36px;border-radius:50%;background:#ffd9c2;flex:none;display:grid;place-items:center;font-weight:700;color:#b5532a}
+  .chat-cab b{display:block;font-size:14px}.chat-cab small{color:#8b8b93}
+  .chat-cab .conta{margin-left:auto;font-size:11px;color:#8b8b93;text-align:right}
+  .msgs{flex:1;overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:8px;justify-content:flex-end;background:#fafafc}
+  .m{max-width:74%;padding:8px 12px;border-radius:16px;font-size:13px;line-height:1.35}
+  .m.fa{align-self:flex-start;background:#ececf2;border-bottom-left-radius:4px}
+  .m.eu{align-self:flex-end;background:#f58220;color:#fff;border-bottom-right-radius:4px}
+  .m.ppv{align-self:flex-end;background:#fff;border:1px solid #f0d2b8;color:#1d1d1f;width:190px}
+  .m.ppv .midia{height:74px;border-radius:10px;background:repeating-linear-gradient(45deg,#f3e3d6,#f3e3d6 8px,#ecd5c3 8px,#ecd5c3 16px);margin-bottom:6px}
+  .m.ppv .st{font-size:11px;font-weight:700}.st.pago{color:#1a9a55}.st.nao{color:#b0563a}
+  .compor{flex:none;display:flex;gap:8px;padding:10px 12px;border-top:1px solid #ececf0;background:#fff}
+  .compor .campo{flex:1;border:1px solid #dcdce3;border-radius:18px;padding:8px 12px;color:#8b8b93;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .compor .campo.colado{color:#1d1d1f;border-color:#f58220}
+  .compor .env{flex:none;width:34px;height:34px;border-radius:50%;background:#f58220}
+  .doca iframe{flex:1;width:100%;border:0;display:block;background:#0e0a0d}
+  .regua{position:absolute;left:0;right:0;top:665px;height:0;border-top:1px dashed rgba(255,255,255,.25);pointer-events:none}
+  .regua span{position:absolute;right:6px;top:-17px;font-size:10px;color:rgba(255,255,255,.55)}
+  /* controles */
+  .controles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:1440px;margin:12px auto 20px;padding:0 16px}
+  .ctl{background:#11151c;border:1px solid #262c38;border-radius:10px;padding:10px 12px}
+  .ctl h2{margin:0 0 8px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .ctl h2 i{width:8px;height:8px;border-radius:50%}
+  .ctl .bt{display:flex;flex-wrap:wrap;gap:6px}
+  .ctl button{font:inherit;font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid #333b4a;background:#1a202b;color:#e8e6ea;cursor:pointer}
+  .ctl button:hover{background:#242c3a}
+  .ctl button[aria-pressed="true"]{border-color:#e0507c;background:rgba(224,80,124,.18)}
+  .dica{max-width:1440px;margin:0 auto 24px;padding:0 16px;color:#9aa0ab;font-size:12px}
+  .dica kbd{background:#1a202b;border:1px solid #333b4a;border-radius:4px;padding:0 5px;font:inherit;font-size:11px;color:#e8e6ea}
+</style>
+</head>
+<body>
+<div class="cabecalho">
+  <h1>Delta 2.1 · Cockpit 3x2</h1>
+  <p>Simulação da tela 1440×860: 3 Web Apps da Privacy em cima (480×665) + 3 Docas do Delta embaixo (480×195). Dados de mentira.</p>
+  <div class="legenda"><span><i style="background:#f0c86e"></i>ouro pulsando = VIP esperando</span><span><i style="background:#ff5470"></i>vermelho pulsando = relógio estourou / follow-up venceu</span></div>
+</div>
+<div id="moldura"><div id="palco"><div class="regua"><span>665 px · daqui para baixo, 195 px livres para as docas</span></div></div></div>
+<div class="controles" id="controles"></div>
+<p class="dica">Dentro de cada doca: clique num <b>chip amarelo</b> para preencher o campo, clique em cima do <b>{campo}</b> para digitar, <b>‹ ›</b> troca a variante, <b>Copiar</b> copia e já marca <b>✓ Feito</b>. Com a doca em foco: <kbd>C</kbd> ou <kbd>Enter</kbd> copia, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> / <kbd>←</kbd> <kbd>→</kbd> trocam a variante (ou o degrau da cena). No Delta de verdade, <kbd>M</kbd> alterna entre a doca e o painel inteiro.</p>
+
+<script>
+"use strict";
+const CHIPS = { // os mesmos de coach-ext/data/coach_regras.json > chips_placeholders
+  qtd_conteudo: ["1 vídeo de 3 min + 4 fotos", "1 vídeo de 5 min", "pack com 3 vídeos", "4 fotos + 1 vídeo curto"],
+  quando: ["hoje à tarde", "ontem à noite", "agora há pouco"],
+  lugar: ["na cama", "no banho", "no meu quarto", "no espelho"],
+  roupa: ["só de calcinha", "de lingerie nova", "só de toalha", "sem nada"]
+};
+const CENA = { id: "S1", titulo: "O kink dela", degraus: [
+  ["Tirando a roupa", "Começa assim: eu na cama, pensando em você, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora."],
+  ["Me tocando", "Não aguentei e comecei a me tocar na cama, pensando em você... me conta o que você tá sentindo."],
+  ["Brinquedo", "Peguei meu brinquedo 😈 na cama, pensando em você, bem devagar, imaginando que é você. Quer ver até onde eu vou?"],
+  ["Brincando", "Tô perdendo o controle na cama, pensando em você... cada vez mais forte. Me acompanha, quero saber como você tá."],
+  ["Quase lá", "Tô quase, {nome}... minhas pernas tremendo na cama, pensando em você. Não para agora, fica comigo."],
+  ["Final", "Não deu pra segurar 🙈 olha como eu fiquei na cama, por sua causa. Me conta: você chegou junto comigo?"]] };
+const CONTAS = [
+  { conta: "arrudafree", rotulo: "Arruda", cor: "#d3456f", fa: "João Teste", nome: "João", espera: 36, fase: "FECHA AGORA", preco: "R$ 69,90–89,90", motivo: "6 msgs dele desde o último PPV, ativo há 36 s",
+    jogada: "Legenda em 4 partes. Manda o PPV agora.", vip: false,
+    variantes: ["Ai {nome}, tô até com vergonha de mandar isso 😳 gravei {quando} {lugar}, {roupa}, e no meio do vídeo eu faço uma coisa que nunca mostrei aqui... adivinha o quê? ({qtd_conteudo})",
+      "{nome}, separei esse só depois da nossa conversa 😏 {roupa}, {lugar}, e eu fiz exatamente o que você disse que gosta... quer saber se acertei? ({qtd_conteudo})",
+      "Chega de papo, {nome}. Esse é o teu primeiro comigo e eu não começo fraco 😈 ({qtd_conteudo})"],
+    chat: [["fa", "oi linda"], ["eu", "oi amor, tudo bem? 😘"], ["fa", "cheguei do trabalho agora, tô sozinho em casa"], ["eu", "hmm, e tá pensando em quê?"], ["fa", "em você né 😏 o que você tá fazendo"]] },
+  { conta: "xlunavitaligratis", rotulo: "Luna", cor: "#7c6cf0", fa: "Rafa M.", nome: "Rafa", espera: 12, fase: "PÓS-COMPRA", preco: "R$ 74,90–84,90", motivo: "comprou há 3 min",
+    jogada: "Ele aguentou. Próximo degrau, mais caro.", vip: false,
+    variantes: ["Você aguentou aquele, então agora é outro nível: mais ousado e um degrau acima no preço. Vem 😏 ({qtd_conteudo})",
+      "Aquele foi o aquecimento, {nome}. O próximo é o que eu deixo pra quem chega até aqui 😈",
+      "Passou de fase 😏 o próximo é mais forte, mais caro, e vale cada centavo."],
+    chat: [["eu", "olha o que eu separei pra você 😈"], ["ppv", "pago", "R$ 49,90 · pago"], ["fa", "nossa 🔥 gostei demais"], ["fa", "tem mais desse?"]] },
+  { conta: "louisefree", rotulo: "Louise", cor: "#2fb39a", fa: "Carlos (VIP)", nome: "Carlos", espera: 85, fase: "FECHA AGORA", preco: "R$ 219,90–299,90", motivo: "VIP · ele pediu: “me manda aquele”",
+    jogada: "VIP pediu. Pula degrau e lembra do Pix.", vip: true,
+    variantes: ["{nome}, esse eu não mando pra qualquer um. Gravei {quando}, {roupa}... abre e me diz se aguentou 😈 ({qtd_conteudo})",
+      "Você pediu, eu entrego. Só não reclama depois que ficou querendo mais 😈 ({qtd_conteudo})",
+      "Pra você eu separei o mais forte, {nome}. No Pix passa direto 😏 ({qtd_conteudo})"],
+    chat: [["eu", "senti sua falta, {nome}".replace("{nome}", "Carlos")], ["ppv", "nao", "R$ 219,90 · não pago"], ["fa", "tava viajando a trabalho"], ["fa", "me manda aquele que você falou"]] }
+];
+const S = CONTAS.map((c) => ({ c, variante: 0, vars: {}, feitas: new Set(), cena: { fixa: false, n: 1 }, espera: c.espera, vipMsg: false, fu: false, copiadoEm: 0, editando: null }));
+const palco = document.getElementById("palco");
+const elp = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+
+// ---------- monta as 6 janelas ----------
+const SRCDOC = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../coach-ext/painel.css"><style>html,body{overflow:hidden}</style></head>
+<body class="mini dom"><header class="topo"><div id="contaBadge" class="conta-badge"><i class="ponto"></i><b></b><span></span></div>
+<button id="btnUseiTopo" class="btn mini usei" type="button">✓ Usei</button><button id="btnCopiarTopo" class="btn mini rosa" type="button">Copiar</button><button id="btnMini" class="btn mini ico" type="button" title="No Delta de verdade: expande o painel inteiro (tecla M)">▾</button></header>
+<section id="telaApp" class="tela"><div id="alertas"></div><div id="conteudo"></div></section></body></html>`;
+S.forEach((s, i) => {
+  const app = elp("div", "app"); app.style.cssText = "left:" + i * 480 + "px;top:0;width:480px;height:665px";
+  const jan = elp("div", "jan"), tit = elp("div", "titulo"); tit.append(elp("span", "ico"), elp("span", "", "Privacy" + (i ? " (" + i + ")" : "") + " · @" + s.c.conta), elp("span", "bts", "—☐✕"));
+  const chat = elp("div", "chat"), cab = elp("div", "chat-cab"), nm = elp("div"); nm.append(elp("b", "", s.c.fa), elp("small", "", "online agora"));
+  cab.append(elp("div", "av", s.c.fa[0]), nm, elp("div", "conta", "privacy.com.br/chat"));
+  const msgs = elp("div", "msgs");
+  s.c.chat.forEach((m) => { if (m[0] === "ppv") { const b = elp("div", "m ppv"); b.append(elp("div", "midia"), elp("div", "st " + m[1], m[2])); msgs.append(b); } else msgs.append(elp("div", "m " + m[0], m[1])); });
+  const comp = elp("div", "compor"); s.campo = elp("div", "campo", "Escreva uma mensagem…"); comp.append(s.campo, elp("div", "env"));
+  chat.append(cab, msgs, comp); jan.append(tit, chat); app.append(jan); palco.append(app); s.app = app;
+
+  const doca = elp("div", "doca"); doca.style.cssText = "left:" + i * 480 + "px;top:665px;width:480px;height:195px";
+  const dj = elp("div", "jan"), dt = elp("div", "titulo"); dt.append(elp("span", "ico"), elp("span", "", "Delta"), elp("span", "bts", "—☐✕"));
+  const fr = document.createElement("iframe"); fr.title = "Doca do Delta · " + s.c.rotulo; fr.srcdoc = SRCDOC;
+  dj.append(dt, fr); doca.append(dj); palco.append(doca); s.doca = doca; s.fr = fr;
+  fr.addEventListener("load", () => iniciarDoca(s));
+  // clicar numa janela traz ela "para a frente": a doca nunca fica atrás da Privacy, porque não ocupam o mesmo lugar
+  [app, doca].forEach((j) => j.addEventListener("pointerdown", () => { document.querySelectorAll(".foco").forEach((x) => x.classList.remove("foco")); j.classList.add("foco"); }));
+});
+
+// ---------- a doca (mesmas classes do painel.js, desenhadas com o painel.css de verdade) ----------
+function preencher(txt, dados) {
+  const faltam = [], partes = String(txt).split(/(\{[a-z_]+\})/g).map((p) => { const m = /^\{([a-z_]+)\}$/.exec(p); if (!m) return { t: p }; const v = dados[m[1]]; if (v) return { t: v, campo: m[1] }; if (!faltam.includes(m[1])) faltam.push(m[1]); return { t: p, campo: m[1], falta: true }; });
+  return { partes, faltam, texto: partes.map((p) => p.t).join("") };
+}
+const fmt = (s) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+const chave = (s) => (s.cena.fixa ? "cena" + s.cena.n : "v" + s.variante);
+function atual(s) {
+  const dados = Object.assign({ nome: s.c.nome }, s.vars);
+  return preencher(s.cena.fixa ? CENA.degraus[s.cena.n - 1][1] : s.c.variantes[s.variante], dados);
+}
+function iniciarDoca(s) {
+  const d = s.fr.contentDocument; s.d = d;
+  d.documentElement.style.setProperty("--conta", s.c.cor);
+  d.querySelector("#contaBadge b").textContent = s.c.rotulo; d.querySelector("#contaBadge span").textContent = "@" + s.c.conta;
+  d.getElementById("btnUseiTopo").addEventListener("click", () => { s.feitas.add(chave(s)); desenhar(s); });
+  d.getElementById("btnCopiarTopo").addEventListener("click", () => copiar(s));
+  d.getElementById("btnMini").addEventListener("click", () => alert("No Delta de verdade, ▾ (ou a tecla M) volta ao painel inteiro, acoplado por dentro da janela da Privacy."));
+  d.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || (e.target && e.target.tagName === "INPUT")) return;
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (k === "c" || (k === "Enter" && e.target.tagName !== "BUTTON")) { e.preventDefault(); copiar(s); }
+    else if (k === "ArrowLeft" || k === "ArrowRight") { e.preventDefault(); passo(s, k === "ArrowLeft" ? -1 : 1); }
+    else if ("123".includes(k) && k && !s.cena.fixa) { s.variante = Number(k) - 1; desenhar(s); }
+  });
+  s.pronta = true; desenhar(s);
+}
+function passo(s, dlt) {
+  if (s.cena.fixa) { s.cena.n += dlt; if (s.cena.n > CENA.degraus.length) { s.cena.fixa = false; s.cena.n = 1; } s.cena.n = Math.max(1, s.cena.n); }
+  else s.variante = (s.variante + dlt + s.c.variantes.length) % s.c.variantes.length;
+  desenhar(s);
+}
+async function copiar(s) {
+  const t = atual(s).texto;
+  try { await navigator.clipboard.writeText(t); } catch (_) { /* arquivo local sem permissão: a simulação segue */ }
+  s.copiadoEm = Date.now(); s.feitas.add(chave(s));
+  s.campo.textContent = t; s.campo.classList.add("colado"); s.campo.title = "No uso real você cola aqui com Ctrl+V. O Delta nunca digita na Privacy.";
+  desenhar(s);
+}
+function desenhar(s) {
+  if (!s.pronta || s.editando) return;
+  const d = s.d, e = (tag, cls, txt) => { const x = d.createElement(tag); if (cls) x.className = cls; if (txt != null) x.textContent = txt; return x; };
+  const cor = s.espera == null ? "verde" : s.espera <= 60 ? "verde" : s.espera <= 180 ? "amarelo" : "vermelho";
+  d.body.classList.toggle("urgente-vip", (s.c.vip || s.vipMsg) && s.espera != null);
+  d.body.classList.toggle("urgente-sla", cor === "vermelho" || s.fu);
+  const feito = s.feitas.has(chave(s));
+  const bu = d.getElementById("btnUseiTopo"); bu.textContent = feito ? "✓ Feito" : "✓ Usei"; bu.className = "btn mini usei" + (feito ? " feito" : "");
+  d.getElementById("btnCopiarTopo").textContent = Date.now() - s.copiadoEm < 2500 ? "Copiado" : "Copiar";
+  const c = d.getElementById("conteudo"); c.replaceChildren();
+  // fã + relógio
+  const cab = e("div", "cab"), esq = e("div"); esq.append(e("div", "nome", s.c.fa + (s.vipMsg && !s.c.vip ? " (VIP)" : "")));
+  const rel = e("div", "relogio");
+  if (s.espera != null) rel.append(e("div", "grande " + cor, fmt(s.espera)), e("div", "r", s.fu ? "follow-up 2/5 vencido" : "esperando · meta 60 s")); else rel.append(e("div", "grande verde", "—"), e("div", "r", "ninguém esperando"));
+  cab.append(esq, rel); c.append(cab);
+  // cartão principal
+  const jogo = e("section", "card jogo" + (s.cena.fixa ? " cena-topo" : "")), fase = e("div", "fase"), p = atual(s);
+  const navEl = e("span", "nav-mini"), bt = (t, dl, tit) => { const b = e("button", "btn mini nav", t); b.type = "button"; b.title = tit; b.addEventListener("click", () => passo(s, dl)); return b; };
+  if (s.cena.fixa) {
+    fase.append(e("span", "chip", "Cena · degrau " + s.cena.n + "/" + CENA.degraus.length), e("span", "chip preco-chip", s.c.preco), e("span", "motivo", CENA.id + " · " + CENA.titulo));
+    navEl.append(bt("−", -1, "degrau anterior"), e("span", "pequeno fraco", s.cena.n + "/" + CENA.degraus.length), bt("+", 1, "próximo degrau"));
+  } else {
+    fase.append(e("span", "chip", s.c.fase), e("span", "chip preco-chip", s.c.preco), e("span", "motivo", s.c.motivo));
+    navEl.append(bt("‹", -1, "variante anterior"), e("span", "pequeno fraco", s.variante + 1 + "/" + s.c.variantes.length), bt("›", 1, "próxima variante"));
+  }
+  fase.append(navEl); jogo.append(fase);
+  if (s.cena.fixa) {
+    const dg = e("div", "degraus"); CENA.degraus.forEach((_, i) => dg.append(e("i", i + 1 < s.cena.n ? "feito" : i + 1 === s.cena.n ? "agora" : ""))); jogo.append(dg);
+    const esperar = s.espera == null; // a última mensagem é nossa: espere ele responder
+    jogo.append(esperar ? e("div", "jogada espere", "ESPERE a resposta dele antes do próximo degrau.") : e("div", "jogada", "Degrau " + s.cena.n + ": " + CENA.degraus[s.cena.n - 1][0]));
+  } else jogo.append(e("div", "jogada", s.c.jogada));
+  const rot = e("div", "roteiro"), txt = e("div", "txt");
+  p.partes.forEach((x) => {
+    if (!x.campo) { txt.append(x.t); return; }
+    const sp = e("span", x.falta ? "falta" : "posto", x.t); sp.dataset.campo = x.campo; sp.title = x.falta ? "Clique para preencher {" + x.campo + "}" : "Clique para trocar";
+    sp.addEventListener("click", () => editar(s, sp, x.campo, x.falta ? "" : x.t)); txt.append(sp);
+  });
+  rot.append(txt);
+  const campos = p.faltam.filter((f) => CHIPS[f]);
+  if (campos.length) {
+    const ch = e("div", "chips");
+    campos.forEach((f) => { const l = e("div", "chips-l"); l.dataset.campo = f; l.append(e("span", "chips-t", f.replace(/_/g, " "))); CHIPS[f].forEach((v) => { const b = e("button", "chipb", v); b.type = "button"; b.addEventListener("click", () => { s.vars[f] = v; desenhar(s); }); l.append(b); }); ch.append(l); });
+    rot.append(ch);
+  }
+  jogo.append(rot); c.append(jogo);
+  atualizarControles(s);
+}
+function editar(s, span, campo, atualV) {
+  if (s.editando) return; s.editando = campo;
+  const inp = s.d.createElement("input"); inp.className = "campo"; inp.type = "text"; inp.maxLength = 80; inp.placeholder = campo.replace(/_/g, " "); inp.value = atualV;
+  let fim = false; const fechar = (gravar) => { if (fim) return; fim = true; s.editando = null; if (gravar) { const v = inp.value.trim(); if (v) s.vars[campo] = v; else delete s.vars[campo]; } desenhar(s); };
+  inp.addEventListener("keydown", (ev) => { ev.stopPropagation(); if (ev.key === "Enter") fechar(true); else if (ev.key === "Escape") fechar(false); });
+  inp.addEventListener("blur", () => fechar(true));
+  span.replaceWith(inp); inp.focus(); inp.select();
+}
+
+// ---------- controles da simulação ----------
+let ctx = null, somLigado = false;
+function bipe(vip) {
+  if (!somLigado) return;
+  try { ctx = ctx || new AudioContext(); if (ctx.state === "suspended") ctx.resume(); const t0 = ctx.currentTime + 0.01;
+    (vip ? [880, 1320] : [660, 660]).forEach((f, i) => { const o = ctx.createOscillator(), g = ctx.createGain(), t = t0 + i * 0.16; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.2, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14); o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 0.16); });
+  } catch (_) {}
+}
+const ctl = document.getElementById("controles");
+S.forEach((s) => {
+  const box = elp("div", "ctl"), h = elp("h2"), pt = elp("i"); pt.style.background = s.c.cor; h.append(pt, s.c.rotulo + " · @" + s.c.conta);
+  const bt = elp("div", "bt"), mk = (t, f) => { const b = elp("button", "", t); b.type = "button"; b.addEventListener("click", f); bt.append(b); return b; };
+  s.bCena = mk("🎬 Fixar Cena no Topo", () => { s.cena.fixa = !s.cena.fixa; desenhar(s); });
+  mk("⭐ Chega mensagem de VIP", () => { s.vipMsg = true; s.espera = 0; bipe(true); desenhar(s); });
+  mk("⏰ Follow-up venceu", () => { s.fu = true; bipe(false); desenhar(s); });
+  mk("✔ Respondi (acalmar)", () => { s.vipMsg = false; s.fu = false; s.espera = null; desenhar(s); });
+  box.append(h, bt); ctl.append(box);
+});
+const boxSom = elp("div", "ctl"); boxSom.style.gridColumn = "1 / -1";
+const bSom = elp("button", "", "🔕 Som desligado (padrão)"); bSom.type = "button"; bSom.setAttribute("aria-pressed", "false");
+bSom.addEventListener("click", () => { somLigado = !somLigado; bSom.textContent = somLigado ? "🔔 Som ligado: bipe no VIP e no follow-up vencido" : "🔕 Som desligado (padrão)"; bSom.setAttribute("aria-pressed", String(somLigado)); bipe(true); });
+const bs = elp("div", "bt"); bs.append(bSom); boxSom.append(bs); ctl.append(boxSom);
+function atualizarControles(s) { if (s.bCena) { s.bCena.textContent = s.cena.fixa ? "🎬 Desafixar cena" : "🎬 Fixar Cena no Topo"; s.bCena.setAttribute("aria-pressed", String(s.cena.fixa)); } }
+setInterval(() => S.forEach((s) => { if (s.espera != null) s.espera++; desenhar(s); }), 1000);
+
+// ---------- escala: o palco de 1440x860 encolhe para caber na janela ----------
+function escala() {
+  const k = Math.min(1, (document.documentElement.clientWidth - 32) / 1440);
+  palco.style.transform = "scale(" + k + ")";
+  const m = document.getElementById("moldura"); m.style.width = 1440 * k + "px"; m.style.height = 860 * k + "px";
+}
+addEventListener("resize", escala); escala();
+
+// ---------- ganchos para conferência automática ----------
+window.__cockpit = {
+  pronto: () => S.every((s) => s.pronta && s.d.querySelector(".jogo") && getComputedStyle(s.d.body).backgroundColor === "rgb(14, 10, 13)"),
+  estado: () => {
+    const caixa = (e) => ({ x: e.offsetLeft, y: e.offsetTop, w: e.offsetWidth, h: e.offsetHeight });
+    return { tela: { w: palco.offsetWidth, h: palco.offsetHeight }, apps: S.map((s) => caixa(s.app)),
+      docas: S.map((s) => { const w = s.fr.contentWindow, j = s.d.querySelector(".jogo").getBoundingClientRect(), t = s.d.querySelector(".roteiro .txt").getBoundingClientRect();
+        return Object.assign(caixa(s.doca), { css: getComputedStyle(s.d.body).backgroundColor === "rgb(14, 10, 13)", iw: w.innerWidth, ih: w.innerHeight, cabe: j.bottom <= w.innerHeight + 1 && t.bottom <= w.innerHeight + 1 && s.d.documentElement.scrollWidth <= w.innerWidth + 1 }); }) };
+  },
+  demo: async () => {
+    const r = {}, a = S[0], b = S[1], c = S[2];
+    a.d.querySelector(".chips-l[data-campo='quando'] .chipb").click(); a.d.querySelector(".chips-l[data-campo='qtd_conteudo'] .chipb").click();
+    r.chip = /hoje à tarde/.test(a.d.querySelector(".roteiro .txt").textContent) && !/\{qtd_conteudo\}|\{quando\}/.test(a.d.querySelector(".roteiro .txt").textContent);
+    await copiar(a); r.copiou = a.d.getElementById("btnUseiTopo").textContent === "✓ Feito" && a.campo.classList.contains("colado");
+    a.fu = true; desenhar(a); r.sla = a.d.body.classList.contains("urgente-sla");
+    b.cena.fixa = true; passo(b, 1); r.cena = !!b.d.querySelector(".jogo.cena-topo") && /degrau 2\/6/.test(b.d.querySelector(".fase .chip").textContent) && b.d.querySelectorAll(".degraus i").length === 6;
+    r.vip = c.d.body.classList.contains("urgente-vip");
+    return r;
+  }
+};
+</script>
+</body>
+</html>

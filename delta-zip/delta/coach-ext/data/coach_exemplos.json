@@ -1,0 +1,47 @@
+{
+ "versao": "coach-exemplos-1.0",
+ "_doc": "Exemplos REAIS que funcionaram, tirados das conversas da conta momoi (central.delta_msgs, só leitura, 12/11/2026), por decisão do usuário. Curados à mão: sem dominação/humilhação, sem contato ou pagamento por fora, sem menoridade, sem terceiros; nomes de fãs trocados por {nome}; alguns textos encurtados para tirar trechos fora dessas regras (o resto é como foi enviado). O ⚡ manda à IA alguns exemplos da MESMA situação para ela copiar o JEITO (tamanho, tom, responder ao que ele disse, pergunta no fim), nunca o conteúdo nem as frases. 'fa' = última mensagem do fã; 'conta' = o que a conta mandou antes; 'msg' = a mensagem que funcionou (legenda do PPV que ele comprou, ou a mensagem que ele respondeu rápido). 'preco' só para referência; não vai para a IA.",
+ "origem": "BASE",
+ "por_pedido": 4,
+ "situacoes": {
+  "abertura": "Começo de conversa / rapport: a conta respondeu e o fã voltou a responder em até 10 min.",
+  "reabrir": "Conversa parada há 20 h ou mais: a conta mandou isto e o fã respondeu em até 3 h.",
+  "pediu": "O fã pediu para ver / perguntou: a conta mandou o PPV com esta legenda e ele comprou.",
+  "primeiro_ppv": "1º PPV comprado naquela conversa: esta foi a legenda.",
+  "recompra": "PPV comprado até 3 h depois de outro PPV comprado (sequência): esta foi a legenda."
+ },
+ "exemplos": [
+  { "situacao": "abertura", "fa": "Q ta fazendo d bom amor?", "msg": "estou deitadinha relaxando e vc?" },
+  { "situacao": "abertura", "fa": "Oi amorr", "msg": "oiiie tudo bem, novo?" },
+  { "situacao": "abertura", "fa": "Vai ser a melhor parte de conversar com vc", "msg": "hahaha, como vc tá?" },
+  { "situacao": "abertura", "fa": "Mas vou continuar só com os mimos mesmo tá", "msg": "hahaha fica tranquilo" },
+  { "situacao": "abertura", "fa": "Ia te deixar toda gozada", "msg": "como voce é malvado e me faz isso" },
+  { "situacao": "abertura", "fa": "Bota eles na minha cara para eu chupar bem gostoso vai", "msg": "Vai chupar eles enquanto eu sento bem gostoso em você? 😏" },
+  { "situacao": "abertura", "fa": "", "msg": "Que horas posso te chamar?" },
+
+  { "situacao": "reabrir", "fa": "", "msg": "oiiie volteiii {nome}" },
+  { "situacao": "reabrir", "fa": "", "msg": "Oii está por ai? Sinto falta de suas promessas 🤭" },
+
+  { "situacao": "pediu", "preco": 43.33, "fa": "Me mostra amor", "msg": "vamos começar a brincar bem gostoso entao {nome}... sera que essa vista te deixaria com tesao?" },
+  { "situacao": "pediu", "preco": 95.00, "fa": "quero ver", "conta": "vou te mandar safadooo👀", "msg": "3 VÍDEOS ME TOCANDO BEM GOSTOSO PRA VOCÊ {nome} 💦 tô abertinha na cama, mostrando bem de pertinho e deixando molhadinha pra você" },
+  { "situacao": "pediu", "preco": 150.00, "fa": "pode ser, um q mostra bem fundo", "conta": "ta bomm", "msg": "aqui amor... dps me diz oq achou rs" },
+  { "situacao": "pediu", "preco": 30.00, "fa": "Pq eu queria pegar no seus peitos agora", "conta": "Muito", "msg": "Olha como eu fiquei molhada só de imaginar as putaria que vc falou rsrsrs 😝🫣🔥" },
+  { "situacao": "pediu", "preco": 47.77, "fa": "Uma pena eu não poder te enviar um vídeo para te mostrar como estou nesse momento na cama", "conta": "hummm vai poder no fim rs", "msg": "vamos começar a brincar bem gostoso amor..." },
+  { "situacao": "pediu", "preco": 67.89, "fa": "Vc deixa eu ver? 🤤", "conta": "deixo sim safadinho rsrs", "msg": "de 4 pra vc imaginar o que quiser fazer cmg safado" },
+
+  { "situacao": "primeiro_ppv", "preco": 36.02, "fa": "Queria um de você cavalgando", "conta": "q dlc amor ¦ esse é facil", "msg": "oq acha dessa amor? cavalgada bem forte no seu pau assim a noite inteira... vms gozar juntinhos hj amr?" },
+  { "situacao": "primeiro_ppv", "preco": 39.99, "fa": "Que expressão maravilhosa KKKKKKKKKK", "msg": "o que vc acha do meu pijama? fica bem em mim?? rs" },
+  { "situacao": "primeiro_ppv", "preco": 88.88, "fa": "meu pau tá latejando pra você amor 🤤", "msg": "imagina se fosse seu pau assim dentro de mim... pulsando la dentro" },
+  { "situacao": "primeiro_ppv", "preco": 37.11, "fa": "Você ja ta no jeito ai e eu ja estou no jeito aqui, todo duro só pra voce amor", "msg": "Sei que você está duro então já fiquei totalmente peladinha 😏 e vou chupar seu pau exatamente assim safadoo 😈🤤" },
+  { "situacao": "primeiro_ppv", "preco": 33.33, "fa": "Mas não sei daí quais q vc tem aí", "msg": "entãoo vc gosta de ver um batendo umaa ne safado? 😈" },
+  { "situacao": "primeiro_ppv", "preco": 68.69, "fa": "quero delicia", "conta": "então prepara essa lingua pq quero ver do que vc é capaz", "msg": "passar os dedinhos aqui pra deixar vc doido de vontade de passar a lingua" },
+
+  { "situacao": "recompra", "preco": 92.55, "fa": "Estou pronto para guardar cada detalhe seu.", "conta": "nao quer me ver gozando antes??? ¦ mas eu vou separar umas fotinhas bem gostosas para voce aqui...", "msg": "aqui be... minhas melhores fotinhas pra voce poder me olhar e guardar cada detalhe do meu corpo..." },
+  { "situacao": "recompra", "preco": 29.66, "fa": "Aguardando ansiosamente.", "conta": "to terminando ela amor... ¦ acho que voce vai gostar", "msg": "gostou da minha make amor... olha como ela é bem gotica safadinha... 🥺" },
+  { "situacao": "recompra", "preco": 129.99, "fa": "até fazer você gozar", "conta": "sera q vc aguenta?", "msg": "imagina eu gemendo assim bem baixinho no seu ouvido enquanto eu gozava gostoso no seu pau?" },
+  { "situacao": "recompra", "preco": 66.87, "fa": "Q dlc bebe", "msg": "vai querer me comer no banho também amor? vou dar pra vc com gosto" },
+  { "situacao": "recompra", "preco": 65.70, "fa": "dlç", "msg": "olha como ele entra facinho amor depois que fico bem molhadinha rsrs 🤤" },
+  { "situacao": "recompra", "preco": 43.02, "fa": "Delicia", "msg": "olha como ela aguentou esse brinquedinho grossoo, toda abertinha p vc" },
+  { "situacao": "recompra", "preco": 43.44, "fa": "Quero meter meu pau no meio deles até gozar", "msg": "imaginaa eu chupando ele deixando todo babadooo até vc gozar 😈😈" }
+ ]
+}

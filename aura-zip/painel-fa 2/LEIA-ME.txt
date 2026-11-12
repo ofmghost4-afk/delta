@@ -1,0 +1,65 @@
+PAINEL DO FÃ - versão 1.3.0
+
+O QUE FAZ
+Mostra, ao lado do chat da Privacy, a ficha do fã da conversa que você abriu.
+Só lê o que já está na sua tela. Não envia mensagem, não abre conversa,
+não rola a lista e não faz pedidos à Privacy.
+
+1) CRIAR SEU LOGIN (uma vez só)
+- Abra o Supabase, projeto "Central de Chat".
+- Menu da esquerda: Authentication > Users > Add user > Create new user.
+- E-mail: ofmghost4@gmail.com. Escolha uma senha só sua.
+- Deixe marcado "Auto Confirm User" e confirme.
+(Se esse e-mail já existir na lista, não precisa criar de novo.)
+
+2) INSTALAR NO CHROME (uma vez só)
+- Descompacte o arquivo painel-fa.zip numa pasta que você não vá apagar.
+- No Chrome, abra o endereço: chrome://extensions
+- Ligue a chave "Modo do desenvolvedor" (canto de cima, à direita).
+- Clique em "Carregar sem compactação" e escolha a pasta painel-fa.
+- Clique no ícone de quebra-cabeça do Chrome e fixe "Aura - Painel do fã".
+
+3) USAR
+- Abra privacy.com.br/chat (se a aba já estava aberta, atualize com F5).
+- Clique no ícone da extensão: o painel abre na lateral direita.
+- Entre com o e-mail e a senha do passo 1.
+- Clique numa conversa. A ficha aparece.
+- Para ligar um fã a um comprador, abra "Detalhes" dele na Privacy.
+
+4) SUBIR EXTRATO NOVO
+- Na Privacy, baixe o extrato de vendas da conta (arquivo .xlsx).
+- No painel, aba "Mais" > "Subir extrato novo" > escolha o arquivo > Subir.
+- Pode subir o mesmo período de novo sem medo: o que já está na base não repete.
+
+O QUE HÁ DE NOVO NA 1.3.0
+- Fila com cronômetro: mostra há quanto tempo cada fã espera resposta.
+    verde    = até 5 minutos
+    amarelo  = de 5 a 15 minutos
+    vermelho = mais de 15 minutos, ou mensagem de outro dia
+    fã novo  = verde até 5 minutos e vermelho depois (sem amarelo)
+    cinza    = a conta falou por último ("aguardando o fã")
+  "±1 min" quer dizer que o horário veio da lista da Privacy, que só mostra
+  hora e minuto. Sem isso, o painel viu a mensagem chegar e o tempo é exato.
+- Tempo médio de resposta do dia, no alto da Fila (só das conversas abertas).
+- PPV: o painel lê o preço e se foi pago, direto no rodapé da mensagem.
+- Preço do próximo PPV, na Ficha: faixa de +38% a +70% sobre o último valor
+  pago, nunca acima do dobro. Avisa se o PPV enviado passou da faixa.
+- Follow-up: conta as mensagens enviadas depois de um PPV não pago, até 5.
+- Selos: "VIP rápido" (R$ 500 ou mais nos primeiros 7 dias) e "Promissor"
+  (R$ 200 ou mais). "só por nome" = ligação não confirmada. "só conversa" =
+  nunca comprou e deixou 2 ou mais PPVs sem pagar. "fã novo" = sem compra na
+  base e sem mensagem nossa guardada. "sem ficha" = o painel ainda não viu.
+- Aviso de leitura: se o painel não conseguir ler a página da Privacy por
+  10 segundos, ele avisa em vermelho em vez de mostrar ficha errada.
+- Depois de subir um extrato, os PPVs não pagos na tela são conferidos com
+  as vendas e marcados como comprados quando o valor bate.
+
+CONTAS QUE O PAINEL ACEITA
+arrudafree, xlunavitaligratis (Luna) e louisefree. Em qualquer outra conta
+ele avisa "conta fora do painel" e não grava nada.
+
+CUIDADOS
+- Os dados dos fãs ficam só no seu banco. Não compartilhe esta pasta com o
+  painel logado nem a sua senha.
+- As regras da Privacy sobre extensões não foram conferidas. O risco para as
+  contas é seu.

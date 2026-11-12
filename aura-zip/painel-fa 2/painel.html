@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Painel do fã</title>
+<link rel="stylesheet" href="painel.css">
+</head>
+<body>
+<header class="topo">
+  <div class="marca"><img src="logo.png" alt="Aura"></div>
+  <div id="selo" class="selo cinza">aguardando</div>
+</header>
+
+<section id="telaLogin" class="tela" hidden>
+  <h2>Entrar</h2>
+  <p class="fraco">Use o e-mail e a senha que você criou no banco para o painel.</p>
+  <form id="formLogin">
+    <label>E-mail<input id="email" type="email" autocomplete="username" required></label>
+    <label>Senha<input id="senha" type="password" autocomplete="current-password" required></label>
+    <button class="btn laranja" type="submit">Entrar</button>
+    <p id="erroLogin" class="erro"></p>
+  </form>
+</section>
+
+<section id="telaApp" class="tela" hidden>
+  <nav class="abas">
+    <button data-aba="ficha" class="ativa">Ficha</button>
+    <button data-aba="fila">Fila</button>
+    <button data-aba="sumidos">Sumidos</button>
+    <button data-aba="mais">Mais</button>
+  </nav>
+  <div id="aba-ficha" class="aba"></div>
+  <div id="aba-fila" class="aba" hidden></div>
+  <div id="aba-sumidos" class="aba" hidden></div>
+  <div id="aba-mais" class="aba" hidden></div>
+</section>
+
+<footer class="rodape">Só lê a conversa que você abriu. Nunca envia nada.</footer>
+<script src="config.js"></script>
+<script src="painel.js"></script>
+</body>
+</html>

@@ -1,0 +1,1524 @@
+{
+ "versao": "coach-cenas-1.1",
+ "doc": "Modo sequência (cena/episódio). Adaptação condensada em PT-BR do Chatters manual (Alice & Sophie), sem os scripts fora (lista 'fora'). Só use cena cujo conteúdo a conta TEM de verdade, na ordem certa. Cada degrau: mande o PPV e ESPERE A RESPOSTA. Depois do final: aftercare 1 → espere → aftercare 2 → descanso. Preço: degrau 1 = entrada da conta; depois +50–70% por degrau, nunca cai, nunca > 2x, Pix do 4º em diante. Confira nas notas do Aura quais cenas ele já viu: não repita.",
+ "aftercare": [
+  "PC_AFTERCARE_1",
+  "PC_AFTERCARE_2"
+ ],
+ "fora": [
+  {
+   "id": "K1",
+   "motivo": "Dominação (Privacy proíbe humilhação/dominação)"
+  },
+  {
+   "id": "K2",
+   "motivo": "Submissão/pegging/'mummy' com punição"
+  },
+  {
+   "id": "S9",
+   "motivo": "Modelo dominante e fã submisso"
+  },
+  {
+   "id": "S25",
+   "motivo": "Daddy/Dom com punição"
+  },
+  {
+   "id": "S30",
+   "motivo": "Mistress/modelo dominante"
+  },
+  {
+   "id": "K4",
+   "motivo": "'Perder a virgindade' evoca menoridade (Privacy, ECA Digital)"
+  },
+  {
+   "id": "S7",
+   "motivo": "Rough: revisão caso a caso, fora desta versão"
+  },
+  {
+   "id": "S11",
+   "motivo": "Amarrada: bondage, revisão caso a caso"
+  },
+  {
+   "id": "S18",
+   "motivo": "Bondage e submissão"
+  },
+  {
+   "id": "S19",
+   "motivo": "Rough"
+  },
+  {
+   "id": "S23",
+   "motivo": "Bondage"
+  },
+  {
+   "id": "S41",
+   "motivo": "Rough"
+  },
+  {
+   "id": "S3",
+   "motivo": "Fantasia de submissão: revisão caso a caso"
+  },
+  {
+   "id": "S15",
+   "motivo": "Modelo submissa ('me dê ordens'): revisão"
+  },
+  {
+   "id": "S38",
+   "motivo": "50 Tons (BDSM): revisão"
+  },
+  {
+   "id": "tarefas",
+   "motivo": "'Dar tarefas aos escravos' (dominação)"
+  },
+  {
+   "id": "dick_rate",
+   "motivo": "Avaliação de nude do fã: conferir termos antes"
+  },
+  {
+   "id": "DNP_auto",
+   "motivo": "Mensagem automática: o Coach nunca envia"
+  }
+ ],
+ "cenas": [
+  {
+   "id": "S1",
+   "titulo": "O kink dela",
+   "origem": "Chatters manual S1 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Acho que eu sei qual é o teu kink... mas que tal eu te contar o meu primeiro? Pronto? 🥹",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na cama, pensando em você, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na cama, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na cama, pensando em você, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na cama, pensando em você... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na cama, pensando em você. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na cama, por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S2",
+   "titulo": "Lingerie nova",
+   "origem": "Chatters manual S2 (adaptado)",
+   "perfil": "ego",
+   "abertura": "Cá entre nós: comprei uma lingerie que não tem nada a ver comigo... quer ver? 🙈",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu com a lingerie nova, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar com a lingerie nova, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 com a lingerie nova, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle com a lingerie nova... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo com a lingerie nova. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei com a lingerie nova por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S4",
+   "titulo": "Jantar a dois",
+   "origem": "Chatters manual S4 (adaptado)",
+   "perfil": "romantico",
+   "abertura": "Eu e você num jantar... deixa eu te contar o que eu queria que acontecesse 😏",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu voltando do jantar, ainda de vestido, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar voltando do jantar, ainda de vestido, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 voltando do jantar, ainda de vestido, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle voltando do jantar, ainda de vestido... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo voltando do jantar, ainda de vestido. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei voltando do jantar, ainda de vestido por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S5",
+   "titulo": "Noite na cobertura",
+   "origem": "Chatters manual S5 (adaptado)",
+   "perfil": "ego",
+   "abertura": "Se a gente tivesse uma noite romântica, pra onde você me levaria? ♥️",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na suíte do hotel, com a cidade lá fora, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na suíte do hotel, com a cidade lá fora, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na suíte do hotel, com a cidade lá fora, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na suíte do hotel, com a cidade lá fora... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na suíte do hotel, com a cidade lá fora. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na suíte do hotel, com a cidade lá fora por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S6",
+   "titulo": "Desafio do dia (final molhado)",
+   "origem": "Chatters manual S6 (adaptado)",
+   "perfil": "conduzir",
+   "abertura": "Eu adoro um desafio... deixa eu te contar o que eu me propus hoje 👂",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu no meu quarto, aceitando o desafio, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar no meu quarto, aceitando o desafio, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 no meu quarto, aceitando o desafio, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle no meu quarto, aceitando o desafio... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo no meu quarto, aceitando o desafio. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei no meu quarto, aceitando o desafio por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S8",
+   "titulo": "Cena clássica",
+   "origem": "Chatters manual S8 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Ei, amor, tá por aí?",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na cama, só de calcinha, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na cama, só de calcinha, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na cama, só de calcinha, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na cama, só de calcinha... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na cama, só de calcinha. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na cama, só de calcinha por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S10",
+   "titulo": "No chuveiro",
+   "origem": "Chatters manual S10 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "O que eu não faria pra estar num banho com você, a água escorrendo na gente... 🚿",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu no chuveiro, com a água quente, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar no chuveiro, com a água quente, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 no chuveiro, com a água quente, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle no chuveiro, com a água quente... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo no chuveiro, com a água quente. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei no chuveiro, com a água quente por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S12",
+   "titulo": "Luz acesa ou apagada",
+   "origem": "Chatters manual S12 (adaptado)",
+   "perfil": "timido",
+   "abertura": "Imagina: você chega em casa e me encontra de lingerie vermelha na cama. Acende ou apaga a luz? 😏",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de lingerie vermelha na cama, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de lingerie vermelha na cama, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de lingerie vermelha na cama, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de lingerie vermelha na cama... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de lingerie vermelha na cama. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de lingerie vermelha na cama por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S13",
+   "titulo": "Romântico",
+   "origem": "Chatters manual S13 (adaptado)",
+   "perfil": "romantico",
+   "abertura": "Hoje eu tô num clima diferente... posso te contar como seria uma noite perfeita com você? 🥰",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu à luz de vela, sem pressa, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar à luz de vela, sem pressa, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 à luz de vela, sem pressa, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle à luz de vela, sem pressa... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo à luz de vela, sem pressa. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei à luz de vela, sem pressa por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S14",
+   "titulo": "Desafio pra ele",
+   "origem": "Chatters manual S14 (adaptado)",
+   "perfil": "conduzir",
+   "abertura": "Eu adoro um desafio e tenho um pra você... topa? 😈",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu te provocando de propósito, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar te provocando de propósito, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 te provocando de propósito, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle te provocando de propósito... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo te provocando de propósito. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei te provocando de propósito por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S16",
+   "titulo": "No escritório",
+   "origem": "Chatters manual S16 (adaptado)",
+   "perfil": "ego",
+   "abertura": "O que você acha de um pouco de ousadia num lugar onde não devia? Tenho uma coisa pra te manter ocupado... 👀",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na mesa do escritório, depois do expediente, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na mesa do escritório, depois do expediente, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na mesa do escritório, depois do expediente, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na mesa do escritório, depois do expediente... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na mesa do escritório, depois do expediente. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na mesa do escritório, depois do expediente por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S17",
+   "titulo": "Bem devagar (edging)",
+   "origem": "Chatters manual S17 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Você é meu?",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu segurando o ritmo, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar bem devagar, segurando o ritmo, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 bem devagar, segurando o ritmo, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle bem devagar, segurando o ritmo... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo bem devagar, segurando o ritmo. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei bem devagar, segurando o ritmo por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S20",
+   "titulo": "Vem brincar comigo",
+   "origem": "Chatters manual S20 (adaptado)",
+   "perfil": "carente",
+   "abertura": "Tô sozinha... vem brincar comigo?",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu sozinha no sofá, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar sozinha no sofá, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 sozinha no sofá, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle sozinha no sofá... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo sozinha no sofá. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei sozinha no sofá por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S21",
+   "titulo": "Conchinha",
+   "origem": "Chatters manual S21 (adaptado)",
+   "perfil": "carente",
+   "abertura": "De manhã eu amo uma conchinha... você aceitaria? 🥰",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de conchinha, ainda de pijama, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de conchinha, ainda de pijama, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de conchinha, ainda de pijama, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de conchinha, ainda de pijama... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de conchinha, ainda de pijama. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de conchinha, ainda de pijama por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S22",
+   "titulo": "Interativo (anjo ou diabinha)",
+   "origem": "Chatters manual S22 (adaptado)",
+   "perfil": "timido",
+   "abertura": "Anjo ou diabinha: qual combina mais comigo? 😇😈",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu seguindo o que você me disser, tirando peça por peça bem devagar pra você 😏 me fala o próximo passo.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar seguindo o que você me disser, pensando em você... me conta como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 seguindo o que você me disser, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle seguindo o que você me disser... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo seguindo o que você me disser. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei seguindo o que você me disser por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S24",
+   "titulo": "Na cadeira",
+   "origem": "Chatters manual S24 (adaptado)",
+   "perfil": "ego",
+   "abertura": "Acho que você é o homem que eu tava procurando... deixa eu te contar por quê 😏",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu sentada na cadeira, de pernas cruzadas, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar sentada na cadeira, de pernas cruzadas, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 sentada na cadeira, de pernas cruzadas, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle sentada na cadeira, de pernas cruzadas... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo, sentada na cadeira. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei sentada na cadeira, de pernas cruzadas por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S26",
+   "titulo": "Nosso tempo",
+   "origem": "Chatters manual S26 (adaptado)",
+   "perfil": "carente",
+   "abertura": "Bora ter um tempinho só nosso? 🙈",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu no meu quarto, só nós dois, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar no meu quarto, só nós dois, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 no meu quarto, só nós dois, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle no meu quarto, só nós dois... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo no meu quarto, só nós dois. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei no meu quarto, só nós dois por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S27",
+   "titulo": "Marido e mulher",
+   "origem": "Chatters manual S27 (adaptado)",
+   "perfil": "casado",
+   "abertura": "Eu adoro imaginar a gente numa vida normal: você chegando do trabalho e me encontrando te esperando... 🏠",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu te esperando em casa, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar te esperando em casa, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 te esperando em casa, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle te esperando em casa... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo te esperando em casa. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei te esperando em casa por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S28",
+   "titulo": "Mais forte que nunca",
+   "origem": "Chatters manual S28 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Ei, lindo... deixa eu te fazer gozar mais forte do que nunca 😈",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na cama, com vontade, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na cama, com vontade, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na cama, com vontade, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na cama, com vontade... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na cama, com vontade. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na cama, com vontade por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S29",
+   "titulo": "Saia vermelha",
+   "origem": "Chatters manual S29 (adaptado)",
+   "perfil": "ego",
+   "abertura": "Comprei uma roupa nova e acho que fiquei bem fofa... o que você acha? 😇",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de saia vermelha, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de saia vermelha, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de saia vermelha, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de saia vermelha... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de saia vermelha. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de saia vermelha por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S31",
+   "titulo": "No carro",
+   "origem": "Chatters manual S31 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Eu e você no seu carro, num lugar reservado... gostou da ideia? 🚗",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu no banco do carro, vidro embaçado, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar no banco do carro, vidro embaçado, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 no banco do carro, vidro embaçado, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle no banco do carro, vidro embaçado... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo no banco do carro, vidro embaçado. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei no banco do carro, vidro embaçado por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S32",
+   "titulo": "Noite romântica",
+   "origem": "Chatters manual S32 (adaptado)",
+   "perfil": "romantico",
+   "abertura": "Quero te impressionar na nossa noite romântica... quer saber o que eu planejei? ♥️",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu com o vestido que eu separei pra você, tirando peça por peça bem devagar 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar com o vestido que eu separei pra você, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 com o vestido que eu separei pra você, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle com o vestido que eu separei pra você... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo com o vestido que eu separei pra você. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei com o vestido que eu separei pra você por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S33",
+   "titulo": "Seda preta",
+   "origem": "Chatters manual S33 (adaptado)",
+   "perfil": "ego",
+   "abertura": "Me fala: preto é a minha cor? Eu amo como a seda fica no meu corpo... faz alguma coisa com você? 🖤",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de seda preta, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de seda preta, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de seda preta, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de seda preta... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de seda preta. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de seda preta por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S34",
+   "titulo": "Enfermeira e paciente",
+   "origem": "Chatters manual S34 (adaptado)",
+   "perfil": "conduzir",
+   "abertura": "Topa explorar um roleplay comigo? 👀",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de enfermeira, cuidando de você, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de enfermeira, cuidando de você, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de enfermeira, cuidando de você, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de enfermeira, cuidando de você... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de enfermeira, cuidando de você. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de enfermeira, cuidando de você por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S35",
+   "titulo": "Café da manhã depois",
+   "origem": "Chatters manual S35 (adaptado)",
+   "perfil": "romantico",
+   "abertura": "Imagina: a gente acorda depois de uma noite intensa e você me encontra na cozinha só com a tua camisa ☕",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na cozinha, só com a tua camisa, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na cozinha, só com a tua camisa, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na cozinha, só com a tua camisa, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na cozinha, só com a tua camisa... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na cozinha, só com a tua camisa. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na cozinha, só com a tua camisa por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S36",
+   "titulo": "Verdade ou desafio",
+   "origem": "Chatters manual S36 (adaptado)",
+   "perfil": "conduzir",
+   "abertura": "Tenho um desafio pra você... verdade ou desafio? 👀",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu jogando verdade ou desafio com você, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar jogando verdade ou desafio com você, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 jogando verdade ou desafio com você, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle jogando verdade ou desafio com você... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo jogando verdade ou desafio com você. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei jogando verdade ou desafio com você por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S37",
+   "titulo": "Lap dance de branco",
+   "origem": "Chatters manual S37 (adaptado)",
+   "perfil": "ego",
+   "abertura": "Branco é a minha cor? Eu amo o ar delicado que ele dá... 🤍",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de lingerie branca, dançando pra você, tirando peça por peça bem devagar 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de lingerie branca, dançando pra você, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de lingerie branca, dançando pra você, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de lingerie branca, dançando pra você... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de lingerie branca, dançando pra você. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de lingerie branca, dançando pra você por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S39",
+   "titulo": "Bom dia diferente",
+   "origem": "Chatters manual S39 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Queria estar do teu lado quando você acordasse pra cuidar de você logo cedo... 😏",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu de manhã, ainda na cama com você, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar de manhã, ainda na cama com você, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 de manhã, ainda na cama com você, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle de manhã, ainda na cama com você... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo de manhã, ainda na cama com você. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei de manhã, ainda na cama com você por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S40",
+   "titulo": "Massagem nele",
+   "origem": "Chatters manual S40 (adaptado)",
+   "perfil": "timido",
+   "abertura": "Você me deixaria ser tua massagista? 😉",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu com óleo nas mãos, te fazendo massagem, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar com óleo nas mãos, te fazendo massagem, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 com óleo nas mãos, te fazendo massagem, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle com óleo nas mãos, te fazendo massagem... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo com óleo nas mãos, te fazendo massagem. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei com óleo nas mãos, te fazendo massagem por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S42",
+   "titulo": "Varanda nas férias",
+   "origem": "Chatters manual S42 (adaptado)",
+   "perfil": "romantico",
+   "abertura": "Nada melhor que uma varanda nas férias, ficando um pouquinho safadinha... 🌅",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na varanda, de biquíni, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na varanda, de biquíni, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na varanda, de biquíni, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na varanda, de biquíni... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na varanda, de biquíni. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na varanda, de biquíni por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "S43",
+   "titulo": "Fantasia completa",
+   "origem": "Chatters manual S43 (adaptado)",
+   "perfil": "tesao",
+   "abertura": "Minha cabeça tá cheia de fantasias com você... deixa eu te contar EXATAMENTE o que eu quero 😈",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu na cama, sem pressa nenhuma, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar na cama, sem pressa nenhuma, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 na cama, sem pressa nenhuma, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle na cama, sem pressa nenhuma... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo na cama, sem pressa nenhuma. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei na cama, sem pressa nenhuma por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  },
+  {
+   "id": "K3",
+   "titulo": "Romântico (K3)",
+   "origem": "Chatters manual K3 (adaptado)",
+   "perfil": "romantico",
+   "abertura": "E aí, como foi teu dia? O que você andou fazendo? 🥰",
+   "degraus": [
+    {
+     "n": 1,
+     "rotulo": "Tirando a roupa",
+     "legenda": "Começa assim: eu juntinho de você, com carinho, tirando peça por peça bem devagar pra você 😏 me fala o que você faria agora.",
+     "esperar": true
+    },
+    {
+     "n": 2,
+     "rotulo": "Me tocando",
+     "legenda": "Não aguentei e comecei a me tocar juntinho de você, com carinho, pensando em você... me conta o que você tá sentindo.",
+     "esperar": true
+    },
+    {
+     "n": 3,
+     "rotulo": "Brinquedo",
+     "legenda": "Peguei meu brinquedo 😈 juntinho de você, com carinho, bem devagar, imaginando que é você. Quer ver até onde eu vou?",
+     "esperar": true
+    },
+    {
+     "n": 4,
+     "rotulo": "Brincando",
+     "legenda": "Tô perdendo o controle juntinho de você, com carinho... cada vez mais forte. Me acompanha, quero saber como você tá.",
+     "esperar": true
+    },
+    {
+     "n": 5,
+     "rotulo": "Quase lá",
+     "legenda": "Tô quase, {nome}... minhas pernas tremendo juntinho de você, com carinho. Não para agora, fica comigo.",
+     "esperar": true
+    },
+    {
+     "n": 6,
+     "rotulo": "Final",
+     "legenda": "Não deu pra segurar 🙈 olha como eu fiquei juntinho de você, com carinho por sua causa. Me conta: você chegou junto comigo?",
+     "esperar": true
+    }
+   ]
+  }
+ ]
+}

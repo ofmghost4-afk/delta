@@ -1,0 +1,380 @@
+DELTA (antigo Aura Coach) - versão 2.3.0 (Modo Palco: 1 modelo por vez na tela inteira)
+
+NOVO NA 2.3 (o que fazer: recarregar a extensão em chrome://extensions nos 3
+perfis, abrir o Delta de novo em cada janela e dar dois cliques em
+arrumar_cockpit.bat; NÃO precisa rodar SQL)
+- MODO PALCO: a Privacy fica à esquerda em largura de computador (1030 px
+  numa tela de 1440), mostrando a lista de conversas E a conversa aberta ao
+  mesmo tempo. O Delta inteiro ocupa a coluna da direita (410 px), sem cobrir
+  nada da Privacy. As 3 contas continuam abertas, uma atrás da outra, lendo
+  tudo e alimentando o radar.
+- TROCAR DE MODELO: no topo do Delta há 3 botões (Arruda / Luna / Louise).
+  O da modelo da tela fica aceso na cor dela ("ATIVA"); os outros dois mostram
+  ★ VIPs esperando · ⏱ maior espera · 💬 não lidas e piscam quando tem VIP
+  esperando, follow-up vencido ou espera acima de 3 min. Clique no nome (ou
+  Alt+1 / Alt+2 / Alt+3) e a Privacy + o Delta daquela modelo vêm para a frente.
+- QUEM FAZ A TROCA é a janela preta que fica aberta depois do
+  arrumar_cockpit.bat (pode minimizar; não feche). Ela só traz janelas para a
+  frente: não clica, não digita e não mexe na Privacy. Se ela estiver fechada,
+  o Delta avisa "Não trocou…".
+- 2.3.1: O DELTA ABRE SOZINHO quando a Privacy (chat) carrega numa janela e
+  ele está fechado naquele perfil. Uma vez por janela: se você fechar o
+  Delta, ele só volta pelo ícone. Para desligar: coach_regras.json >
+  palco > abrir_sozinho: false.
+- Quer o layout antigo de 3 colunas? powershell -File arrumar_cockpit.ps1 -Modo 3x2
+- Para ver sem mexer em nada: node teste/previa/servidor.mjs e abrir
+  http://127.0.0.1:4391/teste/previa/palco.html
+
+NOVO NA 2.2.1 (11/11/2026; o que fazer: recarregar a extensão em
+chrome://extensions nos 3 perfis e dar F5 na Privacy; NÃO precisa rodar SQL)
+- DADOS DO LEAD ACIMA DA SUGESTÃO, também na doca: quanto já gastou, quantas
+  compras, última compra, há quantos dias, e o que você sabe dele (profissão,
+  dia que recebe, time, tags, última nota).
+- PRÓXIMO DA FILA: o rodapé da doca diz qual conversa abrir em seguida
+  ("★ Próximo: nome · espera · msgs · já gastou"). Ordem: lembrete vencido,
+  fã que já gastou R$ 1.000+, quem escreveu hoje e está mais atrasado, e por
+  último mensagens de outro dia. Sem conversa aberta ele lista os 3 primeiros.
+  O Delta só indica: quem clica na conversa é você.
+- LEMBRETE ⏰ (ou tecla L): 1 clique = 10 min, 2 = 30 min, 3 = 1 h, 4 =
+  desliga. Quando vence, a borda pulsa em ouro, toca o bipe (se o som estiver
+  ligado) e o fã vira o 1º do "Próximo".
+- NOTA RÁPIDA ＋ (ou tecla N): escreva e aperte Enter. Vai para as notas da
+  ficha (as mesmas do Aura). Escrevendo "profissao: engenheiro" ou "recebe
+  dia 5" o dado já aparece no lead e preenche os roteiros.
+- ⚡ NA DOCA (ou tecla A): pede versões do roteiro adaptadas a este fã; elas
+  entram no lugar das 3 variantes. Clicar de novo volta ao roteiro normal.
+  Precisa da chave de IA configurada no Supabase.
+- AVISO DE LEITURA: se o Delta não conseguir ler as mensagens da conversa
+  aberta, aparece uma faixa vermelha mandando dar F5, em vez de sugerir no
+  escuro.
+- Corrigido: a lista "Abra na Privacy, nesta ordem" aparecia como texto
+  quebrado; a nota do roteiro de entrada citava um preço antigo.
+- O teste automático que abria janelas do Chrome foi REMOVIDO. Para ver o
+  painel sem mexer em nada: node teste/previa/servidor.mjs e abrir
+  http://127.0.0.1:4391/
+
+NOVO NA 2.2 (10/11/2026; o SQL desta versão JÁ FOI aplicado no Supabase)
+- Números calibrados pela sua base (tiers, metas do dia por conta, degraus
+  de preço, hora do 1º PPV).
+- Regras novas: freio de gasto (pagante que reclama de gastar), encontro
+  pedido por pagante/VIP, post fixado, fã que sumiu no meio, piso de mídia.
+- Barra das 3 contas no topo (quantos VIPs esperando e a maior espera em
+  cada uma), ritmo de chats por hora, "Você hoje" e "Fechar Turno".
+- Abas Delta / Ficha / Fila / Sumidos / Mais dentro do Delta.
+- A variante que mais converte vem primeiro; as já usadas com o fã somem.
+
+NOVO NA 2.1 (10/11/2026) - COCKPIT 3x2
+- A Privacy abre como 3 janelas de aplicativo no alto da tela e o Delta fica
+  encolhido numa DOCA embaixo de cada uma (480 x 195): conta, fã, relógio,
+  fase, preço, roteiro, ✓ Usei e Copiar, sem rolar.
+- abrir_3_perfis.bat abre as 3 janelas assim; arrumar_cockpit.bat arruma as
+  que já estão abertas (não abre, não fecha e não recarrega nada).
+- Copiar já marca como usado. Teclas com o Delta em foco: C ou Enter copia,
+  1/2/3 ou setas trocam a variante, M encolhe/abre.
+- Clicar num {campo} do roteiro abre uma caixinha para preencher; há chips
+  de 1 clique para os campos mais comuns.
+- "✓ Feito" fica guardado o dia todo, mesmo fechando a janelinha.
+- Cena fixada no topo, borda que pulsa (ouro = VIP esperando, vermelho =
+  passou do prazo) e botão de som.
+
+NOVO NA 2.0.2 (o que fazer: só recarregar a extensão em chrome://extensions;
+NÃO precisa rodar SQL de novo)
+- "✓ Usei": cada variante do roteiro grava uma vez só. Antes, se você marcava
+  a variante 1, depois a 2 e voltava para a 1, o botão voltava a "✓ Usei" e
+  um clique gravava a mesma jogada de novo. Agora a 1 continua "✓ Feito".
+- Janelinha nunca fica cortada para fora da tela: com a janela da Privacy
+  maximizada, ocupando a tela toda ou passando da borda direita (acontece no
+  3º terço quando a tela é pequena, porque o Chrome não deixa uma janela ter
+  menos de ~500 px), o Delta entra compacto (300 px) por DENTRO da borda
+  direita, abaixo da barra do Chrome, igual ao layout de terços. Vale para o
+  tamanho inteiro e para o mini (▴).
+- "✓ Usei" FIXO NO TOPO, ao lado do ▴: fica sempre à vista, sem rolar, e
+  também no mini. Vira "✓ Feito" (verde) ou "Não gravou" (vermelho; passe o
+  mouse para ver o motivo, clique para tentar de novo). O botão ao lado do
+  "Copiar" continua existindo. Motivo: no teste ao vivo, com a janelinha
+  estreita, o botão do roteiro ficava abaixo do placar e dos avisos e era
+  difícil de achar.
+- Janelinha estreita (300 px): a ordem passou a ser fã → fase/jogada/roteiro
+  → avisos → placar, para o roteiro aparecer assim que abre.
+- LAUNCHER PARA WINDOWS: dois cliques em abrir_3_perfis.bat abre os 3 perfis
+  do Chrome em privacy.com.br/chat, lado a lado. Os perfis ficam no topo do
+  abrir_3_perfis.ps1 (PERFIS = "Profile 20", "Profile 30", "Profile 31";
+  ordem = esquerda, meio, direita). Mesmas regras do launcher do Mac: sem
+  flags, sem trocar user-agent, so mexe nas janelas NOVAS que ele abriu.
+  Em tela de 1440 px as janelas ficam com 516 px (minimo do Chrome) e se
+  sobrepoem um pouco.
+- Teste das regras de passividade: node teste/estatico.mjs coach-ext
+  (o teste que abria um Chrome de verdade foi removido na 2.2.1).
+
+NOVO NA 2.0.1 (o que fazer: rodar o coach_sql.sql de novo UMA vez e recarregar
+a extensão em chrome://extensions)
+- "Usei" ao lado do "Copiar": o botão de registrar a jogada agora fica na
+  barra do próprio roteiro (‹ 1/3 › ... [✓ Usei] [Copiar]). Não precisa mais
+  rolar até o fim do painel. Depois de gravar ele vira "✓ Feito" (verde).
+- Botão ▴ (ao lado do selo da conta): MINIMIZA o Delta para ~180 px, só com
+  conta, nome do fã, relógio, fase e próxima jogada. ▾ volta ao painel
+  inteiro. Bom para 3 janelas lado a lado em tela pequena: o Delta deixa de
+  cobrir o chat. Ele lembra a escolha. Faixa vermelha ("NÃO ENVIE assim" e
+  "PARE DE VENDER") continua aparecendo no mini.
+- Relógio mostra a meta do modo ligado: "meta 60 s" no Modo Dominante e
+  "meta 90 s" no normal (assinante novo: limite 3 min / 5 min). O número vem
+  de coach_regras.json (resposta_meta_s); mudou lá, muda na tela.
+- Compacto (janela de 300 px): a "Meta dos 7 primeiros dias" saiu do cartão
+  de Preço (estava repetida) e fica só na linha de cima ("Dia X de 7 ..."),
+  agora com a barrinha de progresso.
+- "Copiar" mostra "Copiado" por 2,5 s e o clique não se perde mais quando o
+  painel atualiza o relógio.
+- Roteiros da semana (conversão): cada compra conta UMA vez. Se você marcou
+  2 jogadas na mesma conversa antes de uma compra, a venda vai só para a
+  mais recente. Antes a mesma compra somava nos dois roteiros.
+- Cenas: tirei texto repetido das legendas (S1 degraus 2 e 6, S17, S22, S24,
+  S32, S37).
+- Arrumação: coach_regras.json, coach_roteiros.json e coach_cenas.json agora
+  existem SÓ em coach-ext/data/ (as cópias soltas na pasta de fora saíram).
+  É ali que se edita.
+
+NOME NOVO: a extensão agora aparece como "Delta" no Chrome (ícone, título e
+janelinha). Só o nome visível mudou: pasta coach-ext, arquivo coach_sql.sql,
+tabelas e funções do banco continuam com os mesmos nomes. Não confundir com
+o LEITOR Delta que já existe (aba "seed", chave própria): ele não muda e esta
+extensão nunca mexe nele. Quem já tinha a 1.0 instalada: recarregue a
+extensão em chrome://extensions; ela continua logada e com as mesmas
+configurações.
+
+O QUE FAZ
+Uma janelinha ao lado do chat da Privacy que diz, para a conversa aberta:
+a fase (abertura, qualificação, rapport, hora de vender, objeção, pós-compra,
+reengajamento, vulnerável), a próxima jogada, um roteiro pronto (3 variantes),
+a faixa de preço para aquele fã, o recurso da Privacy que cabe agora, o
+relógio de resposta e alertas sobre o que você está digitando.
+
+O Delta SÓ SUGERE. Você envia.
+Ele não clica, não digita, não envia, não rola a lista, não muda nada na
+Privacy e não faz nenhum pedido à Privacy. Só lê o que já está na sua tela,
+igual ao Aura. O botão "Copiar" põe o texto na sua área de transferência;
+quem cola e envia é você.
+
+PRECISA DO AURA?
+Não para abrir, mas usa o mesmo banco e o mesmo login do Aura. Os dois podem
+ficar ligados juntos: o Aura continua no painel lateral e o Delta abre numa
+janelinha separada.
+
+1) RODAR O SQL (uma vez só)
+- Abra o Supabase, projeto "Central de Chat".
+- Menu da esquerda: SQL Editor > New query.
+- Abra o arquivo coach_sql.sql (bloco de notas), copie TUDO, cole e clique Run.
+- Pode rodar de novo sem medo. Ele não mexe em nada do Aura. Só cria:
+    central.emp_jogadas (as jogadas que você marcar "Usei esta jogada"),
+    coach_registrar_jogada, coach_ppvs e central.coach_pode.
+- VERSÃO 2: rode o coach_sql.sql de novo (uma vez). Ele acrescenta a coluna
+  "modo" em emp_jogadas e cria coach_placar (placar do dia), coach_historico
+  (aviso de roteiro repetido) e coach_conversao_semana (conversão por roteiro).
+  Sem rodar, o Delta funciona, mas o placar usa só as vendas vistas na tela.
+- Antes, se quiser conferir: a primeira consulta comentada no arquivo mostra
+  as colunas da tabela emp_usuarios. O Delta libera quem está nessa tabela
+  procurando uma coluna user_id / usuario_id / auth_id / id (uuid) ou email.
+  Se a sua tabela usa outro nome de coluna, me avise antes de rodar.
+- Sem esse passo o Delta funciona igual, só não grava jogadas e mostra
+  "estado do PPV indisponível".
+
+2) INSTALAR NO CHROME (uma vez só)
+- Descompacte delta.zip numa pasta que você não vá apagar.
+- No Chrome, abra o endereço: chrome://extensions
+- Ligue a chave "Modo do desenvolvedor" (canto de cima, à direita).
+- Clique em "Carregar sem compactação" e escolha a pasta coach-ext.
+- Clique no ícone de quebra-cabeça do Chrome e fixe "Delta".
+
+3) USAR
+- Abra privacy.com.br/chat (se a aba já estava aberta, atualize com F5).
+- Clique no ícone do Delta (fundo rosa). Abre uma janelinha estreita
+  ao lado do Chrome. Arraste para onde quiser: ele lembra a posição.
+- Entre com o MESMO e-mail e senha do Aura.
+- Clique numa conversa na Privacy. O Delta acompanha a aba ativa da janela
+  do Chrome: trocou de conversa ou de aba, ele troca junto. Fora da Privacy
+  ele mostra "fora da Privacy".
+- Clicar no ícone de novo só traz a janelinha para frente.
+
+POR QUE UMA JANELINHA E NÃO O PAINEL LATERAL
+O Chrome mostra só um painel lateral por vez, e o lateral já é do Aura.
+Com a janelinha (popup), você vê Aura e Delta ao mesmo tempo.
+
+A FICHA
+O Delta chama a mesma função que o Aura chama ao abrir uma conversa
+(painel_abrir). Por isso ele mostra o mesmo fã e a mesma ficha. Ela pode
+cadastrar um fã novo, exatamente como o Aura já faz. Contas aceitas:
+arrudafree, xlunavitaligratis (Luna) e louisefree. Em outra conta ele
+avisa "conta fora" e não lê nem grava nada.
+
+LIGAR RECURSOS POR CONTA
+Em coach-ext/data/coach_regras.json, bloco "config_por_conta", cada conta
+tem chaves como oferece_chamada, vitrine_ativa, desafio_ativo,
+plano_trimestral_ativo e aceita_custom (true/false). O Delta só sugere
+chamada de vídeo, vitrine, desafio, plano ou custom onde estiver true.
+Depois de editar, vá em chrome://extensions e clique no botão de recarregar
+do Delta.
+
+4) O QUE TESTAR AO VIVO (primeira semana)
+Faça print de cada item que não bater e me mande.
+[ ] Nome do fã, conta e "gastou R$" batem com a Privacy e com o Aura.
+[ ] Trocar de conversa: o Delta troca em até 2 segundos.
+[ ] Trocar de aba / sair da Privacy: aparece "fora da Privacy".
+[ ] Relógio: conta o tempo desde a última mensagem dele. Modo normal: verde
+    até 1:30, amarelo até 4 min (5 min para quem nunca falou com a conta) e
+    vermelho depois. Modo Dominante: verde até 1:00, amarelo até 3 min. O
+    rótulo ao lado diz a meta do modo ("meta 60 s" / "meta 90 s").
+[ ] ALERTAS DO CAMPO DE MENSAGEM: digite (sem enviar!) "me chama no zap"
+    e veja a faixa vermelha. Apague. Se nada aparecer, o campo de texto da
+    Privacy tem outro nome: me mande um print com o F12 aberto no campo.
+[ ] PPV: depois de mandar um PPV, ver se o Delta diz "Usando o PPV visto na
+    tela". Se disser "Nenhum PPV visto na tela", a marcação de PPV da
+    Privacy é diferente: me mande print do F12 em cima do PPV.
+[ ] Fila: abre "Fila" e confere quem tem mensagem não lida.
+[ ] "✓ Usei" (ao lado do Copiar, no roteiro): vira "✓ Feito" e aparece
+    "Jogada registrada." (precisa do passo 1).
+[ ] Testar nas 3 contas.
+
+PARTES QUE AINDA SÃO PALPITE (confirmar ao vivo)
+- Campo de texto: procurado como textarea#roomTextarea, ou textarea dentro
+  de .vac-box-footer / .vac-room-footer / footer, ou o primeiro textarea.
+- Mensagem PPV: mensagem da conta com imagem/vídeo/arquivo E preço "R$" ou
+  um elemento com price/paid/lock/ppv no nome da classe. Pelo que aparece
+  na tela o Delta não sabe se o fã comprou; isso só vem do banco
+  (emp_ppvs, Aura 1.3) pelo coach_ppvs.
+- Colunas da tabela emp_usuarios (ver passo 1) e da emp_ppvs (msg_id,
+  sala, conta, preco, enviado_em, comprado, comprado_em).
+- Entrada (quem nunca pagou) agora vem da base: arrudafree R$29,90–49,90;
+  Luna e louisefree R$39,90–59,90 (substitui R$54,90–82,90). Vários limites
+  continuam marcados como "calibrar" em coach_regras.json.
+
+==========================================================================
+NOVO NA 2.0 - MODO DOMINANTE (vem LIGADO)
+==========================================================================
+- Botão no topo: "MODO DOMINANTE" / "Modo normal". Clique para trocar; ele
+  lembra a escolha. No normal tudo volta a ser como na 1.0.
+- O que muda no Dominante:
+  * Roteiros mais diretos e confiantes (3 variantes cada) e 30 roteiros novos.
+  * Preço NUNCA cai depois de uma compra: degrau de +50% a +70% (VIP +100%),
+    teto de 2x a última compra e de R$2.000 no chat. Digitar um valor menor
+    que a última compra dele dá faixa vermelha.
+  * Tiers: BALEIA (R$2.500+ no total, palpite), VIP (R$500+ nos 7 primeiros
+    dias ou R$1.000+), Potencial (R$200+ em 7 dias ou compra em 2+ contas).
+  * Meta R$500 nos 7 primeiros dias de cada fã: "Dia X de 7 · R$ gasto · faltam".
+  * Ritmo mais rápido: aquecimento 4–7 msgs, 1º PPV mais cedo, follow-ups em
+    5, 12, 40 min, 3 h e 24 h (máx. 5), reforço de 30 s depois do PPV,
+    "PPV abandonado" quando ele volta sem comprar.
+  * PLACAR DO DIA por conta: meta (R$500/dia, editável em meta_dia_brl),
+    ticket médio, conversão e ranking 🥇🥈🥉 entre as 3 contas.
+  * Alertas de tempo: VIP esperando, follow-up vencido, pico das 23h.
+
+AS 15 MELHORIAS (GAPS.md, aprovadas)
+ 1  Revisor antes de enviar: avisa (sem bloquear) abertura fraca, sem
+    pergunta no fim, pergunta sim/não, "vai abrir?" seco, legenda de PPV
+    fraca, texto igual ao roteiro copiado sem personalizar.
+ 2  Mimo ativo HONESTO: depois de uma sessão completa (3+ compras), UMA vez,
+    como agradecimento, sem culpa nem emergência. Liga/desliga por conta em
+    config_por_conta > mimo_ativo (vem true nas 3).
+ 3  Videochamada ligada para a arrudafree (oferece_chamada: true). Luna e
+    louisefree continuam false.
+ 4  Sinais sutis de compra ("cheguei em casa", "tô sozinho", 3 msgs em 1 min)
+    viram "hora de vender"; sinais ruins (respostas de 1–2 palavras e lentas)
+    seguram a venda e sugerem reconectar.
+ 5  Fila com PRAZO por tipo de conversa: ativa 2 min, transição 3, novo 4,
+    não-pagante 15, pós-venda 10, ocasional 25. Estourou = vermelho e sobe.
+ 6  Calendário de pagamento BR: 5º dia útil (CLT), dia que ele contou
+    ("recebo dia 15") e 13º (1ª parcela até 30/11, 2ª até 20/12).
+ 7  Entrada por conta pela base (ver acima).
+ 8  MODO SEQUÊNCIA: 32 cenas dos roteiros dos Chatters em PT-BR, 6 degraus
+    cada (tirar roupa → final) com "ESPERE ele responder" entre degraus e Pix
+    a partir do 4º. Ficaram FORA: K1, K2, K4, S9, S25, S30, tarefas de
+    "escravo", avaliação de pau, DNP automático e as cenas pesadas/bondage
+    (S3, S7, S11, S15, S18, S19, S23, S38, S41) até revisão caso a caso.
+ 9  Espelho (como ele escreve: tamanho, emoji, ritmo) e termômetro 1–10
+    (entre um nível acima dele).
+10  Contador "dia X de 7 + quanto gastou".
+11  Aviso de roteiro repetido: "Já usou VD_SUBIR com ele em 08/11".
+12  Perfil do fã (casado, carente, tímido, tesão, ego, romântico, conduzir):
+    automático pelas palavras dele, pela nota do Aura ("perfil: casado") ou
+    escolhido por você na caixinha "Perfil". Muda o roteiro de rapport.
+13  Conversão por roteiro na semana: "manter" / "cortar" / "pouco dado".
+14  Depois de sessão de 3+ compras: aftercare 1 → ESPERE → aftercare 2 →
+    brinde grátis (só R$500+ e se brinde_pos_sessao: true; vem false) →
+    mimo (se ligado) → DESCANSO de 10 h só conversando. Se ELE pedir
+    conteúdo no descanso, pode vender.
+15  Proteção da modelo: em config_por_conta > protecao_termos coloque termos
+    que NÃO podem sair no chat (bairro, academia, nome real...). Vem vazio
+    nas 3 contas. Se digitar um deles: faixa vermelha. Quando ele pergunta
+    a cidade, o Delta lembra: não diga a sua.
+
+==========================================================================
+3 CONTAS AO MESMO TEMPO (3 janelas lado a lado no Mac)
+==========================================================================
+A ideia: 1 perfil do Chrome = 1 conta da Privacy = 1 Aura + 1 Delta.
+O Delta de cada perfil mostra em destaque o NOME e a COR da conta
+(Arruda / Luna / Louise) e gruda na janela daquele perfil.
+
+A) CRIAR 3 PERFIS (uma vez)
+   - No Chrome, clique na sua foto (canto de cima, à direita) > "Adicionar"
+     > "Continuar sem uma conta". Dê o nome "Arruda". Repita: "Luna", "Louise".
+   - Em cada perfil, abra chrome://version e anote o fim do "Caminho do
+     perfil" (ex.: Profile 1, Profile 2, Profile 3).
+
+B) INSTALAR AURA E COACH EM CADA PERFIL
+   - Em CADA um dos 3 perfis: chrome://extensions > Modo do desenvolvedor >
+     Carregar sem compactação > pasta do Aura; repita com a pasta coach-ext.
+     (Pode ser a mesma pasta para os 3 perfis.)
+   - Fixe os dois ícones e faça login no Aura/Delta em cada perfil.
+
+C) LOGAR UMA CONTA POR PERFIL
+   - Perfil Arruda: entre na Privacy só com a arrudafree. Perfil Luna: só a
+     xlunavitaligratis. Perfil Louise: só a louisefree. Login normal, sem
+     truque nenhum.
+   - UM LEITOR POR CONTA: nunca abra a mesma conta em dois perfis (ou em
+     outro computador com o Aura ligado). Se abrir a conta errada num perfil,
+     o Delta avisa "Conta diferente neste perfil do Chrome".
+
+D) USAR O LAUNCHER (todo dia)
+   - Abra abrir_3_perfis.command num editor de texto e confira no topo:
+     PERFIS=("Profile 1" "Profile 2" "Profile 3") com os nomes do passo A
+     e CONTAS (só para você se achar).
+   - Na 1ª vez, no Terminal: chmod +x abrir_3_perfis.command (já vem
+     executável no zip, mas o Mac às vezes tira). Depois, dois cliques.
+     Se o Mac bloquear: botão direito > Abrir. Ele pode pedir permissão de
+     Automação/Acessibilidade para o Terminal controlar o Chrome: aceite.
+   - Ele abre os 3 perfis em privacy.com.br/chat e põe cada janela num terço
+     da tela principal. Só mexe nas janelas NOVAS que ele abriu: qualquer
+     janela ou aba que já estava aberta fica como estava (inclusive a aba
+     "seed" do LEITOR Delta que já existe, que ninguém deve tocar, recarregar
+     ou navegar).
+   - Não usa nenhum truque de navegador: sem trocar user-agent, sem flags.
+   - Em cada janela, clique no ícone do Delta. Janela estreita (1/3) =>
+     Delta compacto (300 px) por dentro da borda direita da própria janela,
+     sem cobrir a janela do lado. Janela larga => Delta do lado direito.
+     Mexeu a janela, ele acompanha. Botão "📌 acoplado" no rodapé solta o
+     Delta para você arrastar onde quiser (ele lembra).
+   - abrir_3_perfis.sh é o mesmo script (para rodar pelo Terminal: bash
+     abrir_3_perfis.sh).
+
+CHECKLIST AO VIVO DA 2.0
+[ ] Topo mostra MODO DOMINANTE e o selo colorido da conta certa em cada perfil.
+[ ] Placar do dia aparece (depois de rodar o SQL v2) e bate com as vendas.
+[ ] Digitar (sem enviar) "faço por R$ 10" depois de uma compra maior => vermelho.
+[ ] Sessão de 3 compras => aftercare 1, espera, aftercare 2, descanso.
+[ ] Cena: escolha uma, veja o degrau subir a cada compra e o "ESPERE".
+[ ] Launcher: 3 janelas em terços, cada uma na sua conta, nada mais mexido.
+[ ] Botão ▴: a janelinha encolhe para ~180 px e continua grudada no alto da
+    janela da Privacy; ▾ volta ao tamanho inteiro.
+
+CUIDADOS
+- Os dados dos fãs ficam só no seu banco. Não compartilhe a pasta nem a
+  senha.
+- As regras da Privacy sobre extensões não foram conferidas. O risco para
+  as contas é seu. O Delta foi feito para não tocar em nada da Privacy.
+- Se aparecer "PARE DE VENDER": é sinal de vulnerabilidade ou de menor de
+  idade. Pare a venda e avise o gestor. Vale nos dois modos.
+- Continua tudo manual: o Delta nunca envia nada. "Copiar" só põe na área de
+  transferência.
+- Nos dois modos seguem as regras da Privacy: nada de pagamento ou contato
+  fora da plataforma, nada de prometer encontro, nada de menor ou ilegal,
+  nada de se passar por outra pessoa real, nada de "só pra você" falso,
+  urgência só se for verdade, nunca ofender o fã.
+- LGPD: o placar mostra só números por conta, nenhum dado de fã.

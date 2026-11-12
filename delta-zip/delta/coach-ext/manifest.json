@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Delta",
+  "version": "2.3.6",
+  "description": "Treinador ao lado do chat da Privacy (Modo Dominante): fase, jogada, roteiro, cena, preço, placar e alertas. Só lê. Nunca envia nada.",
+  "permissions": [
+    "storage",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://ndtnwukltujxzkfvqxtk.supabase.co/*"
+  ],
+  "action": {
+    "default_title": "Abrir o Delta",
+    "default_icon": {
+      "16": "icone16.png",
+      "32": "icone32.png",
+      "48": "icone48.png"
+    }
+  },
+  "background": {
+    "service_worker": "fundo.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://privacy.com.br/chat*"
+      ],
+      "js": [
+        "leitor.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icone16.png",
+    "32": "icone32.png",
+    "48": "icone48.png",
+    "128": "icone128.png"
+  },
+  "short_name": "Delta"
+}

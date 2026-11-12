@@ -1,0 +1,1740 @@
+{
+ "versao": "coach-regras-1.3+dominante-2.2-base-momoi",
+ "moeda": "BRL",
+ "origens": {
+  "OF": "medido no OnlyFans (SaintHaus), valores em US$, não medido no BR",
+  "BASE": "medido na base própria de compradores (extrato Privacy das contas atendidas)",
+  "PRIVACY": "fonte oficial Privacy (termos, central de ajuda ou blog)",
+  "LEI": "lei brasileira",
+  "CONSENSO": "consenso de mercado / curso, sem número",
+  "HIPOTESE": "proposta sem dado medido: calibrar com o extrato"
+ },
+ "chips_placeholders": {
+  "_doc": "Chips de 1 clique do painel para preencher os {placeholders} mais comuns dos roteiros. Só sugestões: troque pelo que a conta realmente tem. {qtd_conteudo} tem de ser verdadeiro.",
+  "qtd_conteudo": [
+   "1 vídeo de 3 min + 4 fotos",
+   "1 vídeo de 5 min",
+   "pack com 3 vídeos",
+   "4 fotos + 1 vídeo curto"
+  ],
+  "quando": [
+   "hoje à tarde",
+   "ontem à noite",
+   "agora há pouco"
+  ],
+  "lugar": [
+   "na cama",
+   "no banho",
+   "no meu quarto",
+   "no espelho"
+  ],
+  "roupa": [
+   "só de calcinha",
+   "de lingerie nova",
+   "só de toalha",
+   "sem nada"
+  ]
+ },
+ "contas_atendidas": [
+  "arrudafree",
+  "xlunavitaligratis",
+  "louisefree"
+ ],
+ "config_por_conta": {
+  "_doc": "Henrique preenche o que cada modelo aprovou. Coach só sugere recursos marcados true. meta_dia_brl = meta de receita do dia no placar (HIPOTESE: ajuste para a sua realidade). cor/rotulo = selo da conta no Coach. mimo_ativo = Coach pode sugerir o pedido HONESTO de mimo como agradecimento depois de uma sessão boa (aprovado pelo Henrique; troca a regra antiga 'nunca pedir'). entrada_brl = faixa do 1º PPV de quem nunca pagou, calibrada pela base (troca o R$54,90–82,90 convertido de US$). protecao_termos = cidade, bairro, academia, faculdade, rotina REAL da modelo: se aparecer no texto, faixa vermelha. Preencha à mão; fica só no seu computador. brinde_pos_sessao = a modelo aprovou mandar um brinde grátis depois de sessão de R$500+ (true/false). arrudafree.oferece_chamada=true: ela fez 46 das 52 chamadas da base (ticket médio R$242); só ela atende. v2.2: meta_dia_brl = 3º quartil da receita diária real dos últimos 60 dias (BASE, 10/11/2026). piso_midia_brl = preço mínimo por mídia nesta conta (BASE: 10º percentil das vendas de 90 dias): nenhuma sugestão sai abaixo e digitar menos dá faixa vermelha. palavra_fixado = palavras-chave ativas no post fixado da conta (ex.: [\"quero\", \"vip\"]); vazio = desligado. Preencha à mão.",
+  "arrudafree": {
+   "oferece_chamada": true,
+   "chamada_preco_min": null,
+   "aceita_custom": false,
+   "desafio_ativo": false,
+   "plano_trimestral_ativo": false,
+   "vitrine_ativa": false,
+   "meta_dia_brl": 530,
+   "cor": "#d3456f",
+   "rotulo": "Arruda",
+   "mimo_ativo": true,
+   "entrada_brl": [
+    29.9,
+    49.9
+   ],
+   "protecao_termos": [],
+   "brinde_pos_sessao": false,
+   "piso_midia_brl": 15,
+   "palavra_fixado": []
+  },
+  "xlunavitaligratis": {
+   "oferece_chamada": false,
+   "chamada_preco_min": null,
+   "aceita_custom": false,
+   "desafio_ativo": false,
+   "plano_trimestral_ativo": false,
+   "vitrine_ativa": false,
+   "meta_dia_brl": 490,
+   "cor": "#6b4bd6",
+   "rotulo": "Luna",
+   "mimo_ativo": true,
+   "entrada_brl": [
+    39.9,
+    59.9
+   ],
+   "protecao_termos": [],
+   "brinde_pos_sessao": false,
+   "piso_midia_brl": 15,
+   "palavra_fixado": []
+  },
+  "louisefree": {
+   "oferece_chamada": false,
+   "chamada_preco_min": null,
+   "aceita_custom": false,
+   "desafio_ativo": false,
+   "plano_trimestral_ativo": false,
+   "vitrine_ativa": false,
+   "meta_dia_brl": 230,
+   "cor": "#1f8a70",
+   "rotulo": "Louise",
+   "mimo_ativo": true,
+   "entrada_brl": [
+    39.9,
+    59.9
+   ],
+   "protecao_termos": [],
+   "brinde_pos_sessao": false,
+   "piso_midia_brl": 14.9,
+   "palavra_fixado": []
+  }
+ },
+ "limiares": {
+  "resposta_meta_s": {
+   "v": 80,
+   "origem": "BASE",
+   "doc": "mediana real de resposta da conta: 79 s (conta momoi, medido em 10/11/2026; as 3 contas atendidas ainda não têm mensagens guardadas)"
+  },
+  "resposta_limite_s": {
+   "v": 300,
+   "origem": "BASE",
+   "doc": "3º quartil real de resposta da conta: 305 s (momoi, medido em 10/11/2026)"
+  },
+  "novo_assinante_limite_s": {
+   "v": 300,
+   "origem": "OF"
+  },
+  "aquecimento_min_msgs_fa": {
+   "v": 6,
+   "origem": "OF",
+   "doc": "msgs do fã desde o último PPV antes de ofertar; 1º quartil real dos PPVs vendidos = 5 (momoi, medido em 10/11/2026)"
+  },
+  "aquecimento_max_msgs_fa": {
+   "v": 11,
+   "origem": "BASE",
+   "doc": "mediana real dos PPVs vendidos: 11 mensagens do fã desde o PPV anterior (momoi, medido em 10/11/2026); antes 10 (OF)"
+  },
+  "qualificacao_ate_msgs_fa": {
+   "v": 5,
+   "origem": "CONSENSO"
+  },
+  "abertura_ate_msgs_fa": {
+   "v": 2,
+   "origem": "CONSENSO"
+  },
+  "fa_ativo_s": {
+   "v": 120,
+   "origem": "BASE",
+   "doc": "o fã responde com mediana de 59 s; 64,6% das respostas dele chegam em até 2 min (momoi, medido em 10/11/2026) · 53,6% dos PPVs vendidos saíram em até 2 min da última mensagem dele (mediana 106 s) e 92,1% em até 10 min"
+  },
+  "esfriou_s": {
+   "v": 900,
+   "origem": "OF",
+   "doc": "15 min sem msg do fã: não mandar PPV frio, reabrir"
+  },
+  "pos_compra_janela_min": {
+   "v": 60,
+   "origem": "BASE",
+   "doc": "55,4% das recompras saem em até 60 min (20,1% em 10 min); dentro de 6 h a mediana é 15 min e o 3º quartil 32 min (medido em 10/11/2026)"
+  },
+  "followup_1_min": {
+   "v": 5,
+   "origem": "OF"
+  },
+  "followup_max": {
+   "v": 5,
+   "origem": "OF"
+  },
+  "followup_intervalos_min": {
+   "v": [
+    5,
+    15,
+    60,
+    1440,
+    4320
+   ],
+   "origem": "HIPOTESE",
+   "doc": "1º = 5 min, BASE: 70,6% respondem ao PPV em até 5 min (momoi, medido em 10/11/2026); os demais são configuráveis"
+  },
+  "nunca_pagou_recusas_parar": {
+   "v": 2,
+   "origem": "OF"
+  },
+  "quieto_dias": {
+   "v": 7,
+   "origem": "CONSENSO",
+   "doc": "assinante sem responder há 7+ dias"
+  },
+  "whale_sumido_observar_h": {
+   "v": 72,
+   "origem": "CONSENSO"
+  },
+  "whale_sumido_max_tentativas": {
+   "v": 3,
+   "origem": "CONSENSO"
+  },
+  "vip_7d_brl": {
+   "v": 500,
+   "origem": "BASE",
+   "doc": "R$500+ nos 7 primeiros dias -> 53,8% chegam a R$1.000 (medido em 10/11/2026; antes 59,4%)"
+  },
+  "potencial_7d_brl": {
+   "v": 300,
+   "origem": "BASE",
+   "doc": "R$300+ nos 7 primeiros dias -> 31,1% chegam a R$1.000; de R$200 a R$499 só 7,1% (medido em 10/11/2026; antes R$200)"
+  },
+  "multi_conta_mediana_brl": {
+   "v": 229,
+   "origem": "BASE",
+   "doc": "compradores em 2+ contas: mediana R$229 x R$50 de quem compra em 1"
+  },
+  "pix_acima_brl": {
+   "v": 200,
+   "origem": "BASE",
+   "doc": "67% das vendas >R$200 são Pix; cartão teria teto de R$200 (Privacy, fonte única)"
+  },
+  "horario_nobre": {
+   "inicio": "20:00",
+   "fim": "03:00",
+   "pico": "23:00",
+   "origem": "BASE",
+   "doc": "43,4% da receita das 3 contas atendidas (medido em 10/11/2026; antes 41,3%); 22h–23h = 14,9%; pico de almoço NÃO confirmado na base"
+  },
+  "taxa_privacy": {
+   "v": 0.2,
+   "origem": "PRIVACY"
+  },
+  "sumiu_meio_s": {
+   "v": 300,
+   "origem": "BASE",
+   "doc": "sessão de compras ativa (ou cena fixada), última mensagem é da conta e ele não responde há 5 min: 78,1% das respostas do fã chegam antes disso (momoi, medido em 10/11/2026). Dispara SS_SUMIU_MEIO."
+  },
+  "sumiu_meio_max_s": {
+   "v": 3600,
+   "origem": "HIPOTESE",
+   "doc": "depois de 1 h já não é 'sumiu no meio': volta para as regras normais de reengajamento"
+  },
+  "primeiro_ppv_min_msgs_fa": {
+   "v": 11,
+   "origem": "BASE",
+   "doc": "1º PPV da conversa com quem nunca comprou: 75% dos primeiros PPVs vendidos saíram depois de 11+ mensagens do fã; mediana 23,5 (momoi, medido em 10/11/2026). Se ele PEDIR, vende na hora, sem esperar."
+  },
+  "primeiro_ppv_max_msgs_fa": {
+   "v": 24,
+   "origem": "BASE",
+   "doc": "mediana real: o 1º PPV vendido sai com 23,5 mensagens do fã (momoi, medido em 10/11/2026). Acima disso, ofertar."
+  }
+ },
+ "fases": [
+  {
+   "id": "vulneravel",
+   "prioridade": 1,
+   "doc": "trava tudo: parar de vender, chamar Henrique/gestor",
+   "quando": "keyword em sinais.vulnerabilidade ou sinais.menor nas últimas 10 msgs do fã"
+  },
+  {
+   "id": "objecao",
+   "prioridade": 2,
+   "quando": "última msg do fã (ou uma das 2 últimas) bate em algum objecoes.*; tipo = primeiro conjunto que casar na ordem de objecoes_ordem",
+   "tipos": [
+    "encontro",
+    "contato_externo",
+    "autenticidade",
+    "sem_dinheiro",
+    "caro",
+    "previa",
+    "depois"
+   ]
+  },
+  {
+   "id": "pos_compra",
+   "prioridade": 3,
+   "quando": "compra (emp_compras ou emp_ppvs.comprado) há <= pos_compra_janela_min e nenhuma oferta nova paga depois"
+  },
+  {
+   "id": "hora_de_vender",
+   "prioridade": 4,
+   "quando": "(msgs_fa_desde_ultimo_ppv >= aquecimento_min_msgs_fa E fa ativo (ultima msg fã < fa_ativo_s)) OU keyword em sinais.compra na última msg do fã OU msgs_fa_desde_ultimo_ppv > aquecimento_max_msgs_fa"
+  },
+  {
+   "id": "reengajamento",
+   "prioridade": 5,
+   "quando": "última msg do fã há >= quieto_dias OU (fã VIP sem compra há >= whale_sumido_observar_h e sem resposta) OU assinatura expirada (se lido)"
+  },
+  {
+   "id": "abertura",
+   "prioridade": 6,
+   "quando": "msgs_fa_total_na_sala <= abertura_ate_msgs_fa E sem compras"
+  },
+  {
+   "id": "qualificacao",
+   "prioridade": 7,
+   "quando": "msgs_fa_desde_ultimo_ppv <= qualificacao_ate_msgs_fa E notas sem trabalho/rotina/gosto (ou sem notas)"
+  },
+  {
+   "id": "rapport",
+   "prioridade": 8,
+   "quando": "demais casos (aquecendo: 3 a 5 msgs desde último PPV com notas básicas)"
+  }
+ ],
+ "modificadores": {
+  "esfriou": "ultima msg do fã > esfriou_s e PPV não enviado: jogada vira 'reabrir' (nunca PPV frio)",
+  "ppv_pendente": "último PPV não comprado: mostrar relógio de follow-up",
+  "vip": "total 7d >= vip_7d_brl ou total geral no top 10% da conta: selo VIP, prioridade, sequência inteira",
+  "potencial": "total 7d >= potencial_7d_brl",
+  "multi_conta": "ficha mostra gasto em 2+ contas: selo 'compra em outras contas' (alta propensão, BASE)",
+  "nunca_pagou_2_recusas": "sem compras e 2 PPVs ignorados/recusados: só conversa (OF)"
+ },
+ "objecoes_ordem": [
+  "encontro",
+  "contato_externo",
+  "autenticidade",
+  "sem_dinheiro",
+  "caro",
+  "previa",
+  "depois"
+ ],
+ "palavras": {
+  "_doc": "comparar em minúsculas, sem acento (normalizar NFD), por palavra inteira ou expressão; regex marcadas com re:",
+  "sinais": {
+   "compra": [
+    "quanto custa",
+    "quanto e",
+    "qual o valor",
+    "qual valor",
+    "preco",
+    "quanto ta",
+    "manda",
+    "me manda",
+    "quero ver",
+    "deixa eu ver",
+    "mostra",
+    "tem video",
+    "tem mais",
+    "tem foto",
+    "libera",
+    "desbloquear",
+    "quero comprar",
+    "vou comprar",
+    "pack",
+    "pacote",
+    "o que voce tem",
+    "conteudo"
+   ],
+   "pos_compra_positivo": [
+    "amei",
+    "adorei",
+    "gostei",
+    "perfeita",
+    "que delicia",
+    "maravilhosa",
+    "quero mais",
+    "manda mais",
+    "incrivel",
+    "nossa"
+   ],
+   "interesse_chamada": [
+    "chamada",
+    "videochamada",
+    "chamada de video",
+    "ao vivo",
+    "te ver ao vivo",
+    "call",
+    "live"
+   ],
+   "interesse_mimo": [
+    "presente",
+    "mimo",
+    "te dar um presente",
+    "gorjeta",
+    "te agradecer",
+    "quero te ajudar",
+    "te mimar"
+   ],
+   "assinatura": [
+    "cancelar",
+    "renovar",
+    "renovacao",
+    "mensalidade",
+    "assinatura",
+    "vou sair",
+    "nao vou renovar",
+    "expirou",
+    "vence"
+   ],
+   "vulnerabilidade": [
+    "divida",
+    "desempregado",
+    "emprestimo",
+    "nao tenho pra comer",
+    "aluguel atrasado",
+    "to devendo",
+    "nome sujo",
+    "agiota",
+    "perdi o emprego",
+    "to mal",
+    "depressao",
+    "vou me matar",
+    "me matar",
+    "suicidio",
+    "quero morrer",
+    "nao aguento mais viver"
+   ],
+   "menor": [
+    "tenho 17",
+    "tenho 16",
+    "tenho 15",
+    "17 anos",
+    "16 anos",
+    "15 anos",
+    "sou menor",
+    "de menor",
+    "ensino medio",
+    "minha mae nao deixa",
+    "escola amanha"
+   ],
+   "compra_sutil": [
+    "o que voce ta fazendo agora",
+    "o que ce ta fazendo",
+    "o que vc ta fazendo",
+    "acabei de chegar em casa",
+    "cheguei em casa",
+    "to relaxando",
+    "relaxando",
+    "deitado",
+    "na cama",
+    "sozinho em casa",
+    "to sozinho",
+    "por favor",
+    "pfv",
+    "pfvr",
+    "to com vontade",
+    "to entediado",
+    "sem sono"
+   ],
+   "freio_gasto": [
+    "vai me deixar pobre",
+    "vou ficar pobre",
+    "me deixar pobre",
+    "ja gastei demais",
+    "gastei demais hoje",
+    "gastei muito hoje",
+    "vou falir",
+    "falir com voce",
+    "ta me levando tudo",
+    "me levando tudo",
+    "me quebrar",
+    "vai me quebrar",
+    "acabou meu dinheiro",
+    "estourei o cartao",
+    "meu cartao nao aguenta",
+    "chega por hoje"
+   ]
+  },
+  "objecoes": {
+   "caro": [
+    "caro",
+    "muito caro",
+    "ta caro",
+    "salgado",
+    "puxado",
+    "faz por menos",
+    "desconto",
+    "mais barato",
+    "abaixa",
+    "baixa o preco",
+    "faz um precinho",
+    "nao vale"
+   ],
+   "sem_dinheiro": [
+    "sem dinheiro",
+    "sem grana",
+    "liso",
+    "duro",
+    "zerado",
+    "quebrado",
+    "cartao estourado",
+    "limite estourado",
+    "fim do mes",
+    "quando eu receber",
+    "quando cair",
+    "salario",
+    "dia do pagamento",
+    "dia 5",
+    "quinto dia util",
+    "semana que vem eu compro"
+   ],
+   "autenticidade": [
+    "e voce mesma",
+    "e voce",
+    "e fake",
+    "fake",
+    "e bot",
+    "robo",
+    "quem ta falando",
+    "quem responde",
+    "e agencia",
+    "e um homem",
+    "prova",
+    "manda audio",
+    "manda um audio",
+    "fala meu nome"
+   ],
+   "previa": [
+    "previa",
+    "amostra",
+    "de graca",
+    "gratis",
+    "mostra antes",
+    "so um pouquinho",
+    "manda uma de graca"
+   ],
+   "encontro": [
+    "encontro",
+    "sair comigo",
+    "se ver",
+    "pessoalmente",
+    "ao vivo pessoalmente",
+    "onde voce mora",
+    "qual cidade voce",
+    "endereco",
+    "programa",
+    "quanto o programa",
+    "cache",
+    "motel",
+    "te buscar",
+    "marcar"
+   ],
+   "contato_externo": [
+    "whatsapp",
+    "whats",
+    "zap",
+    "zapzap",
+    "wpp",
+    "telegram",
+    "numero",
+    "telefone",
+    "celular",
+    "instagram",
+    "insta",
+    "direct",
+    "chave pix",
+    "pix direto",
+    "me passa seu",
+    "fora daqui",
+    "fora da plataforma"
+   ],
+   "depois": [
+    "depois",
+    "agora nao",
+    "mais tarde",
+    "to ocupado",
+    "to trabalhando",
+    "to dirigindo",
+    "amanha vejo",
+    "outra hora"
+   ]
+  },
+  "qualificacao_campos": {
+   "trabalho": [
+    "trabalho",
+    "trabalha",
+    "emprego",
+    "empresa",
+    "turno",
+    "plantao",
+    "escritorio"
+   ],
+   "rotina": [
+    "acordo",
+    "durmo",
+    "folga",
+    "fim de semana",
+    "academia",
+    "faculdade"
+   ],
+   "gosto": [
+    "curto",
+    "gosto de",
+    "prefiro",
+    "tesao",
+    "fetiche",
+    "adoro"
+   ]
+  },
+  "quentes": [
+   "gostosa",
+   "tesao",
+   "safada",
+   "delicia",
+   "excitado",
+   "duro",
+   "molhada",
+   "quero voce",
+   "te pegar",
+   "me deixa louco",
+   "sexy",
+   "quente",
+   "vontade",
+   "pelada",
+   "nua",
+   "gemer",
+   "louco",
+   "fogo",
+   "provocar",
+   "beijar"
+  ],
+  "fechadas": [
+   "gostou?",
+   "tava bom?",
+   "curtiu?",
+   "ta bom?",
+   "entendeu?",
+   "viu?",
+   "ok?",
+   "sim?",
+   "certo?"
+  ],
+  "perfis": {
+   "casado": [
+    "casado",
+    "minha esposa",
+    "minha mulher",
+    "esposa",
+    "aliança",
+    "minha noiva",
+    "namorada",
+    "escondido",
+    "discreto",
+    "discrição"
+   ],
+   "carente": [
+    "sozinho",
+    "carente",
+    "ninguem me",
+    "me sinto so",
+    "solidao",
+    "sem ninguem",
+    "falta de carinho",
+    "abraço"
+   ],
+   "timido": [
+    "timido",
+    "vergonha",
+    "sem jeito",
+    "nao sei o que falar",
+    "fico nervoso"
+   ],
+   "tesao": [
+    "tesao",
+    "excitado",
+    "duro",
+    "safada",
+    "gostosa",
+    "quero te comer",
+    "me deixa louco"
+   ],
+   "ego": [
+    "sou rico",
+    "meu carro",
+    "minha empresa",
+    "ganho bem",
+    "sou o melhor",
+    "sou diferente",
+    "sou o unico"
+   ],
+   "romantico": [
+    "linda",
+    "princesa",
+    "apaixonado",
+    "namorar",
+    "romantico",
+    "meu amor",
+    "carinho",
+    "te levar pra jantar"
+   ],
+   "conduzir": [
+    "eu mando",
+    "faz o que eu falar",
+    "me obedece",
+    "eu que escolho",
+    "eu comando"
+   ]
+  }
+ },
+ "preco": {
+  "doc": "todas as faixas em BRL; arredondar para final ,90; nunca abaixo do piso Privacy",
+  "piso_chat_brl": {
+   "v": 14.9,
+   "origem": "PRIVACY"
+  },
+  "teto_chat_brl": {
+   "v": 2000,
+   "origem": "PRIVACY",
+   "doc": "blog; termos §16 citam R$5–200 em post pago: conflito, conferir"
+  },
+  "entrada_nunca_pagou": {
+   "faixa": [
+    54.9,
+    82.9
+   ],
+   "origem": "OF",
+   "status": "HIPOTESE",
+   "doc": "conversão de US$10–15 a R$5,53; mesmo nível da assinatura que mais vende (R$39,90–69,90). Henrique ajusta 'entrada_override' até calibrar com extrato · v2: substituído por config_por_conta.<conta>.entrada_brl (BASE: entrada R$25–40 → gasto mediano posterior R$59; abaixo de R$15 só 40% voltam; ticket arrudafree R$42). Teste A/B sugerido.",
+   "entrada_override": null,
+   "origem_v2": "BASE"
+  },
+  "pagante_oferta_min_brl": {
+   "v": 103.9,
+   "origem": "BASE",
+   "doc": "3º quartil dos PPVs vendidos (momoi, medido em 10/11/2026); antes R$ 165,90 (US$30 do OnlyFans)"
+  },
+  "degrau": {
+   "padrao_pct": 50,
+   "origem": "BASE",
+   "base_mediana_alta_pct": 38,
+   "base_origem": "BASE",
+   "sem_hesitacao_pct": 70,
+   "hesitou_pct": 0,
+   "max_multiplicador": 2,
+   "doc": "faixa [último×1,38 .. ×1,5] (ou ×1,7 sem hesitação); nunca > 2x. BASE medido em 10/11/2026: na mesma sessão o preço sobe em 71,8% das recompras, mediana ×1,38, 3º quartil ×1,71; só 11,7% passam de 2x"
+  },
+  "apos_compra_nunca_menor": {
+   "v": true,
+   "origem": "OF",
+   "doc": "na base própria o preço caiu em 21,8% das compras seguidas (medido em 10/11/2026; antes 31,5%): alertar quando o chatter digitar valor menor que a última compra dele"
+  },
+  "achou_caro": "oferecer item MENOR de verdade (degrau abaixo), nunca desconto no mesmo item (CONSENSO)",
+  "vip": "pode pular um degrau quando ele compra sem hesitar; sequência inteira",
+  "pix": {
+   "acima_brl": 200,
+   "origem": "BASE",
+   "texto": "Acima de R$200: lembrar que no Pix passa direto (cartão pode travar)"
+  },
+  "liquido": "mostrar 'você recebe ≈ preço x 0,80' (taxa Privacy 20%)",
+  "hesitou": "fã demorou >5 min ou fez objeção 'caro' antes de comprar",
+  "escada_cena_brl": {
+   "doc": "Chatters manual (US$10–15, 20–30, 20+, 40+, 55+, 55+) convertido; no Coach o 1º degrau usa a entrada da conta e os seguintes sobem 50–70% (nunca cai, nunca > 2x). Selo Pix do 4º em diante.",
+   "origem": "OF",
+   "pix_a_partir_degrau": 4
+  }
+ },
+ "recursos": [
+  {
+   "id": "chamada_video",
+   "quando": [
+    "fase objecao tipo autenticidade",
+    "sinais.interesse_chamada",
+    "selo VIP e oferece_chamada"
+   ],
+   "requer": "config.oferece_chamada",
+   "regra": "só a própria modelo faz a chamada; chatter nunca finge",
+   "origem": "PRIVACY",
+   "faixa_brl": [
+    39.9,
+    5000
+   ]
+  },
+  {
+   "id": "mimo",
+   "quando": [
+    "sinais.interesse_mimo",
+    "fã acabou de mandar mimo (agradecer)"
+   ],
+   "regra": "só explicar que existe quando ELE oferece; nunca pedir com emergência ou chantagem",
+   "origem": "PRIVACY",
+   "faixa_brl": [
+    5,
+    2000
+   ]
+  },
+  {
+   "id": "desafio",
+   "quando": [
+    "config.desafio_ativo e fã pagante e horario_nobre"
+   ],
+   "regra": "mencionar o desafio ativo da conta, sem pressão",
+   "origem": "PRIVACY",
+   "faixa_brl": [
+    50,
+    2000
+   ]
+  },
+  {
+   "id": "vitrine_packs",
+   "quando": [
+    "sinais.compra com 'tem mais'/'o que voce tem'",
+    "fora do horário de atendimento",
+    "fã expirado (ex-assinante pode comprar)",
+    "objecao caro (pack menor)"
+   ],
+   "requer": "config.vitrine_ativa",
+   "origem": "PRIVACY",
+   "doc": "até 5 pacotes; compra mesmo com a modelo offline"
+  },
+  {
+   "id": "plano_trimestral",
+   "quando": [
+    "sinais.assinatura",
+    "fã quieto pagante há 2+ meses (se lido)"
+   ],
+   "requer": "config.plano_trimestral_ativo",
+   "origem": "PRIVACY"
+  },
+  {
+   "id": "pix",
+   "quando": [
+    "preço sugerido ou digitado > 200"
+   ],
+   "origem": "BASE"
+  }
+ ],
+ "alertas_composer": {
+  "doc": "lidos do textarea do chat (só leitura). Nível bloqueio_visual = faixa vermelha 'NÃO ENVIE assim'; aviso = faixa amarela. Nunca alterar o texto.",
+  "regras": [
+   {
+    "id": "contato_externo",
+    "nivel": "bloqueio_visual",
+    "padroes": [
+     "whatsapp",
+     "whats",
+     "zap",
+     "wpp",
+     "telegram",
+     "t.me",
+     "chave pix",
+     "meu pix",
+     "pix:",
+     "instagram",
+     "insta",
+     "re:@[A-Za-z0-9_.]{3,}",
+     "re:\\(?\\d{2}\\)?\\s?9?\\d{4}[-\\s]?\\d{4}",
+     "re:[\\w.+-]+@[\\w-]+\\.[\\w.]+",
+     "re:https?://",
+     "re:\\bwww\\."
+    ],
+    "motivo": "Termos Privacy proíbem contato/pagamento fora da plataforma e redirecionar tráfego"
+   },
+   {
+    "id": "outras_plataformas",
+    "nivel": "bloqueio_visual",
+    "padroes": [
+     "onlyfans",
+     "only fans",
+     "fansly",
+     "fanvue",
+     "fatal fans",
+     "fatalfans",
+     "closefans",
+     "telegram vip",
+     "close friends"
+    ],
+    "motivo": "redirecionar tráfego para outra plataforma"
+   },
+   {
+    "id": "encontro",
+    "nivel": "bloqueio_visual",
+    "padroes": [
+     "a gente se encontra",
+     "vamos nos ver",
+     "te encontro",
+     "pessoalmente",
+     "meu endereco",
+     "motel",
+     "programa",
+     "sair comigo",
+     "marcar um dia"
+    ],
+    "motivo": "promessa de encontro é proibida (curso + termos)"
+   },
+   {
+    "id": "descricao_enganosa",
+    "nivel": "aviso",
+    "padroes": [
+     "fiz so pra voce",
+     "gravei so pra voce",
+     "so voce tem",
+     "exclusivo so seu",
+     "ninguem mais viu",
+     "nunca mostrei pra ninguem",
+     "sou eu agora ao vivo"
+    ],
+    "motivo": "só use se for verdade (custom real). Descrição enganosa é violação na Privacy"
+   },
+   {
+    "id": "emergencia",
+    "nivel": "bloqueio_visual",
+    "padroes": [
+     "preciso de dinheiro",
+     "to precisando",
+     "me ajuda a pagar",
+     "conta atrasada",
+     "hospital",
+     "emergencia"
+    ],
+    "motivo": "inventar emergência para pedir dinheiro é proibido"
+   },
+   {
+    "id": "menoridade",
+    "nivel": "bloqueio_visual",
+    "padroes": [
+     "novinha",
+     "colegial",
+     "uniforme escolar",
+     "menorzinha",
+     "de menor",
+     "17 anos",
+     "ninfeta"
+    ],
+    "motivo": "conteúdo que evoca menoridade é proibido"
+   },
+   {
+    "id": "humilhacao",
+    "nivel": "aviso",
+    "padroes": [
+     "humilhar",
+     "humilhacao",
+     "dominacao",
+     "escravo",
+     "verme",
+     "inutil"
+    ],
+    "motivo": "Privacy lista humilhação/dominação como conteúdo proibido"
+   },
+   {
+    "id": "preco_menor",
+    "nivel": "aviso",
+    "padroes": [
+     "re:R\\$\\s?\\d+"
+    ],
+    "motivo": "valor digitado menor que a última compra do fã (OF: rende ~metade)",
+    "checagem": "comparar valor extraído com ultima_compra_brl"
+   },
+   {
+    "id": "pix_alto",
+    "nivel": "info",
+    "padroes": [
+     "re:R\\$\\s?\\d+"
+    ],
+    "motivo": "valor > R$200: lembrar Pix",
+    "checagem": "valor > 200"
+   },
+   {
+    "id": "urgencia_falsa",
+    "nivel": "aviso",
+    "padroes": [
+     "so hoje",
+     "ultima chance",
+     "ultimas vagas",
+     "vou apagar",
+     "vou tirar do ar",
+     "acaba hoje",
+     "so ate meia noite",
+     "so ate amanha",
+     "corre que acaba",
+     "ultimas horas"
+    ],
+    "motivo": "Urgência só se for verdade (prazo real da vitrine/desafio). Prazo inventado = descrição enganosa na Privacy."
+   },
+   {
+    "id": "ofensa_fa",
+    "nivel": "bloqueio_visual",
+    "padroes": [
+     "otario",
+     "mao de vaca",
+     "pao duro",
+     "pobre",
+     "fracassado",
+     "corno",
+     "idiota",
+     "babaca",
+     "trouxa",
+     "lixo",
+     "vagabundo",
+     "mendigo",
+     "broxa"
+    ],
+    "motivo": "Dominante não é ofensivo: nada de xingar ou humilhar o fã (termos Privacy + regra da casa)."
+   },
+   {
+    "id": "oferta_desconto",
+    "nivel": "aviso",
+    "padroes": [
+     "te dou desconto",
+     "faco desconto",
+     "faco por menos",
+     "faco mais barato",
+     "precinho",
+     "promocao",
+     "promo",
+     "re:\\b(deixo|fa[cç]o|abaixo|baixo)\\s+(por|pra|para)\\s+(R\\$\\s?)?\\d+",
+     "re:\\d{1,3}\\s?%\\s?(off|de desconto)"
+    ],
+    "motivo": "Regra da casa: nunca desconto no mesmo item. Ofereça um item MENOR de verdade."
+   },
+   {
+    "id": "protecao_modelo",
+    "nivel": "bloqueio_visual",
+    "padroes": [],
+    "motivo": "Dado REAL da modelo (cidade, bairro, rotina). Nunca revele: risco de pedido de encontro e de segurança.",
+    "por_conta": "config_por_conta.<conta>.protecao_termos"
+   },
+   {
+    "id": "piso_midia",
+    "nivel": "bloqueio_visual",
+    "padroes": [],
+    "motivo": "Valor abaixo do preço mínimo por mídia desta conta. Não desvalorize o conteúdo: suba o valor ou mande um item menor de verdade."
+   }
+  ]
+ },
+ "relogio": {
+  "espera": "agora - hora da última msg do fã, se a última msg da sala não é da conta",
+  "cores": {
+   "verde_ate_s": 90,
+   "amarelo_ate_s": 240,
+   "vermelho_acima_s": 240
+  },
+  "novo_assinante": "sala sem msgs da conta: limite 300 s",
+  "followup": "PPV não comprado: contagem até followup_intervalos_min[n]; mostra 'FU n/5'",
+  "nobre": "selo 'HORÁRIO NOBRE' 20h–3h, 'PICO' 22h30–23h30 (horário de Brasília)"
+ },
+ "modos": {
+  "_doc": "O Coach lê o modo escolhido no painel (botão no topo). 'padrao' é o modo ao instalar. O modo só muda limiares, preço, textos e alertas de tempo; as travas (vulnerável, ToS, nada automático) são as mesmas nos dois.",
+  "padrao": "dominante",
+  "normal": {
+   "rotulo": "Normal"
+  },
+  "dominante": {
+   "rotulo": "DOMINANTE",
+   "doc": "Aquecimento curto, 1º PPV mais cedo, degrau mais íngreme, follow-up mais rápido, piso = última compra, metas e placar.",
+   "limiares": {
+    "aquecimento_min_msgs_fa": {
+     "v": 4,
+     "origem": "BASE",
+     "doc": "PPVs seguintes vendidos: 1º quartil = 4 mensagens do fã desde o PPV anterior (momoi, medido em 10/11/2026); normal 6"
+    },
+    "aquecimento_max_msgs_fa": {
+     "v": 9,
+     "origem": "BASE",
+     "doc": "PPVs seguintes vendidos: mediana = 9 mensagens do fã desde o PPV anterior (momoi, medido em 10/11/2026); normal 11"
+    },
+    "qualificacao_ate_msgs_fa": {
+     "v": 3,
+     "origem": "HIPOTESE",
+     "doc": "normal 5"
+    },
+    "abertura_ate_msgs_fa": {
+     "v": 1,
+     "origem": "HIPOTESE",
+     "doc": "normal 2"
+    },
+    "esfriou_s": {
+     "v": 600,
+     "origem": "BASE",
+     "doc": "84,2% das respostas do fã chegam em até 10 min: depois disso ele esfriou (momoi, medido em 10/11/2026); normal 900 · 92,1% dos PPVs vendidos foram enviados em até 10 min da última mensagem dele"
+    },
+    "resposta_meta_s": {
+     "v": 60,
+     "origem": "BASE",
+     "doc": "44,5% das respostas reais saem em até 60 s (momoi, medido em 10/11/2026); normal 80"
+    },
+    "resposta_limite_s": {
+     "v": 180,
+     "origem": "BASE",
+     "doc": "66% das respostas reais saem em até 180 s (momoi, medido em 10/11/2026); normal 300"
+    },
+    "novo_assinante_limite_s": {
+     "v": 180,
+     "origem": "HIPOTESE",
+     "doc": "normal 300 (OF)"
+    },
+    "followup_intervalos_min": {
+     "v": [
+      5,
+      12,
+      40,
+      180,
+      1440
+     ],
+     "origem": "HIPOTESE",
+     "doc": "normal [5,15,60,1440,4320]; o 1º (5 min) é BASE: 70,6% respondem ao PPV em até 5 min (momoi, medido em 10/11/2026). Máximo continua 5 (Privacy proíbe spam)."
+    },
+    "quieto_dias": {
+     "v": 4,
+     "origem": "HIPOTESE",
+     "doc": "normal 7"
+    },
+    "whale_sumido_observar_h": {
+     "v": 48,
+     "origem": "HIPOTESE",
+     "doc": "normal 72"
+    },
+    "pos_compra_upsell_apos_min": {
+     "v": 3,
+     "origem": "BASE",
+     "doc": "depois do agradecimento, já abre o próximo degrau: 20,1% das recompras saem em até 10 min (medido em 10/11/2026)"
+    },
+    "ppv_abandonado_min": {
+     "v": 30,
+     "origem": "BASE",
+     "doc": "83,3% dos fãs respondem ao PPV em até 30 min (momoi, medido em 10/11/2026): passou disso sem comprar e ele voltou a falar, recuperar no mesmo preço"
+    },
+    "vip_esperando_alerta_s": {
+     "v": 60,
+     "origem": "HIPOTESE"
+    },
+    "fila_alerta_n": {
+     "v": 3,
+     "origem": "HIPOTESE"
+    },
+    "reforco_ppv_s": {
+     "v": [
+      0,
+      150
+     ],
+     "origem": "BASE",
+     "doc": "em 74,3% dos PPVs vendidos a conta mandou uma mensagem logo depois do PPV, mediana 12 s (momoi, medido em 10/11/2026): o reforço (FU_REFORCO) vale desde o envio até 150 s"
+    }
+   },
+   "preco": {
+    "entrada_nunca_pagou": {
+     "faixa": [
+      39.9,
+      59.9
+     ],
+     "origem": "BASE",
+     "doc": "v2: usa config_por_conta.<conta>.entrada_brl; esta faixa é só o reserva · BASE: 1º PPV vendido tem 1º quartil R$ 35,48 e mediana R$ 57,09 (momoi, medido em 10/11/2026)"
+    },
+    "degrau": {
+     "min_pct": 38,
+     "padrao_pct": 70,
+     "vip_pct": 100,
+     "max_multiplicador": 2,
+     "origem": "BASE",
+     "doc": "faixa [última×1,38 .. ×1,7] = mediana e 3º quartil reais de quem sobe na mesma sessão (medido em 10/11/2026); VIP/Baleia sem hesitar pula degrau até ×2,0 (só 11,7% das recompras passam de 2x); hesitou = mantém"
+    },
+    "piso_ultima_compra": {
+     "v": true,
+     "origem": "OF",
+     "doc": "nenhuma faixa fica abaixo da última compra, nem no arredondamento (arredonda PRA CIMA no ,90). Base: preço caiu em 31,5% das compras seguidas."
+    },
+    "preco_menor_nivel": "bloqueio_visual",
+    "tiers": [
+     {
+      "id": "baleia",
+      "rotulo": "BALEIA",
+      "total_min": 2300,
+      "piso_oferta": 299.9,
+      "pula_degrau": true,
+      "origem": "BASE",
+      "doc": "top 1% dos 3.891 compradores começa em R$ 2.333 e soma 25,3% da receita (medido em 10/11/2026); 34 fãs passam de R$ 2.500"
+     },
+     {
+      "id": "vip",
+      "rotulo": "VIP",
+      "gasto7_min": 500,
+      "total_min": 1000,
+      "piso_oferta": 219.9,
+      "pula_degrau": true,
+      "origem": "BASE",
+      "doc": "R$ 1.000+ = 145 fãs (3,7%) e 43,1% da receita; R$ 500+ nos 7 primeiros dias → 53,8% chegam a R$ 1.000 (medido em 10/11/2026); piso R$ 219,90 (acima de R$ 200 → Pix) é hipótese"
+     },
+     {
+      "id": "potencial",
+      "rotulo": "POTENCIAL",
+      "gasto7_min": 300,
+      "multi_conta": true,
+      "piso_oferta": 165.9,
+      "pula_degrau": false,
+      "origem": "BASE",
+      "doc": "R$300+ em 7 dias → 31,1% chegam a R$1.000; multi-conta mediana R$256 x R$50 (medido em 10/11/2026)"
+     },
+     {
+      "id": "pagante",
+      "rotulo": "PAGANTE",
+      "total_min": 0.01,
+      "piso_oferta": 103.9,
+      "pula_degrau": false,
+      "origem": "BASE",
+      "doc": "já pagou: 3º quartil dos PPVs vendidos = R$ 103,83, mediana R$ 59,24 (momoi, medido em 10/11/2026); sempre limitado a 2x a última compra"
+     },
+     {
+      "id": "novo",
+      "rotulo": "NOVO",
+      "origem": "OF"
+     }
+    ],
+    "meta_7d_brl": {
+     "v": 500,
+     "origem": "BASE"
+    }
+   },
+   "rotulos_fase": {
+    "vulneravel": "PARE",
+    "objecao": "Objeção",
+    "pos_compra": "Pós-compra · SOBE",
+    "hora_de_vender": "FECHA AGORA",
+    "reengajamento": "Recupera",
+    "abertura": "Abertura",
+    "qualificacao": "Lê o fã",
+    "rapport": "Esquenta",
+    "descanso": "Descanso"
+   },
+   "jogadas": {
+    "PAUSA_VULNERAVEL": "Pare de vender. Conversa leve e avise o gestor.",
+    "OB_ENCONTRO": "Só online. Corta o assunto e volta pro desejo dele.",
+    "OB_CONTATO_EXTERNO": "Tudo fica aqui dentro. Corta e puxa pro que ele quer ver.",
+    "OB_AUTENTICIDADE": "Seguro e curto. Sem prova falsa.",
+    "OB_SEM_DINHEIRO": "Anota o dia que ele recebe e para de vender. Sem pressão.",
+    "OB_DESCONTO": "Segura o preço. Nunca desconto: item menor de verdade.",
+    "VD_ITEM_MENOR": "Segura o preço. Item menor de verdade, nunca desconto.",
+    "FT_VITRINE": "Mostra o pacote menor da vitrine. Preço do item não cai.",
+    "OB_PREVIA": "De graça não. Descreve com honestidade e fecha.",
+    "OB_DEPOIS": "Libera ele com confiança. Deixa o gancho.",
+    "PC_AGRADECER": "Reação agora. Em 3 min, já abre o próximo degrau.",
+    "PC_PROXIMO": "Sobe o degrau agora (+50–70%). Ele tá quente.",
+    "PC_SEQUENCIA_NOITE": "Comprou na janela nobre: emenda o próximo na mesma noite.",
+    "WH_PULO": "VIP sem hesitar: pula um degrau (até 2x).",
+    "VIP_CUSTOM": "Propõe custom do menu aprovado.",
+    "FT_MIMO_RECEBIDO": "Agradece o mimo pessoalmente.",
+    "FU_NUNCA_PAGOU": "Nunca pagou e recusou 2: só conversa. Ataca no próximo pico.",
+    "RE_REABRIR": "Esfriou: reabre com provocação, sem PPV frio.",
+    "FT_CHAMADA": "Oferece chamada de vídeo (só a modelo atende).",
+    "VD_PEDIU_PRECO": "Ele pediu. FECHA AGORA.",
+    "VD_FECHAR": "Ele já quer. Fecha sem rodeio.",
+    "VD_SUBIR": "Sobe o degrau (+50–70%). Nunca menos que a última.",
+    "WH_SEQUENCIA": "Baleia comprando: sequência inteira, pula degrau.",
+    "PPV_ABANDONADO": "PPV abandonado: recupera no MESMO preço.",
+    "META7_SEQUENCIA": "Janela de 7 dias aberta: constrói a sequência rumo aos R$500.",
+    "MC_FA_QUENTE": "Fã quente (compra em outras contas): pula a entrada. Nunca cite as outras contas.",
+    "VD_ANCORA": "Ancora no item maior e oferece o degrau.",
+    "PX_NUDGE": "Acima de R$200: manda e lembra o Pix da Privacy.",
+    "VD_PIX_ALTO": "Acima de R$200: manda e lembra o Pix da Privacy.",
+    "NT_PICO": "PICO das 23h: oferta do degrau agora.",
+    "NT_NOBRE": "Janela nobre (41,3% da receita): puxa a venda.",
+    "FT_DESAFIO": "Usa o desafio ativo.",
+    "VD_ENTRADA_DOM": "1º PPV agora. Entrada forte, sem enrolar.",
+    "VD_LEGENDA": "Manda o PPV agora. Legenda em 4 partes.",
+    "RE_WHALE": "VIP sumido: mensagem pessoal, sem venda (1/3).",
+    "RE_WHALE_2": "VIP sumido: 2ª/3ª tentativa, cita as notas, sem venda.",
+    "RE_ENCERRAR": "Encerra com classe. Porta aberta.",
+    "RE_EXPIRADO": "Uma oferta de volta (uma vez).",
+    "FT_TRIMESTRAL": "Sugere o plano trimestral.",
+    "RE_FOTO_FAV": "Cita a favorita dele.",
+    "RE_QUIETO": "Algo das notas, sem preço.",
+    "AB_POS_BOASVINDAS": "Abriu as boas-vindas: mensagem pessoal agora.",
+    "AB_RESPOSTA_SECA": "Resposta seca: provoca curto + pergunta fácil.",
+    "AB_USERNAME": "Abre com o nome dele e tom de quem manda na conversa.",
+    "AB_ESCOLHA": "Pergunta de escolha. Rápido pro rapport.",
+    "QL_PAGAMENTO": "Anota o dia do pagamento.",
+    "QL_TRABALHO": "Descobre trabalho e rotina (1 pergunta).",
+    "QL_GOSTO": "Descobre o que ele curte (1 pergunta).",
+    "FT_MIMO_EXISTE": "Diz que o mimo existe. Nunca pede.",
+    "RP_TRANSICAO": "Vira a conversa: pergunta de opinião.",
+    "RP_QUEBRA": "Provocação leve. Status alto.",
+    "RP_COMMONALITY": "Conecta com algo real e esquenta.",
+    "FT_MIMO_AGRADECER": "Sessão boa: pedido HONESTO de mimo como agradecimento (sem emergência).",
+    "PC_AFTERCARE_1": "Fim da sessão: aftercare 1. ESPERE a resposta.",
+    "PC_AFTERCARE_2": "Aftercare 2: carinho. Depois, descanso.",
+    "PC_BRINDE": "Sessão de R$500+: brinde grátis aprovado, como carinho (nunca no meio).",
+    "RP_DESCANSO": "Descanso pós-sessão: só conversa. Ele pediu? Aí pode vender.",
+    "RE_DIA_PAGAMENTO": "Dia de pagamento dele: volta leve, sem pressão.",
+    "RP_SINAL_RUIM": "Sinal ruim (seco/lento): não venda agora. Crie desejo.",
+    "PF_CASADO": "Perfil casado: discrição total.",
+    "PF_CARENTE": "Perfil carente: atenção e memória.",
+    "PF_TIMIDO": "Perfil tímido: você conduz.",
+    "PF_TESAO": "Perfil com tesão: abre a cena.",
+    "PF_EGO": "Perfil ego: admira e oferece o premium.",
+    "PF_ROMANTICO": "Perfil romântico: clima, sem prometer namoro.",
+    "PF_CONDUZIR": "Quer conduzir: deixa ele escolher entre opções reais.",
+    "FU_REFORCO": "Reforço curto 30 s depois do PPV (sem preço).",
+    "PC_FREIO_CARINHO": "FREIO. Ele disse que gastou demais: segura o preço, valida e dá carinho. Sem PPV novo agora.",
+    "OB_ENCONTRO_VIP": "Valida o status dele, 100% online, e leva pro premium daqui de dentro.",
+    "OB_ENCONTRO_VIP_CHAMADA": "Valida o status dele, 100% online, e converte em chamada de vídeo (a modelo atende).",
+    "VD_POST_FIXADO": "Palavra do post fixado: PRIORIDADE. Entrega o que o post prometeu, agora.",
+    "SS_SUMIU_MEIO": "Sumiu no meio da sessão: uma mensagem leve, sem cobrança e sem PPV."
+   },
+   "fu_texto": "Follow-up {n}/5 {quando}. Ângulo novo, sem implorar."
+  }
+ },
+ "perfis_fa": {
+  "_doc": "Perfil do fã (Funil Etapa 1.5; Playbook OFM Databank). Detectado nas notas/tags do Aura (ex.: tag 'perfil: casado') e nas msgs dele; você pode trocar no painel (fica só neste Chrome). Escolhe o roteiro de rapport e a cena sugerida.",
+  "casado": {
+   "rotulo": "Casado",
+   "roteiro": "PF_CASADO",
+   "dica": "Discrição total. Nunca cite a esposa nem horários dele em casa.",
+   "cenas": [
+    "S27",
+    "S21",
+    "S13"
+   ]
+  },
+  "carente": {
+   "rotulo": "Carente",
+   "roteiro": "PF_CARENTE",
+   "dica": "Atenção e memória: cite o que ele contou. Sem pressa pra vender.",
+   "cenas": [
+    "S21",
+    "K3",
+    "S13"
+   ]
+  },
+  "timido": {
+   "rotulo": "Tímido",
+   "roteiro": "PF_TIMIDO",
+   "dica": "Você conduz. Perguntas de escolha, frases curtas.",
+   "cenas": [
+    "S12",
+    "S22",
+    "S40"
+   ]
+  },
+  "tesao": {
+   "rotulo": "Com tesão",
+   "roteiro": "PF_TESAO",
+   "dica": "Ele já tá quente: cena direto, degrau a degrau.",
+   "cenas": [
+    "S8",
+    "S17",
+    "S28"
+   ]
+  },
+  "ego": {
+   "rotulo": "Ego",
+   "roteiro": "PF_EGO",
+   "dica": "Admire o que ele conta. Ele compra o que é premium.",
+   "cenas": [
+    "S5",
+    "S24",
+    "S16"
+   ]
+  },
+  "romantico": {
+   "rotulo": "Romântico",
+   "roteiro": "PF_ROMANTICO",
+   "dica": "Cena romântica (K3, S13, S32). Nada de 'namoro' prometido.",
+   "cenas": [
+    "K3",
+    "S32",
+    "S13"
+   ]
+  },
+  "conduzir": {
+   "rotulo": "Quer conduzir",
+   "roteiro": "PF_CONDUZIR",
+   "dica": "Deixe ele escolher entre opções que existem. Nada de dominação/humilhação.",
+   "cenas": [
+    "S36",
+    "S14",
+    "S22"
+   ]
+  }
+ },
+ "revisor": {
+  "_doc": "Revisor do campo de texto (Funil 1.2; Como puxar assunto; Vendas; Curso m2.5, m2.7, m4.2, m4.3, m7.6). Nível 'revisor' = dica amarela clara, só sugere, nunca bloqueia.",
+  "min_chars_sem_pergunta": 25,
+  "legenda_min_chars": 120,
+  "abertura_fraca": [
+   "re:^\\s*(oi+|ola|eai|e ai|tudo bem|td bem|tudo bom|o que (voce|vc|ce) (ta|esta) fazendo)\\s*[?!.]*\\s*$"
+  ],
+  "cobranca_seca": [
+   "re:^\\s*(vai abrir|viu|e ai|abriu|e entao|conseguiu ver|viu la)\\s*[?!.]*\\s*$"
+  ],
+  "legenda_palavras": [
+   "video",
+   "videozinho",
+   "fotos",
+   "foto",
+   "gravei",
+   "separei",
+   "conteudo",
+   "midia",
+   "pack",
+   "pacote"
+  ],
+  "seca_max_palavras": 3
+ },
+ "fila_sla": {
+  "_doc": "Prazo de resposta por estado do fã (Playbook B9; Funil 1.7). Prioridade, nunca descarte.",
+  "ativa": {
+   "s": 120,
+   "rotulo": "sessão ativa"
+  },
+  "transicao": {
+   "s": 180,
+   "rotulo": "transição"
+  },
+  "novo": {
+   "s": 240,
+   "rotulo": "novo"
+  },
+  "pos_venda": {
+   "s": 600,
+   "rotulo": "pós-venda"
+  },
+  "ocasional": {
+   "s": 1500,
+   "rotulo": "ocasional"
+  },
+  "nao_pagante": {
+   "s": 900,
+   "rotulo": "não-pagante antigo",
+   "faixa_s": [
+    600,
+    1200
+   ]
+  }
+ },
+ "calendario_pag": {
+  "_doc": "Calendário de pagamento BR: 5º dia útil (CLT art. 459), dia anotado nas notas, 13º salário (Lei 4.749/65: 1ª parcela até 30/11, 2ª até 20/12). Só lembrete de voltar a ofertar, sem pressão.",
+  "quinto_dia_util": true,
+  "decimo_terceiro": [
+   {
+    "mes": 11,
+    "dia": 30,
+    "rotulo": "1ª parcela do 13º",
+    "avisar_dias_antes": 10
+   },
+   {
+    "mes": 12,
+    "dia": 20,
+    "rotulo": "2ª parcela do 13º",
+    "avisar_dias_antes": 10
+   }
+  ],
+  "feriados_nacionais_mmdd": [
+   "01-01",
+   "04-21",
+   "05-01",
+   "09-07",
+   "10-12",
+   "11-02",
+   "11-15",
+   "11-20",
+   "12-25"
+  ],
+  "janela_dias": [
+   -1,
+   2
+  ],
+  "origem": "LEI"
+ },
+ "sessao": {
+  "_doc": "Sessão = compras em sequência com intervalo ≤ gap_min. Sessão completa = ≥ completa_n compras ou a cena chegou ao fim. Depois dela: aftercare 1 → espere → aftercare 2 → descanso (só conversa). O DESCANSO VENCE o follow-up agressivo do Modo Dominante logo depois da sessão (decisão do Henrique). Se ELE pedir conteúdo, pode vender.",
+  "gap_min": 90,
+  "completa_n": 3,
+  "descanso_h": 10,
+  "brinde_acima_brl": 500,
+  "mimo_apos_min": 5,
+  "origem": "BASE",
+  "doc_base": "58% das recompras saem em até 90 min. 14,3% das sessões têm 3+ compras (valor mediano R$ 178); 2,2% passam de R$ 500 (medido em 10/11/2026)"
+ },
+ "termometro": {
+  "_doc": "Termômetro 1–10 (Vendas: entre 1 nível acima dele; 'trem do sim' só no 8–10). Soma: termos quentes, velocidade, tamanho e emojis das últimas msgs dele.",
+  "origem": "HIPOTESE"
+ },
+ "calibragem": {
+  "_doc": "v2.2: números medidos no banco (só leitura) em 10/11/2026. Compras: central.emp_compras, pagamento confirmado, 3.891 compradores, R$ 849.096 (todas as contas da empresa). Mensagens: central.delta_msgs, 27.945 mensagens, só das contas momoi/morieris (as 3 contas atendidas ainda não têm mensagens guardadas: emp_mensagens e emp_ppvs estão vazias). Tudo aqui é BASE; o que veio só da momoi está marcado.",
+  "compradores": 3891,
+  "receita_brl": 849096,
+  "total_por_fa_brl": {
+   "p50": 63,
+   "p75": 174,
+   "p90": 434,
+   "p95": 787,
+   "p99": 2331,
+   "top1pct_min": 2333,
+   "top1pct_pct_receita": 25.3
+  },
+  "ge_1000": {
+   "fas": 145,
+   "pct_receita": 43.1
+  },
+  "ge_2500": {
+   "fas": 34,
+   "pct_receita": 23.8
+  },
+  "multi_conta": {
+   "fas": 471,
+   "mediana_brl": 256,
+   "mono_mediana_brl": 50
+  },
+  "dia_por_conta_60d": {
+   "arrudafree": {
+    "media": 430,
+    "p50": 185,
+    "p75": 532,
+    "p90": 1346,
+    "vendas_dia": 9.4,
+    "ticket": 45.54
+   },
+   "xlunavitaligratis": {
+    "media": 356,
+    "p50": 269,
+    "p75": 489,
+    "p90": 742,
+    "vendas_dia": 6.1,
+    "ticket": 58.28
+   },
+   "louisefree": {
+    "media": 186,
+    "p50": 140,
+    "p75": 229,
+    "p90": 455,
+    "vendas_dia": 4.3,
+    "ticket": 43.13
+   }
+  },
+  "valor_venda_90d": {
+   "arrudafree": {
+    "p10": 15,
+    "p25": 20,
+    "p50": 31.84,
+    "p75": 46.86
+   },
+   "xlunavitaligratis": {
+    "p10": 15,
+    "p25": 29.9,
+    "p50": 39.9,
+    "p75": 63.23
+   },
+   "louisefree": {
+    "p10": 14.9,
+    "p25": 23.61,
+    "p50": 34.89,
+    "p75": 48.3
+   }
+  },
+  "recompra": {
+   "pct_ate_10min": 20.1,
+   "pct_ate_60min": 55.4,
+   "pct_ate_90min": 58,
+   "pct_ate_6h": 63.9,
+   "pct_ate_24h": 71,
+   "pct_ate_7d": 83.2,
+   "mediana_min_dentro_6h": 15.4,
+   "p75_min_dentro_6h": 31.6,
+   "pct_fas_que_recompram": 55.6,
+   "segunda_compra_mediana_h": 0.9
+  },
+  "degrau_6h": {
+   "subiu_pct": 71.8,
+   "igual_pct": 6.4,
+   "caiu_pct": 21.8,
+   "mais_que_2x_pct": 11.7,
+   "mediana_quando_sobe": 1.38,
+   "p75_quando_sobe": 1.71,
+   "p90": 2.16
+  },
+  "sete_dias": {
+   "g7_500_fas": 145,
+   "g7_500_chegam_1000_pct": 53.8,
+   "g7_300_chegam_1000_pct": 31.1,
+   "g7_200_499_chegam_1000_pct": 7.1,
+   "g7_500_chegam_2500_pct": 14.5,
+   "g7_1000_fas": 43,
+   "g7_1000_chegam_2500_pct": 34.9,
+   "g30_sobre_g7_media": 1.47,
+   "g30_sobre_g7_se_g7_200": 1.33,
+   "g30_sobre_g7_multi_conta": 2.41,
+   "primeiro_ticket_mediana_brl": 30.02
+  },
+  "sessao_90min": {
+   "sessoes": 7007,
+   "uma_compra_pct": 69,
+   "tres_ou_mais_pct": 14.3,
+   "valor_mediano_3mais_brl": 178,
+   "ge_500_pct": 2.21
+  },
+  "horario": {
+   "pct_20h_3h": 43.4,
+   "pct_22h_23h": 14.9,
+   "hora_mais_forte": 23
+  },
+  "resposta_momoi": {
+   "conta_responde_s": {
+    "p25": 21,
+    "p50": 79,
+    "p75": 305,
+    "p90": 1683,
+    "pct_ate_60s": 44.5,
+    "pct_ate_180s": 66
+   },
+   "fa_responde_s": {
+    "p25": 18,
+    "p50": 59,
+    "p75": 227,
+    "pct_ate_120s": 64.6,
+    "pct_ate_300s": 78.1,
+    "pct_ate_600s": 84.2
+   }
+  },
+  "conversas_momoi": {
+   "_doc": "Só as 90 conversas da momoi com mensagens guardadas (as dos fãs que mais gastam). Os 408 PPVs delas estão todos destravados: dá para ver o que veio ANTES de uma venda, não comparar com PPV que não vendeu. Leia como 'o que os melhores atendimentos fizeram', não como taxa de conversão.",
+   "conversas": 90,
+   "mensagens": 27420,
+   "ppvs_vendidos": 408,
+   "conversas_com_ppv": 78,
+   "ppvs_por_conversa_mediana": 4,
+   "msgs_do_fa_antes_do_ppv": {
+    "todos": {
+     "p25": 5,
+     "p50": 11,
+     "p75": 26
+    },
+    "primeiro_ppv_da_conversa": {
+     "p25": 11.3,
+     "p50": 23.5,
+     "p75": 39.5
+    },
+    "ppvs_seguintes": {
+     "p25": 4,
+     "p50": 9,
+     "p75": 22
+    },
+    "pct_com_ate_3_msgs": 18.9
+   },
+   "tempo_entre_ultima_msg_do_fa_e_o_ppv_s": {
+    "p25": 44,
+    "p50": 106,
+    "p75": 246,
+    "p90": 524,
+    "pct_ate_120s": 53.6,
+    "pct_ate_600s": 92.1
+   },
+   "entre_ppvs": {
+    "min_p25": 8.6,
+    "min_p50": 17.8,
+    "pct_ate_10min": 32.1,
+    "pct_ate_60min": 64.8,
+    "razao_preco_p25": 0.92,
+    "razao_preco_p50": 1.22,
+    "razao_preco_p75": 1.55,
+    "pct_subiu": 70.9,
+    "pct_caiu": 26.2
+   },
+   "depois_do_ppv": {
+    "fa_responde_s_p50": 153,
+    "pct_fa_responde_5min": 70.6,
+    "pct_fa_responde_30min": 83.3,
+    "pct_nunca_respondeu": 2.5
+   },
+   "msg_da_conta_logo_apos_o_ppv": {
+    "pct_dos_ppvs": 74.3,
+    "segundos_p50": 12,
+    "segundos_p75": 18,
+    "pct_com_3_ou_mais": 22.1
+   },
+   "preco_ppv_brl": {
+    "primeiro_p25": 35.48,
+    "primeiro_p50": 57.09,
+    "primeiro_p75": 125,
+    "todos_p10": 30,
+    "todos_p25": 37.43,
+    "todos_p50": 59.24,
+    "todos_p75": 103.83,
+    "todos_p90": 300.37,
+    "pct_acima_200": 15
+   },
+   "mimos": {
+    "n": 60,
+    "soma_brl": 8148
+   }
+  }
+ },
+ "previsao_30d": {
+  "_doc": "Previsão de gasto nos 30 primeiros dias a partir dos 7 primeiros (gasto7 da ficha). previsao = gasto7 × fator. 'Cara de Baleia' = chance alta de passar do corte de Baleia antes de bater o corte. BASE medido em 10/11/2026 (3.365 fãs com 45+ dias desde a 1ª compra).",
+  "origem": "BASE",
+  "fator_base": 1.47,
+  "fator_g7_200": 1.33,
+  "fator_multi_conta": 2.41,
+  "fator_ticket_baixo": 1.63,
+  "ticket_baixo_brl": 25,
+  "cara_de_baleia": [
+   {
+    "gasto7_min": 1000,
+    "pct": 34.9,
+    "motivo": "R$ 1.000+ nos 7 primeiros dias: 34,9% viram Baleia"
+   },
+   {
+    "gasto7_min": 500,
+    "multi_conta": true,
+    "pct": 14.9,
+    "motivo": "R$ 500+ em 7 dias comprando em 2+ contas: 14,9% viram Baleia"
+   }
+  ],
+  "taxa_base_pct": 1
+ },
+ "variantes_auto": {
+  "_doc": "Ordenação automática das variantes do roteiro pela conversão medida (jogada 'Usei' x PPV comprado em 60 min). Só vale com min_usos do roteiro na conta nos últimos 'dias'. Variante já usada com o fã (coach_historico) sai do carrossel; se todas já foram usadas, voltam todas.",
+  "min_usos": 10,
+  "min_usos_variante": 3,
+  "dias": 7,
+  "origem": "HIPOTESE"
+ },
+ "radar": {
+  "_doc": "Radar global das 3 contas (central.coach_radar): cada perfil publica o seu estado e lê o das outras.",
+  "publicar_s": 20,
+  "offline_min": 3,
+  "vip_gasto_min_brl": 1000,
+  "baleia_gasto_min_brl": 2300,
+  "sla_s": 180,
+  "sla_doc": "Espera acima disto (maior espera de hoje numa conta) deixa o ⏱ vermelho e faz a aba da modelo pulsar no seletor."
+ },
+ "palco": {
+  "_doc": "v2.3 Modo Palco: 1 modelo por vez na tela (Privacy à esquerda, Delta inteiro na coluna de 410 px à direita). 'teclas' = ordem do Alt+1/2/3 e das abas; o ajudante trocar_modelo.ps1 lê esta mesma lista. troca_espera_ms = quanto tempo o pedido de troca fica no título da janelinha.",
+  "teclas": [
+   "arrudafree",
+   "xlunavitaligratis",
+   "louisefree"
+  ],
+  "troca_espera_ms": 2500,
+  "abrir_sozinho": true,
+  "abrir_sozinho_doc": "true = o Delta abre sozinho quando a Privacy (chat) carrega numa janela deste perfil e ele está fechado. Uma vez por aba: fechou, só volta pelo ícone. false = só pelo ícone."
+ },
+ "ritmo": {
+  "_doc": "Ritmo de chegada: conversas diferentes que receberam mensagem nova do fã na última hora (visto na lista da tela).",
+  "janela_min": 60,
+  "minimo_min": 5
+ },
+ "ia": {
+  "_doc": "Botão ⚡ Adaptar: chama a Edge Function coach-ia (precisa do secret AI_API_KEY no Supabase). Só sugere; as versões passam pelos alertas e pelo revisor antes de aparecer.",
+  "funcao": "coach-ia",
+  "max_msgs": 60,
+  "max_chars_msg": 600,
+  "usar_historico": true,
+  "max_doc": "v2.3.2: era 30 mensagens de até 400 caracteres. Na prática a IA recebia quase nada (pedidos de 0,6 a 1,3 KB). Só manda o que está na tela da Privacy.",
+  "timeout_ms": 25000,
+  "timeout_doc": "Era 12000. No teste real de 11/11/2026 a IA passou de 12 s e o painel desistia antes da função (que espera o provedor por até 20 s). Com 25000 o painel sempre recebe a resposta ou o motivo do erro."
+ },
+ "gravar_msgs": true,
+ "gravar_msgs_doc": "v2.3.3 (pedido do usuário em 12/11/2026): true = o Delta grava no banco as mensagens da conversa aberta (função painel_msgs do Aura → central.emp_mensagens: quem mandou, hora, tipo e texto). É o histórico que o ⚡ da IA lê (coach_conversa). Só grava a partir de quando foi ligado. false = não grava.",
+ "gravar_ppvs": true,
+ "gravar_ppvs_doc": "true = o Delta guarda no banco (função painel_ppvs do Aura) os PPVs vistos na conversa aberta: preço, hora e se foi pago. Sem texto de conversa. É o que alimenta placar, conversão, relatório de turno e ordem das variantes quando o Aura não está instalado. false = não grava.",
+ "lembretes": {
+  "_doc": "Lembrete por fã (botão ⏰ ou tecla L): cada clique passa para o próximo tempo; depois do último, desliga.",
+  "minutos": [
+   10,
+   30,
+   60
+  ]
+ },
+ "proximo": {
+  "_doc": "Próximo da fila (doca e avisos): 1) lembrete vencido; 2) fã grande (gasto na lista >= grande_brl) esperando; 3) quem escreveu hoje, mais atrasado primeiro, online na frente; 4) mensagens de outro dia, por quem gastou mais.",
+  "grande_brl": 1000
+ }
+}

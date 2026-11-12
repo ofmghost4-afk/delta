@@ -1,0 +1,1478 @@
+{
+ "versao": "coach-roteiros-2.2-dominante-gaps",
+ "doc": "Placeholders entre chaves. Se o placeholder não estiver nas notas, Coach mostra a variante sem ele ou destaca o campo para o Henrique preencher. Nunca enviar sozinho. Cada roteiro tem 'variantes' (Modo Normal) e 'dominante' (Modo Dominante). Se 'dominante' faltar, usa 'variantes'. O tom dominante é de status e confiança: nunca ofende, nunca mente, nunca promete encontro e nunca leva pra fora da Privacy.",
+ "roteiros": [
+  {
+   "id": "AB_USERNAME",
+   "fase": "abertura",
+   "situacao": "Novo assinante, primeira mensagem pessoal (usar o username)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Oii {nome}! Tô curiosa com esse nome... tem história aí ou foi o primeiro que veio na cabeça? 😅",
+    "{nome}! Chegou chegando hein 😏 me conta, esse nome tem algum significado?",
+    "Ai que bom te ver aqui, {nome} 🙈 confessa: foi curiosidade ou já tava de olho em mim faz tempo?"
+   ],
+   "dominante": [
+    "Oi {nome}. Chegou e já chamou minha atenção. Agora quero ver se você aguenta o ritmo 😏 veio só olhar ou veio jogar?",
+    "{nome}, gostei do nome. Agora me prova que a conversa é tão boa quanto 😏",
+    "Bem-vindo, {nome}. Aqui eu falo direto: o que te fez entrar hoje?"
+   ]
+  },
+  {
+   "id": "AB_ESCOLHA",
+   "fase": "abertura",
+   "situacao": "Abertura com pergunta fácil de escolha",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Pergunta rápida antes de tudo: você é do tipo que conversa ou do tipo que só observa? Seja sincero 😏",
+    "Me fala uma coisa, {nome}: você é mais de dia ou mais da madrugada? 🌙",
+    "Primeira pergunta oficial: café ou cerveja? Vou te julgar pela resposta 😂"
+   ],
+   "dominante": [
+    "Vou direto: você é do tipo que fica só olhando ou do tipo que vai atrás do que quer? 😏",
+    "Duas opções, escolhe uma: conversar comigo agora ou ficar imaginando depois 😏",
+    "Me responde rápido, sem pensar: foto ou vídeo? Quero saber com quem eu tô lidando 😏"
+   ]
+  },
+  {
+   "id": "AB_ORIGEM",
+   "fase": "abertura",
+   "situacao": "Descobrir de onde ele veio",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Foi qual post que te trouxe até aqui? Quero saber qual funcionou 🙈",
+    "Me conta, você me achou onde? Tô fazendo pesquisa 😂",
+    "Foi aquela foto de {detalhe} que te convenceu, né? Todo mundo escolhe essa 🤭"
+   ],
+   "dominante": [
+    "Qual post te fez entrar? Quero saber qual te pegou de jeito 😏",
+    "Fala a verdade: foi qual foto que te convenceu?",
+    "Me conta o que você viu que te trouxe até aqui. Quero saber o que funciona com você 👀"
+   ]
+  },
+  {
+   "id": "AB_POS_BOASVINDAS",
+   "fase": "abertura",
+   "situacao": "Ele abriu/comprou o PPV da boas-vindas automática (mandar em até 1 h)",
+   "origem": "OF",
+   "variantes": [
+    "Vi que você abriu 😳 e aí, passei no teste ou ainda preciso caprichar mais?",
+    "Ai, você viu aquele... tô até com vergonha 🙈 gostou de qual parte?",
+    "Então você é dos curiosos 😏 me conta o que achou, de verdade"
+   ],
+   "nota": "27% recompram em 7 dias com msg pessoal em 1 h x 4,5% sem (OF)",
+   "dominante": [
+    "Abriu rapidinho, hein 😏 aquilo foi só a entrada. O resto é outro nível.",
+    "Vi que você abriu. Gostou? Porque aquilo foi o mais leve que eu tenho 😈",
+    "Você abriu sem pensar duas vezes. Gosto de homem decidido 😏 quer ver o que vem depois?"
+   ]
+  },
+  {
+   "id": "AB_RESPOSTA_SECA",
+   "fase": "abertura",
+   "situacao": "Fã respondeu seco (\"Instagram.\", \"oi\")",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Me viu e ficou curioso, né? 🤭",
+    "Homem de poucas palavras... gosto de um mistério 😏",
+    "Ok, tímido. Vou facilitar: sim ou não, você já assinou alguém antes de mim? 😂"
+   ],
+   "dominante": [
+    "Curto e direto, hein 😂 tudo bem, eu puxo a conversa. Me fala uma coisa que você curte.",
+    "Só isso? Eu mereço mais que um 'oi' 😏 me conta o que te trouxe aqui.",
+    "Tímido ou só testando? 😏 me responde uma: foto ou vídeo?"
+   ]
+  },
+  {
+   "id": "QL_TRABALHO",
+   "fase": "qualificacao",
+   "situacao": "Descobrir trabalho e rotina",
+   "origem": "CONSENSO",
+   "variantes": [
+    "E você faz o quê da vida, {nome}? Tenta adivinhar o meu 😂",
+    "Espera, você trabalha à noite? Então é o cara acordado quando todo mundo dorme. O que te mantém ocupado?",
+    "Seu dia hoje foi daqueles puxados ou deu pra respirar?"
+   ],
+   "dominante": [
+    "E você faz o quê da vida, {nome}? Quero saber se você é tão decidido no trabalho quanto aqui 😏",
+    "Me conta tua rotina: que horas você fica livre de verdade? Quero saber quando te pegar disponível 😏",
+    "Trabalha com o quê? Tenho um palpite e eu costumo acertar 😏"
+   ]
+  },
+  {
+   "id": "QL_CIDADE",
+   "fase": "qualificacao",
+   "situacao": "Perguntar a cidade DELE (nunca revelar a da modelo)",
+   "origem": "LEI",
+   "variantes": [
+    "Você é de onde? Pelo jeito de escrever tô chutando {regiao_chute} 😂",
+    "Me conta de onde você fala que eu quero imaginar o cenário 😏",
+    "Aí tá frio ou calor agora? Aqui tá {clima} 🥵"
+   ],
+   "nota": "Nunca dizer cidade, bairro ou rotina da modelo. Anotar só o necessário (LGPD).",
+   "dominante": [
+    "Você é de onde? Pelo jeito de escrever eu chuto {regiao_chute} 😏 acertei?",
+    "Me fala a tua cidade. A minha eu guardo pra mim 😏",
+    "De onde você tá falando comigo agora?"
+   ]
+  },
+  {
+   "id": "QL_GOSTO",
+   "fase": "qualificacao",
+   "situacao": "Descobrir o que ele curte sem ser explícito",
+   "origem": "CONSENSO",
+   "variantes": [
+    "O que te chamou mais atenção no meu perfil até agora? 👀",
+    "Você é mais de foto ou de vídeo? Quero saber como te agradar 😏",
+    "Se você pudesse escolher meu look de amanhã, qual seria?"
+   ],
+   "dominante": [
+    "Me fala sem rodeio: o que mais te chamou atenção no meu perfil? 👀",
+    "Eu gosto de saber o que o homem quer. Então fala: o que você mais curte? 😏",
+    "Se você pudesse escolher um conteúdo meu agora, qual seria? Sem vergonha 😏"
+   ]
+  },
+  {
+   "id": "QL_PAGAMENTO",
+   "fase": "qualificacao",
+   "situacao": "Dia do pagamento surgiu na conversa (anotar)",
+   "origem": "LEI",
+   "variantes": [
+    "Ahh então seu dia bom é o {dia_pagamento} 😂 vou lembrar, hein",
+    "Dia {dia_pagamento} é o dia que você fica feliz então? 🤭",
+    "Anotado: {dia_pagamento} é dia de comemorar 🥂"
+   ],
+   "nota": "Salário CLT sai até o 5º dia útil (CLT art. 459). Anotar no emp_notas pelo Aura.",
+   "dominante": [
+    "Anotado: teu dia bom é {dia_pagamento} 😏 eu vou lembrar.",
+    "Então {dia_pagamento} é o teu dia. Fica sabendo que eu não esqueço 😏",
+    "{dia_pagamento}, né? Guarda esse dia pra mim 😏"
+   ]
+  },
+  {
+   "id": "RP_COMMONALITY",
+   "fase": "rapport",
+   "situacao": "Ligar o que ele contou a algo da modelo (só se verdadeiro)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "{profissao}? Meu primo também é! Ele vive dizendo que ninguém entende o que ele faz 😂 com você é assim?",
+    "Sério que você curte {hobby}? Eu também! Qual foi a última vez?",
+    "Para, eu também sou assim de {traco} 😂 achei que era só eu"
+   ],
+   "nota": "Só use fatos reais da persona aprovada.",
+   "dominante": [
+    "{profissao}? Tenho gente na família que também é, sei como é puxado 😏 e você ainda arranja tempo pra mim. Gostei.",
+    "{profissao}? Então você sabe lidar com pressão. Vamos ver se aguenta a minha 😏",
+    "Sério que você é {profissao}? Agora fiquei curiosa de verdade 👀"
+   ]
+  },
+  {
+   "id": "RP_QUEBRA",
+   "fase": "rapport",
+   "situacao": "Provocação leve com humor (negativa de brincadeira + positiva)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "{profissao}? Ai, não sei se a gente vai dar certo 😂 brincadeira... adoro homem inteligente",
+    "Torce pro {time}? Pronto, acabou 😂 tô brincando, vou te dar uma chance",
+    "Você dorme às {hora}? Velho demais pra mim 😂 mentira, gosto de quem se cuida"
+   ],
+   "nota": "Nunca ofender ou humilhar (termos Fatal Fans 5.2 l; Privacy).",
+   "dominante": [
+    "{profissao}? Hmm, não sei se você dá conta de mim 😂 brincadeira... ou não.",
+    "Você fala bonito, mas eu quero ver atitude 😏",
+    "Tô gostando de você. Não se acostuma 😂"
+   ]
+  },
+  {
+   "id": "RP_INTERESSE",
+   "fase": "rapport",
+   "situacao": "Interesse genuíno: comentar o que ele disse",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Peraí, volta: como assim {detalhe_dele}? Quero a história completa",
+    "Isso que você falou de {detalhe_dele} me deixou curiosa... e aí, como terminou?",
+    "Adoro quando você conta essas coisas. E você, como ficou depois disso?"
+   ],
+   "dominante": [
+    "Peraí, volta: como assim {detalhe_dele}? Agora eu quero tudo 👀",
+    "Para tudo. {detalhe_dele}? Conta isso direito.",
+    "Isso de {detalhe_dele} me deixou curiosa. Continua 😏"
+   ]
+  },
+  {
+   "id": "RP_TRANSICAO",
+   "fase": "rapport",
+   "situacao": "Virar a conversa: pergunta de opinião perto de sexo (sem explícito)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Sei que é aleatório, mas preciso da opinião de um homem: o que você acha de mulher que toma a iniciativa?",
+    "Pergunta séria: você prefere quando a mulher provoca ou quando ela é mais tímida? 😏",
+    "Me tira uma dúvida: o que te chama mais atenção primeiro numa mulher?"
+   ],
+   "dominante": [
+    "Vou te fazer uma pergunta e quero a verdade: você gosta de mulher que toma a iniciativa? 😏",
+    "Me responde sem pensar: você prefere quando a mulher toma conta da situação ou quando é você? 😏",
+    "Pergunta séria: qual foi a coisa mais ousada que você já pediu pra alguém? 😏"
+   ]
+  },
+  {
+   "id": "RP_APROFUNDAR",
+   "fase": "rapport",
+   "situacao": "Aprofundar depois da opinião dele",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Hmm e se fosse eu tomando a iniciativa com você... como você imagina que seria? 😏",
+    "Gostei da resposta 👀 e se eu fizesse isso agora, você ia reagir como?",
+    "Então você gosta disso... vou guardar essa informação 😈"
+   ],
+   "dominante": [
+    "E se fosse eu tomando a iniciativa com você agora... o que você faria? 😏",
+    "Gostei da resposta. Agora imagina isso comigo 😈",
+    "Hmm, então você gosta assim... eu tenho uma coisa exatamente nessa linha 😏"
+   ]
+  },
+  {
+   "id": "RP_MOTORISTA",
+   "fase": "rapport",
+   "situacao": "Encaixar o roteiro na pergunta dele (só se o conteúdo existir)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Meu dia foi corrido! Acabei de sair do banho depois da academia, tô só de toalha 🙈",
+    "Tava aqui me arrumando pra gravar umas coisinhas... adivinha o que eu tô vestindo 😏",
+    "Acabei de acordar, ainda de pijama... daqueles bem curtinhos 🙈"
+   ],
+   "nota": "Só descreva conteúdo que existe no Acervo.",
+   "dominante": [
+    "Meu dia foi intenso. Acabei de sair do banho depois do treino, tô só de toalha 😏",
+    "Tô aqui deitada pensando no que te mostrar agora 👀",
+    "Treinei pesado hoje e acabei de sair do banho. Quer saber como eu tô? 😏"
+   ]
+  },
+  {
+   "id": "RE_REABRIR",
+   "fase": "rapport",
+   "situacao": "Fã esfriou (>15 min) antes do PPV: reabrir, não mandar PPV frio",
+   "origem": "OF",
+   "variantes": [
+    "Sumiu! Te assustei? 😂",
+    "Voltei a pensar no que você falou de {detalhe_dele}... e aí, me responde 😏",
+    "Ei, você me deixou falando sozinha 🙈 tudo bem por aí?"
+   ],
+   "dominante": [
+    "Sumiu? Achei que você aguentava mais 😏",
+    "Voltei a pensar no que você falou de {detalhe_dele}... e você sumiu. Volta aqui 😏",
+    "Você some bem na parte boa, hein 😂 cadê você?"
+   ]
+  },
+  {
+   "id": "VD_LEGENDA",
+   "fase": "hora_de_vender",
+   "situacao": "PPV: legenda em 4 partes (reação, história, pergunta, nome) + o que tem dentro",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Ai {nome}, tô até com vergonha de mandar isso 😳 gravei {quando} no {lugar}, {roupa}, e no meio do vídeo eu faço uma coisa que nunca mostrei aqui... adivinha o quê? ({qtd_conteudo})",
+    "Não acredito que vou te mandar isso, {nome} 🙈 {quando} eu tava {situacao} e resolvi gravar... tem uma parte no final que você vai querer ver de novo. Qual você acha que é? ({qtd_conteudo})",
+    "{nome}, separei esse só depois da nossa conversa 😏 {roupa}, {lugar}, e eu fiz exatamente o que você disse que gosta... quer saber se acertei? ({qtd_conteudo})"
+   ],
+   "nota": "{qtd_conteudo} obrigatório e verdadeiro (ex.: 1 vídeo de 3 min + 4 fotos). 'Separei' ≠ 'gravei só pra você'.",
+   "dominante": [
+    "{nome}, vou te mandar uma coisa e já aviso: não é pra qualquer hora 😈 gravei {quando} no {lugar}, {roupa}, e tem uma parte no meio que eu sei que vai te pegar. Abre e me diz se eu tava certa. ({qtd_conteudo})",
+    "Chega de conversa, {nome} 😏 {quando} eu tava {situacao} e resolvi gravar. O final é o melhor que eu tenho agora. Quero tua reação. ({qtd_conteudo})",
+    "{nome}, separei esse depois da nossa conversa porque é exatamente o que você disse que gosta 😏 {roupa}, {lugar}. Abre e me fala se eu acertei. ({qtd_conteudo})"
+   ]
+  },
+  {
+   "id": "VD_IMAGINE",
+   "fase": "hora_de_vender",
+   "situacao": "Técnica do imagine antes do PPV",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Imagina você chegando em casa depois de um dia longo e me encontrando assim no seu quarto... o que você faria primeiro?",
+    "Fecha o olho e imagina: eu do seu lado agora, {roupa}... me fala a primeira coisa que vem na sua cabeça 😏",
+    "Se eu tivesse aí agora, você ia me deixar falar ou ia me calar? 😈"
+   ],
+   "dominante": [
+    "Imagina você chegando em casa e eu te esperando assim no teu quarto. Não pergunta nada, só me fala o que você faz primeiro 😈",
+    "Fecha o olho: eu do teu lado agora, {roupa}. Quero a primeira coisa que vier na tua cabeça, sem filtro 😏",
+    "Se eu estivesse aí agora, quem ia tomar a iniciativa: eu ou você? 😈"
+   ]
+  },
+  {
+   "id": "VD_PEDIU_PRECO",
+   "fase": "hora_de_vender",
+   "situacao": "Fã pediu preço/conteúdo: vender na hora",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Tenho sim 😏 vou te mandar um que combina com o que você falou, me diz se acertei",
+    "Você é direto, gosto 😂 olha esse que eu acabei de separar pra você ver",
+    "Pra você eu tenho um bem especial... já te mando 🙈"
+   ],
+   "dominante": [
+    "Tenho. E é exatamente o que você tá pensando 😏 te mando agora, abre e me diz se aguentou.",
+    "Gosto de homem que pede direto 😏 já tá indo pra você.",
+    "Você pediu, eu entrego. Só não reclama depois que ficou querendo mais 😈"
+   ]
+  },
+  {
+   "id": "VD_SUBIR",
+   "fase": "hora_de_vender",
+   "situacao": "Ele comprou: subir o degrau (+38–50%, nunca > 2x)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Você gostou daquele, então vou ser sincera: o próximo é bem mais ousado. E também é um degrau acima no preço 😏",
+    "Se aquele te deixou assim, espera ver o que vem depois... 😈",
+    "Ok, você passou de fase 😂 o próximo é o que eu menos mostro"
+   ],
+   "dominante": [
+    "Você aguentou aquele, então agora é outro nível: mais ousado e um degrau acima no preço. Vem 😏",
+    "Aquele foi o aquecimento. O próximo é o que eu deixo pra quem chega até aqui 😈",
+    "Passou de fase 😏 o próximo é mais forte, mais caro, e vale cada centavo."
+   ]
+  },
+  {
+   "id": "VD_CONTINUAR",
+   "fase": "hora_de_vender",
+   "situacao": "Continuar a sequência enquanto ele compra",
+   "origem": "OF",
+   "variantes": [
+    "Ok, depois dessa você me deixou com vontade de mostrar a parte que vem depois... quer?",
+    "Tá gostando? Porque eu tenho a continuação aqui 🙈",
+    "Não para agora não, a melhor parte ainda tá por vir 😏"
+   ],
+   "dominante": [
+    "Não para agora. A continuação tá aqui e é melhor que a primeira 😏",
+    "Você tá no ritmo certo. Próxima parte? 😈",
+    "Já que você começou, termina comigo. A parte seguinte é a mais intensa 😏"
+   ]
+  },
+  {
+   "id": "VD_PIX_ALTO",
+   "fase": "hora_de_vender",
+   "situacao": "Oferta acima de R$200: lembrar o Pix",
+   "origem": "BASE",
+   "variantes": [
+    "Esse é o mais completo que eu tenho 😏 se o cartão reclamar, no Pix passa direto",
+    "Vou te mandar o especial... dica: no Pix libera na hora 🙈",
+    "Esse é o premium, {nome}. Pelo Pix da própria Privacy é instantâneo"
+   ],
+   "nota": "Pix DA PLATAFORMA (checkout Privacy). Nunca chave Pix pessoal. 67% das vendas >R$200 da base foram Pix.",
+   "dominante": [
+    "Esse é o mais completo que eu tenho, {nome}. Nível máximo 😈 no Pix da Privacy libera na hora.",
+    "Vou te mandar o premium. Se o cartão travar, o Pix da própria Privacy passa direto.",
+    "Esse não é pra curioso, é pra quem quer tudo 😏 Pix aqui da plataforma e é teu em segundos."
+   ]
+  },
+  {
+   "id": "VD_ITEM_MENOR",
+   "fase": "objecao",
+   "situacao": "Achou caro: oferecer item menor de verdade, nunca desconto",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Tudo bem, não vou a lugar nenhum 😊 você estava esperando algo mais curtinho? Tenho um que é a metade desse",
+    "Justo! Me fala o que você queria ver de verdade que eu te digo se eu tenho 😊",
+    "Sem problema 🙈 tenho um menorzinho que é a cara do que você falou, quer ver?"
+   ],
+   "dominante": [
+    "Preço eu não mexo, amor 😏 mas se quiser começar menor, tenho um mais curto que já te mostra do que eu sou capaz.",
+    "Esse vale o que custa. Se quiser ir com calma, tenho uma opção menor de verdade. Qual você prefere?",
+    "Eu não baixo, eu te dou outra porta: um menor, no mesmo estilo. Quer?"
+   ]
+  },
+  {
+   "id": "OB_SEM_DINHEIRO",
+   "fase": "objecao",
+   "situacao": "Tô sem dinheiro: descobrir quando recebe, parar de vender",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Ah, isso é o pior 🥺 quando melhora pra você? Aí a gente brinca de novo, foi tão bom",
+    "Relaxa, sem pressão nenhuma 😊 me conta do seu dia então",
+    "Tranquilo, {nome}! Eu continuo aqui. Quando cai o seu salário?"
+   ],
+   "nota": "Anotar data. Se houver sinal de aperto sério (dívida etc.), parar e avisar o gestor.",
+   "dominante": [
+    "Sem stress, a gente não tem pressa 😏 quando cai o teu? Eu anoto e te espero.",
+    "Tudo bem. Aqui ninguém te cobra nada. Me conta do teu dia enquanto isso.",
+    "Ok, {nome}. Fica tranquilo, eu continuo aqui. Que dia melhora pra você?"
+   ]
+  },
+  {
+   "id": "OB_AUTENTICIDADE",
+   "fase": "objecao",
+   "situacao": "\"É você mesma?\" — resposta curta, sem prova falsa",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Você tá falando com a minha página, e tudo que eu te mando é meu 😉",
+    "Desconfiado hein 😂 tudo aqui é meu, pode ficar tranquilo",
+    "Quer ter certeza? A chamada de vídeo existe pra isso 😏"
+   ],
+   "nota": "Variante 3 só se config.oferece_chamada=true e quem faz a chamada é a modelo.",
+   "dominante": [
+    "Você tá falando com a minha página e tudo que eu te mando é meu. Agora para de desconfiar e aproveita 😏",
+    "Desconfiado, hein 😂 tudo aqui é meu. Se não fosse, você não estaria tão interessado.",
+    "Quer certeza? A chamada de vídeo existe pra isso. Topa? 😏"
+   ]
+  },
+  {
+   "id": "OB_PREVIA",
+   "fase": "objecao",
+   "situacao": "Pediu prévia grátis",
+   "origem": "CONSENSO",
+   "variantes": [
+    "A prévia é essa borradinha que você já vê 🙈 mas te conto exatamente o que tem: {qtd_conteudo}",
+    "Se eu mostrar de graça perde a graça 😂 mas te falo: {qtd_conteudo}",
+    "Te dou uma dica do que tem: {descricao_honesta} 😏"
+   ],
+   "dominante": [
+    "De graça não, amor 😏 mas te falo exatamente o que tem: {qtd_conteudo}. O resto você decide.",
+    "Prévia é essa borradinha que você já tá vendo. Dentro: {qtd_conteudo}. Vale cada segundo.",
+    "Eu não entrego de graça o que tem valor 😏 mas te adianto: {descricao_honesta}."
+   ]
+  },
+  {
+   "id": "OB_ENCONTRO",
+   "fase": "objecao",
+   "situacao": "Pediu encontro: só online, sem prometer",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Hahaha você é rápido hein 😂 aqui é só online, mas online eu sou bem divertida... quer ver?",
+    "Aqui é só online, {nome} 🙈 mas prometo que vale a pena",
+    "Encontro não rola, mas aqui dentro eu sou toda sua 😏"
+   ],
+   "nota": "Nunca prometer encontro nem 'quem sabe um dia'. Na Fatal Fans (grupo Fatal Model) espere mais pedidos.",
+   "dominante": [
+    "Hahaha calma 😂 aqui é só online. E online eu dou conta muito bem, quer ver?",
+    "Só online, {nome}. E é aqui que eu sou mais ousada 😏",
+    "Fora daqui não existe. Aqui dentro eu já sou intensa o suficiente pra você 😈"
+   ]
+  },
+  {
+   "id": "OB_CONTATO_EXTERNO",
+   "fase": "objecao",
+   "situacao": "Pediu WhatsApp/Insta/Pix pessoal",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Aqui é o meu cantinho, amor. Tudo que eu tenho de melhor fica aqui dentro 🙈 me conta, o que você queria ver?",
+    "Só converso por aqui 😊 mas aqui eu respondo, prometo",
+    "Fora daqui não rola, mas aqui eu sou bem mais legal 😏"
+   ],
+   "nota": "Termos Privacy proíbem contato/pagamento por fora.",
+   "dominante": [
+    "Tudo que eu tenho de melhor tá aqui dentro, amor. Não precisa de mais nada 😏 me fala o que você quer ver.",
+    "Só converso por aqui, e aqui eu respondo de verdade. Bora aproveitar?",
+    "Fora daqui não rola. Aqui dentro é onde eu fico mais solta 😈"
+   ]
+  },
+  {
+   "id": "OB_DEPOIS",
+   "fase": "objecao",
+   "situacao": "\"Depois\"/\"tô ocupado\"",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Vai lá! Fico aqui esperando você voltar 😏",
+    "Tranquilo, depois você me conta como foi 😊",
+    "Ok, mas não some não hein 🙈"
+   ],
+   "dominante": [
+    "Vai lá. Mas volta, porque eu não terminei com você 😏",
+    "Tranquilo. Quando voltar, já sabe onde me achar 😈",
+    "Ok, ocupado. Depois me conta, e a gente continua de onde parou 😏"
+   ]
+  },
+  {
+   "id": "PC_AGRADECER",
+   "fase": "pos_compra",
+   "situacao": "Logo após a compra (janela de 1 h; mediana até 2ª compra 48 min)",
+   "origem": "BASE",
+   "variantes": [
+    "E aí, me fala a verdade: qual parte você mais gostou? 😳",
+    "Tô aqui nervosa esperando sua opinião 🙈",
+    "Gostou? Porque eu adorei gravar esse..."
+   ],
+   "dominante": [
+    "E aí? Fala a verdade: qual parte te pegou? 😏",
+    "Você abriu rápido. Quero tua reação agora 😈",
+    "Gostou? Eu sabia que você ia gostar 😏"
+   ]
+  },
+  {
+   "id": "PC_PROXIMO",
+   "fase": "pos_compra",
+   "situacao": "Ele elogiou após a compra: abrir próximo degrau",
+   "origem": "BASE",
+   "variantes": [
+    "Se você gostou desse, nem imagina o que eu tenho guardado 😏",
+    "Ai que bom 🥰 sabe que tem uma continuação, né?",
+    "Fico feliz demais! Quer ver a parte que eu não mostrei nesse?"
+   ],
+   "nota": "27,9% recompram em até 1 h (base).",
+   "dominante": [
+    "Se esse te deixou assim, imagina o próximo. É mais forte e já tá pronto 😈",
+    "Isso foi só a primeira parte. A continuação tá aqui: agora ou vai ficar na vontade? 😏",
+    "Gostou? Então vamos subir o nível. Te mando o próximo?"
+   ]
+  },
+  {
+   "id": "FU_1",
+   "fase": "hora_de_vender",
+   "situacao": "PPV não comprado: 1º follow-up (~5 min)",
+   "origem": "OF",
+   "variantes": [
+    "Ainda tô corada de ter te mandado esse 🙈 queria muito saber o que você vai achar da parte do final",
+    "Você viu o que eu te mandei? Fiquei ansiosa aqui 😳",
+    "Tô curiosa pra saber se acertei no que você gosta 👀"
+   ],
+   "dominante": [
+    "Mandei e você ainda não abriu? Tô curiosa pra ver tua cara na parte do final 😏",
+    "Te mandei uma coisa que combina com o que você falou. Agora é contigo 😈",
+    "Tá aí trancadinho te esperando. E o final é o melhor 😏"
+   ]
+  },
+  {
+   "id": "FU_2",
+   "fase": "hora_de_vender",
+   "situacao": "2º follow-up: ângulo segredo",
+   "origem": "OF",
+   "variantes": [
+    "Vou te contar um segredo: esse é o que eu mais gostei de gravar essa semana 🤫",
+    "Esse foi o que mais demorou pra eu ter coragem de postar 🙈",
+    "Sabe aquele detalhe que você falou? Tem nesse vídeo..."
+   ],
+   "dominante": [
+    "Vou te contar: esse é o que eu mais gostei de gravar essa semana. E você ainda não viu 😏",
+    "Tem um detalhe nesse que eu sei que é a tua cara 👀",
+    "Esse tem aquilo que você falou. Só tô dizendo 😏"
+   ]
+  },
+  {
+   "id": "FU_3",
+   "fase": "hora_de_vender",
+   "situacao": "3º follow-up: ângulo imaginação",
+   "origem": "OF",
+   "variantes": [
+    "Tô aqui imaginando sua cara quando chegar naquela parte... 😏",
+    "Fico pensando se você vai aguentar até o final 😈",
+    "Só queria ver sua reação ao vivo 🙈"
+   ],
+   "dominante": [
+    "Tô imaginando tua cara quando chegar naquela parte... 😈",
+    "Duvido você aguentar até o final 😏",
+    "Queria ver tua reação ao vivo. Abre e me conta."
+   ]
+  },
+  {
+   "id": "FU_4",
+   "fase": "hora_de_vender",
+   "situacao": "4º follow-up: ângulo conversa (leve)",
+   "origem": "OF",
+   "variantes": [
+    "Mudando de assunto, como foi o resto do seu dia?",
+    "Tá tudo bem por aí? Sumiu 🥺",
+    "E aquele {detalhe_dele}, resolveu?"
+   ],
+   "dominante": [
+    "Mudando de assunto: como foi teu dia? Me conta.",
+    "Sumiu! Tá tudo certo aí?",
+    "E aquele {detalhe_dele}, resolveu?"
+   ]
+  },
+  {
+   "id": "FU_5",
+   "fase": "hora_de_vender",
+   "situacao": "5º e último follow-up",
+   "origem": "OF",
+   "variantes": [
+    "Ele continua aqui te esperando quando quiser 😏",
+    "Não vou insistir mais, prometo 😂 mas que você ia gostar, ia",
+    "Fica pra quando você tiver com vontade 😉"
+   ],
+   "nota": "Depois do 5º, parar. Nunca 'vai abrir?' seco.",
+   "dominante": [
+    "Não vou ficar insistindo 😏 ele fica aqui. Quando quiser, é só abrir.",
+    "Último recado sobre ele, prometo 😂 depois não diz que eu não avisei.",
+    "Fica aí guardado. Quando der vontade, você sabe onde tá 😈"
+   ]
+  },
+  {
+   "id": "FU_NUNCA_PAGOU",
+   "fase": "rapport",
+   "situacao": "Nunca pagou e recusou 2 vezes: só conversa",
+   "origem": "OF",
+   "variantes": [
+    "Mudando de assunto: e o seu dia, foi puxado? Me conta 😊",
+    "Esquece venda, quero saber de você: o que você faz pra relaxar?",
+    "Me conta uma coisa aleatória sobre você 😂"
+   ],
+   "dominante": [
+    "Esquece o vídeo. Me conta de você: o que você faz quando sai do trabalho?",
+    "Quero saber de você agora: o que te deixa de bom humor?",
+    "Me conta uma coisa aleatória sua. Depois eu conto uma minha 😏"
+   ]
+  },
+  {
+   "id": "RE_QUIETO",
+   "fase": "reengajamento",
+   "situacao": "Assinante quieto 7+ dias: mensagem pessoal sem preço, usando as notas",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Você acabou fazendo aquela {plano_dele}? Quero o relatório completo 😂",
+    "Lembrei de você hoje por causa de {detalhe_dele} 🙈 como você tá?",
+    "Sumido! Como foi {evento_dele}?"
+   ],
+   "nota": "Sem PPV na 1ª mensagem. Oferta só depois que ele responder.",
+   "dominante": [
+    "E aí, fez aquela {plano_dele}? Quero o relatório completo 😏",
+    "Lembrei de você hoje por causa de {detalhe_dele}. Sumiu por quê?",
+    "Sumido! Como foi {evento_dele}? Não me deixa sem notícia 😏"
+   ]
+  },
+  {
+   "id": "RE_FOTO_FAV",
+   "fase": "reengajamento",
+   "situacao": "Reengajar citando a favorita dele",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Tava organizando minhas fotos e achei aquela que você disse que era sua favorita. Ainda é? 🙈",
+    "Postei uma parecida com aquela que você amou... será que você ainda lembra? 😏",
+    "Lembra daquela {conteudo_fav}? Pensei em você"
+   ],
+   "dominante": [
+    "Achei aquela que você disse que era tua favorita. Ainda é, ou já tem outra? 😏",
+    "Postei uma na linha daquela que você amou. Vai ver ou vai fingir que não? 😈",
+    "Lembra da {conteudo_fav}? Eu lembrei de você."
+   ]
+  },
+  {
+   "id": "RE_WHALE",
+   "fase": "reengajamento",
+   "situacao": "VIP sumido (após 72 h de observação): pessoal, sem venda, máx. 3 tentativas",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Senti sua falta por aqui. Sem cobrança nenhuma, só queria saber se tá tudo bem com você",
+    "Ei, {nome}, tudo bem? Fiquei pensando em você esses dias",
+    "Não é pra vender nada, prometo 😊 só queria saber como você tá"
+   ],
+   "dominante": [
+    "Senti tua falta por aqui, {nome}. Sem cobrança, só quero saber se tá tudo bem com você.",
+    "Ei, {nome}. Você sumiu e eu reparei. Tudo certo aí?",
+    "Não é pra vender nada. Só queria saber de você 😏"
+   ]
+  },
+  {
+   "id": "RE_EXPIRADO",
+   "fase": "reengajamento",
+   "situacao": "Ex-assinante: uma oferta de renovação (uma vez)",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Sinto sua falta aqui, {nome} 🥺 voltei a postar umas coisas que você ia gostar",
+    "Tem novidade no meu perfil que é a sua cara 😏 se quiser voltar, tô aqui",
+    "Deixei uns pacotes na vitrine do chat, dá pra ver mesmo sem assinatura 🙈"
+   ],
+   "nota": "Variante 3 só se vitrine_ativa. Enviar uma vez, não todo dia.",
+   "dominante": [
+    "Voltei a postar coisa que é a tua cara, {nome}. Se quiser voltar, você sabe o caminho 😏",
+    "Tem novidade no perfil que você ia gostar. A porta tá aberta.",
+    "Deixei uns pacotes na vitrine do chat, dá pra ver mesmo sem assinatura 😏"
+   ]
+  },
+  {
+   "id": "RE_ENCERRAR",
+   "fase": "reengajamento",
+   "situacao": "Sem resposta após as tentativas: encerrar com gentileza",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Vou parar de te encher 😂 quando quiser conversar, tô aqui",
+    "Fica bem, {nome}! A porta tá sempre aberta 😊",
+    "Último recado: senti sua falta. Beijo 😘"
+   ],
+   "dominante": [
+    "Vou parar de te chamar 😏 quando quiser, você sabe onde me achar.",
+    "Fica bem, {nome}. Porta aberta.",
+    "Último recado: tô aqui. Beijo 😘"
+   ]
+  },
+  {
+   "id": "VIP_CUSTOM",
+   "fase": "pos_compra",
+   "situacao": "VIP: upsell de custom (só do menu aprovado)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Você já falou de {pedido_recorrente} três vezes 😏 quer que eu grave algo com isso, só pra você?",
+    "Tive uma ideia de um vídeo só seu... posso te contar?",
+    "Se você pudesse escolher um vídeo meu do zero, como seria?"
+   ],
+   "nota": "Só se config.aceita_custom. Aqui 'só pra você' é verdade. Nada de humilhação/dominação nem menoridade.",
+   "dominante": [
+    "Você já falou de {pedido_recorrente} três vezes 😏 vou gravar isso pra você. Quer os detalhes?",
+    "Tive uma ideia de vídeo feito sob medida pra você. Te conto ou você confia em mim? 😈",
+    "Me fala como seria o teu vídeo dos sonhos comigo. Eu vejo se dá pra gravar."
+   ]
+  },
+  {
+   "id": "VIP_CHECKIN",
+   "fase": "reengajamento",
+   "situacao": "VIP: check-in semanal sem venda",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Lembrei de você hoje! Como foi aquela {evento_dele} que você tava nervoso?",
+    "E aí, sobreviveu à semana? 😂",
+    "Passando só pra saber de você 😊"
+   ],
+   "dominante": [
+    "Lembrei de você hoje. Como foi aquela {evento_dele}?",
+    "Sobreviveu à semana? Me conta 😏",
+    "Passando só pra saber de você 😏"
+   ]
+  },
+  {
+   "id": "FT_CHAMADA",
+   "fase": "hora_de_vender",
+   "situacao": "Recurso: chamada de vídeo paga (só a modelo atende)",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Já pensou em conversar comigo por vídeo? Dá pra marcar aqui mesmo 😏",
+    "Se você quiser me ver ao vivo, eu abro um horário de chamada pra você 🙈",
+    "Tenho chamada de vídeo aqui na Privacy... quer que eu te mande um horário?"
+   ],
+   "nota": "Privacy R$39,90–5.000; 5–120 min.",
+   "dominante": [
+    "Chega de texto. Quer me ver por vídeo? Dá pra marcar aqui mesmo na Privacy 😏",
+    "Se você quer me ver ao vivo, eu abro um horário de chamada. Topa?",
+    "Tem chamada de vídeo aqui na Privacy. Quer que eu te mande um horário? 😈"
+   ]
+  },
+  {
+   "id": "FT_MIMO_RECEBIDO",
+   "fase": "pos_compra",
+   "situacao": "Ele mandou mimo: agradecer pessoalmente",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Ai {nome}, que fofo 🥺 obrigada de verdade",
+    "Você me deixou sem graça agora 🙈 obrigada pelo mimo!",
+    "Recebi seu mimo e tô sorrindo aqui 😊"
+   ],
+   "nota": "Nunca pedir mimo com emergência ou chantagem.",
+   "dominante": [
+    "Recebi teu mimo, {nome}. Obrigada de verdade 😏",
+    "Você sabe como me deixar de bom humor. Obrigada pelo mimo!",
+    "Esse mimo me ganhou o dia. Obrigada 🥰"
+   ]
+  },
+  {
+   "id": "FT_MIMO_EXISTE",
+   "fase": "rapport",
+   "situacao": "Ele quer dar presente: dizer que o mimo existe",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Que lindo você querer me mimar 🥺 aqui no chat tem o botão de mimo",
+    "Se quiser me dar um presente, o mimo do chat é o jeito 🙈",
+    "Fofo demais! Dá pra mandar mimo direto por aqui"
+   ],
+   "dominante": [
+    "Quer me mimar? Tem o botão de mimo aqui no chat 😏",
+    "Se quiser me dar um presente, o mimo do chat é o jeito.",
+    "Gostei da ideia 😏 dá pra mandar mimo direto por aqui."
+   ],
+   "nota": "Quando ELE oferece. O pedido ativo e honesto fica em FT_MIMO_AGRADECER (só depois de sessão boa, se mimo_ativo=true)."
+  },
+  {
+   "id": "FT_VITRINE",
+   "fase": "hora_de_vender",
+   "situacao": "Recurso: vitrine de pacotes no chat",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Deixei uns pacotes prontos ali em cima no chat, 'Conteúdos exclusivos' 😏",
+    "Se eu tiver offline, dá uma olhada nos pacotes ali no topo do chat 🙈",
+    "Tem pacote menorzinho na vitrine do chat também"
+   ],
+   "dominante": [
+    "Deixei uns pacotes prontos no topo do chat, 'Conteúdos exclusivos'. Escolhe o teu 😏",
+    "Se eu estiver offline, os pacotes no topo do chat estão lá pra você.",
+    "Tem pacote menor na vitrine do chat também. Começa por ele."
+   ]
+  },
+  {
+   "id": "FT_TRIMESTRAL",
+   "fase": "reengajamento",
+   "situacao": "Recurso: plano trimestral/semestral com desconto",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Sabia que no trimestral sai mais em conta? Aí você não perde nada 😏",
+    "Se for renovar, o plano de 3 meses tá com desconto 🙈",
+    "Fica comigo mais tempo? O trimestral compensa 😊"
+   ],
+   "dominante": [
+    "Vai renovar? No trimestral sai mais em conta e você não perde nada 😏",
+    "O plano de 3 meses compensa mais. Fica comigo mais tempo?",
+    "Se é pra ficar, fica direito: o trimestral sai melhor pra você 😏"
+   ]
+  },
+  {
+   "id": "FT_DESAFIO",
+   "fase": "hora_de_vender",
+   "situacao": "Recurso: desafio ativo da conta",
+   "origem": "PRIVACY",
+   "variantes": [
+    "Tô com um desafio rolando aqui: quando bater a meta eu libero {premio_desafio} 😏",
+    "Ajuda a gente a bater a meta do desafio? Falta pouco 🙈",
+    "Viu o desafio? Quando completar, sai {premio_desafio}"
+   ],
+   "nota": "Sem pressão; desafio é da conta, não pedido pessoal.",
+   "dominante": [
+    "Tô com um desafio rolando: bateu a meta, eu libero {premio_desafio} 😏 bora?",
+    "O desafio tá em {progresso_desafio}. Quer ser quem ajuda a fechar? 😈",
+    "Viu o desafio? Quando completar, sai {premio_desafio} 😈"
+   ]
+  },
+  {
+   "id": "PAUSA_VULNERAVEL",
+   "fase": "vulneravel",
+   "situacao": "Sinal de menor ou vulnerabilidade: parar de vender e chamar o gestor",
+   "origem": "LEI",
+   "variantes": [
+    "Ei, fica tranquilo, sem pressão nenhuma por aqui. Como você tá de verdade?",
+    "Esquece isso agora 😊 me conta como você tá",
+    "Aqui não tem cobrança nenhuma, tá? Cuida de você primeiro"
+   ],
+   "nota": "Sinal de menor: não continuar, registrar e avisar; ECA Digital.",
+   "dominante": [
+    "Ei, fica tranquilo, sem pressão nenhuma por aqui. Como você tá de verdade?",
+    "Esquece isso agora 😊 me conta como você tá",
+    "Aqui não tem cobrança nenhuma, tá? Cuida de você primeiro"
+   ]
+  },
+  {
+   "id": "OB_DESCONTO",
+   "fase": "objecao",
+   "situacao": "Pediu desconto/precinho: segurar o preço e oferecer item menor de verdade",
+   "origem": "CONSENSO",
+   "nota": "Nunca baixar o preço do mesmo item. Na base o preço caiu em 31,5% das compras seguidas: é isso que o Modo Dominante corta.",
+   "variantes": [
+    "Esse preço é o que ele vale, amor 😊 mas tenho um menor, se quiser começar por ele",
+    "Nesse eu não mexo 🙈 mas te mostro uma opção menorzinha",
+    "Prefiro te dar outra opção do que diminuir esse 😊 quer ver a menor?"
+   ],
+   "dominante": [
+    "Preço eu não negocio, {nome} 😏 mas tenho uma opção menor de verdade. Quer começar por ela?",
+    "Esse vale exatamente o que custa. Se quiser algo menor, eu tenho. Escolhe.",
+    "Eu não mexo no valor. Te dou duas portas: esse completo ou um menor. Qual?"
+   ]
+  },
+  {
+   "id": "VD_ANCORA",
+   "fase": "hora_de_vender",
+   "situacao": "Âncora pra cima: citar o item maior antes de oferecer o do degrau",
+   "origem": "CONSENSO",
+   "nota": "Os dois itens precisam existir e o {preco_maior} tem que ser o preço real do item maior.",
+   "variantes": [
+    "Tenho o completo, de {preco_maior}, e um mais curto que é a cara do que você falou. Te mostro o curto primeiro? 😊",
+    "O meu mais completo é {item_maior}... mas acho que esse aqui combina mais com você agora 🙈",
+    "Tem o grandão ({item_maior}) e tem esse. Vou te mandar esse, depois você me diz se quer o outro 😏"
+   ],
+   "dominante": [
+    "Meu completo é {item_maior}, {preco_maior}. Pra você começar, te mando esse aqui, que já é forte 😏",
+    "Tenho dois: o pesado ({item_maior}) e esse. Começa por esse e depois me diz se aguenta o outro 😈",
+    "O topo da minha lista é {item_maior}. Esse aqui é o degrau antes dele. Vai?"
+   ]
+  },
+  {
+   "id": "VD_FECHAR",
+   "fase": "hora_de_vender",
+   "situacao": "Ele já mostrou desejo: fechar sem rodeio",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Então deixa eu te mostrar 😏 já te mando",
+    "Acho que você vai gostar desse, te mando agora 🙈",
+    "Vou te mandar e você me diz o que achou 😊"
+   ],
+   "dominante": [
+    "Chega de imaginar. Te mando agora e você me diz se aguentou 😈",
+    "Você já sabe que quer. Tá indo 😏",
+    "Decidido? Então toma. Abre e me conta 😏"
+   ]
+  },
+  {
+   "id": "PPV_ABANDONADO",
+   "fase": "hora_de_vender",
+   "situacao": "PPV sem compra há 30+ min e ele voltou a falar: recuperar no MESMO preço",
+   "origem": "OF",
+   "nota": "Mesmo preço. Nunca reenviar mais barato. 1 em 8 PPVs ignorados vende depois de follow-up (OF).",
+   "variantes": [
+    "Aquele que eu te mandei ainda tá lá te esperando 🙈",
+    "Você nem viu o que eu te mandei mais cedo 😳",
+    "Lembra daquele de antes? Ainda acho que é a tua cara 😊"
+   ],
+   "dominante": [
+    "Aquele que eu te mandei ainda tá trancado te esperando. Vai deixar ele aí? 😏",
+    "Você voltou e o vídeo continua lá. Abre e depois a gente conversa 😈",
+    "Antes de qualquer coisa: abre o que eu te mandei. Depois me fala 😏"
+   ]
+  },
+  {
+   "id": "WH_SEQUENCIA",
+   "fase": "hora_de_vender",
+   "situacao": "VIP/Baleia comprando: sequência inteira, pode pular degrau",
+   "origem": "CONSENSO",
+   "nota": "Só com quem compra sem hesitar. Nunca mais que o dobro da última compra.",
+   "variantes": [
+    "Você tá comigo até o fim hoje? Tenho a sequência completa 😏",
+    "Já que você gostou, vou te mostrar a próxima parte",
+    "Tem mais uma, e é a mais ousada 🙈"
+   ],
+   "dominante": [
+    "Hoje eu vou até o fim com você. A próxima é a mais forte que eu tenho 😈",
+    "Você aguenta mais um nível? Porque eu tenho 😏",
+    "Sem freio hoje. Próxima parte, pronta 😈"
+   ]
+  },
+  {
+   "id": "WH_PULO",
+   "fase": "pos_compra",
+   "situacao": "VIP comprou sem hesitar: oferecer pulando um degrau",
+   "origem": "CONSENSO",
+   "nota": "Pular degrau = até 2x a última compra, nunca mais.",
+   "variantes": [
+    "Você foi rápido 😏 vou pular uma etapa e te mostrar o que eu guardo",
+    "Como você gostou, vou direto pro mais completo",
+    "Vou subir o nível com você 🙈"
+   ],
+   "dominante": [
+    "Você não hesitou, então eu também não vou: vou pular direto pro mais forte 😈",
+    "Rápido assim? Então vamos direto pro topo 😏",
+    "Pra quem compra sem pensar eu pulo etapa. O próximo é o completo 😈"
+   ]
+  },
+  {
+   "id": "META7_SEQUENCIA",
+   "fase": "hora_de_vender",
+   "situacao": "Fã nos 7 primeiros dias, já pagou e ainda abaixo de R$500: construir a sequência",
+   "origem": "BASE",
+   "nota": "BASE: R$500+ nos 7 primeiros dias → 59,4% chegam a R$1.000. Nunca cite meta nem valores pro fã.",
+   "variantes": [
+    "Tô gostando de te conhecer 😊 tenho uma coisa nova pra te mostrar",
+    "Separei mais um que combina com você",
+    "Esse é a continuação daquele que você viu 🙈"
+   ],
+   "dominante": [
+    "Você chegou faz pouco e já entendeu como funciona aqui 😏 o próximo tá pronto.",
+    "Bom começo, {nome}. Agora vem a parte boa 😈",
+    "Primeiro foi o aquecimento. Agora eu subo o nível com você 😏"
+   ]
+  },
+  {
+   "id": "NT_NOBRE",
+   "fase": "hora_de_vender",
+   "situacao": "Horário nobre 20h–3h (41,3% da receita): puxar a venda com quem já paga",
+   "origem": "BASE",
+   "nota": "Só em conversa ativa. Nada de mídia explícita que ele não pediu.",
+   "variantes": [
+    "A noite chegou e eu tô aqui pensando besteira 🙈 quer ver?",
+    "À noite eu fico mais ousada... tenho algo pra você",
+    "Tá acordado? Separei uma coisa pra essa hora 😏"
+   ],
+   "dominante": [
+    "Agora é a minha hora 😈 tenho uma coisa que é pra ver de noite. Quer?",
+    "Noite, você acordado e eu com vontade de te mostrar uma coisa. Bora? 😏",
+    "A essa hora eu não fico de conversa fiada. Tenho algo pra você 😈"
+   ]
+  },
+  {
+   "id": "NT_PICO",
+   "fase": "hora_de_vender",
+   "situacao": "Pico perto das 23h: oferta do degrau com quem está ativo",
+   "origem": "BASE",
+   "nota": "Só se a conta estiver ativa de verdade nesse horário.",
+   "variantes": [
+    "Esse horário é o meu preferido 🙈 tenho algo pra te mostrar",
+    "Tô aqui agora, sem pressa nenhuma 😏 quer ver o que eu separei?",
+    "Bem nessa hora eu lembrei de você"
+   ],
+   "dominante": [
+    "Tô aqui agora e com tempo pra você 😏 o próximo é pra ver agora.",
+    "Essa é a hora que eu fico mais solta. Te mando? 😈",
+    "Agora, {nome}. Te mando o melhor que eu tenho pra esse horário 😏"
+   ]
+  },
+  {
+   "id": "PX_NUDGE",
+   "fase": "hora_de_vender",
+   "situacao": "Valor acima de R$200 ou cartão travou: lembrar o Pix DA PLATAFORMA",
+   "origem": "BASE",
+   "nota": "Pix do checkout da Privacy (74% da receita da base; 67% das vendas >R$200). Nunca chave Pix pessoal.",
+   "variantes": [
+    "Se o cartão não passar, no Pix da Privacy libera na hora 😊",
+    "Dica: pelo Pix daqui da plataforma é instantâneo",
+    "No Pix do checkout da Privacy cai na hora 🙈"
+   ],
+   "dominante": [
+    "Cartão travou? Vai no Pix da própria Privacy que libera na hora 😏",
+    "Não deixa o cartão atrapalhar: Pix aqui no checkout da Privacy e é teu em segundos.",
+    "Pix da plataforma, {nome}. Rápido e já abre 😈"
+   ]
+  },
+  {
+   "id": "MC_FA_QUENTE",
+   "fase": "hora_de_vender",
+   "situacao": "Compra em outras contas da agência: alta propensão, pular a entrada",
+   "origem": "BASE",
+   "nota": "NUNCA cite as outras contas nem o que ele compra lá (LGPD e sigilo). O dado só serve para calibrar o preço. BASE: mediana R$229 x R$50.",
+   "variantes": [
+    "Você parece saber bem o que quer 😏 tenho uma coisa no teu estilo",
+    "Gosto de quem vai direto. Te mostro um dos meus melhores?",
+    "Acho que você vai curtir esse, é dos mais completos"
+   ],
+   "dominante": [
+    "Você tem cara de quem não gosta de enrolação. Vou direto no completo 😈",
+    "Nada de aquecimento com você. Te mando um dos mais fortes 😏",
+    "Você sabe o que quer, eu sei o que tenho. Vai?"
+   ]
+  },
+  {
+   "id": "RE_WHALE_2",
+   "fase": "reengajamento",
+   "situacao": "2ª/3ª tentativa com VIP sumido: pessoal, citando as notas, sem venda",
+   "origem": "CONSENSO",
+   "nota": "Máximo 3 tentativas no total. Sem PPV.",
+   "variantes": [
+    "Lembrei daquela {detalhe_dele}, deu certo?",
+    "Ei, {nome}, tô aqui. Quando quiser conversar 😊",
+    "Passando de novo só pra saber de você"
+   ],
+   "dominante": [
+    "Lembrei de {detalhe_dele}. Deu certo? Quero saber 😏",
+    "{nome}, ainda tô aqui. Quando quiser, você sabe onde me achar.",
+    "Sem venda, sem cobrança: só senti falta da tua conversa."
+   ]
+  },
+  {
+   "id": "VD_ESCASSEZ_REAL",
+   "fase": "hora_de_vender",
+   "situacao": "Escassez SÓ verdadeira: prazo ou quantidade que existem de fato",
+   "origem": "CONSENSO",
+   "nota": "Use só se {prazo_real} / {qtd_real} forem verdade (ex.: pacote da vitrine com data de saída). Prazo falso = descrição enganosa na Privacy.",
+   "variantes": [
+    "Esse fica na vitrine até {prazo_real} 😊",
+    "Tenho {qtd_real} desses no pacote, te mostro?",
+    "Esse sai da vitrine {prazo_real}, quer ver antes?"
+   ],
+   "dominante": [
+    "Esse fica disponível até {prazo_real}. Decide antes 😏",
+    "São {qtd_real} desses, e é isso. Vai ser um teu?",
+    "Sai da vitrine {prazo_real}. Te mando agora? 😈"
+   ]
+  },
+  {
+   "id": "VD_ENTRADA_DOM",
+   "fase": "hora_de_vender",
+   "situacao": "1º PPV de quem nunca pagou, depois de aquecimento curto",
+   "origem": "OF",
+   "nota": "Entrada: use a faixa de preço mostrada acima (vem de config_por_conta.<conta>.entrada_brl, medida na base). {qtd_conteudo} obrigatório e verdadeiro.",
+   "variantes": [
+    "Acho que já te conheço o suficiente pra te mostrar isso 🙈 ({qtd_conteudo})",
+    "Separei um pra você começar comigo 😊 ({qtd_conteudo})",
+    "Vou arriscar e te mandar esse... me diz se acertei ({qtd_conteudo})"
+   ],
+   "dominante": [
+    "Chega de papo, {nome}. Esse é o teu primeiro comigo e eu não começo fraco 😈 ({qtd_conteudo})",
+    "Já entendi do que você gosta. Toma e me diz se eu acertei 😏 ({qtd_conteudo})",
+    "Primeira vez comigo? Então começa direito 😏 ({qtd_conteudo})"
+   ]
+  },
+  {
+   "id": "PC_SEQUENCIA_NOITE",
+   "fase": "pos_compra",
+   "situacao": "Comprou no horário nobre: emendar o próximo degrau na mesma noite",
+   "origem": "BASE",
+   "nota": "BASE: mediana até a 2ª compra 48 min; 27,9% recompram em 1 h; 20h–3h = 41,3% da receita.",
+   "variantes": [
+    "A noite tá só começando 🙈 tenho a continuação",
+    "Gostou? Tenho mais um pra essa noite",
+    "Se quiser continuar, eu tô aqui 😏"
+   ],
+   "dominante": [
+    "A noite tá só começando e eu ainda não te mostrei o melhor 😈",
+    "Você abriu esse rápido. O próximo é mais forte, quer agora?",
+    "Bora emendar? O próximo tá pronto 😏"
+   ]
+  },
+  {
+   "id": "FT_MIMO_AGRADECER",
+   "fase": "pos_compra",
+   "situacao": "Sessão boa terminou: pedido HONESTO de mimo como agradecimento (opt-in por conta)",
+   "origem": "BASE",
+   "variantes": [
+    "Amei demais hoje 🥺 se quiser me agradecer, tem o mimo aqui no chat. Sem obrigação nenhuma, tá?",
+    "Você me deixou de bom humor 😊 se der vontade de me mimar, o botão de mimo tá aqui",
+    "Hoje foi bom demais... se quiser deixar um carinho, tem o mimo do chat 🙈"
+   ],
+   "dominante": [
+    "Hoje foi do jeito que eu gosto 😏 se quiser me agradecer, o mimo tá aqui no chat. Sem obrigação.",
+    "Você mandou bem hoje. Se quiser me mimar por isso, o botão de mimo tá aí 😈",
+    "Gostei de hoje. Quer deixar um mimo de agradecimento? Só se você quiser 😏"
+   ],
+   "nota": "Aprovado pelo Henrique (troca a regra 'nunca pedir'). Só depois de sessão boa, uma vez por sessão. Nunca emergência, chantagem ou culpa. Mimo = 23,7% do vendido na base; ticket R$98,86 x R$57,21 do PPV."
+  },
+  {
+   "id": "PC_AFTERCARE_1",
+   "fase": "pos_compra",
+   "situacao": "Fim da sessão: aftercare 1 (Chatters manual: 'foi bom pra você?') e ESPERAR a resposta",
+   "origem": "OF",
+   "variantes": [
+    "Foi tão bom pra você quanto foi pra mim? 🥺",
+    "Me conta... foi bom pra você? 🙈",
+    "E aí, como você tá depois dessa? 😳"
+   ],
+   "dominante": [
+    "Foi tão bom pra você quanto foi pra mim? 😏",
+    "Me fala a verdade: você aguentou até o fim? 😈",
+    "Como você tá agora? Quero saber 😏"
+   ],
+   "nota": "ESPERE A RESPOSTA antes do aftercare 2. Anote nas notas do Aura a cena usada."
+  },
+  {
+   "id": "PC_AFTERCARE_2",
+   "fase": "pos_compra",
+   "situacao": "Aftercare 2: carinho e vínculo (Chatters manual: 'meu novo vício')",
+   "origem": "OF",
+   "variantes": [
+    "Você virou oficialmente meu vício novo 🙈 vou dormir bem hoje graças a você",
+    "Obrigada por hoje, de verdade. Você me fez sentir incrível 🥰",
+    "Já tô com saudade e você nem saiu 😂 obrigada por hoje"
+   ],
+   "dominante": [
+    "Você virou meu vício novo 😏 vou dormir bem hoje por sua causa",
+    "Obrigada por hoje. Pouca gente me acompanha desse jeito 😈",
+    "Já tô com vontade de repetir. Descansa, que depois tem mais 😏"
+   ],
+   "nota": "Depois dele, descanso: só conversa até ele puxar."
+  },
+  {
+   "id": "PC_BRINDE",
+   "fase": "pos_compra",
+   "situacao": "Sessão de R$500+ terminou: brinde grátis APROVADO como carinho (Tricks)",
+   "origem": "HIPOTESE",
+   "variantes": [
+    "Pra fechar a noite, vou te mandar um presentinho por minha conta 🎁",
+    "Você merece um mimo meu hoje. Esse é por minha conta 🙈",
+    "Separei um presente pra você, de graça, por ter sido incrível hoje 😊"
+   ],
+   "dominante": [
+    "Pra fechar: um presente por minha conta. Você mereceu 😏",
+    "Esse vai de graça. É meu jeito de dizer obrigada por hoje 😈",
+    "Presente meu pra você. Só pra quem fica até o fim 😏"
+   ],
+   "nota": "Só se config.brinde_pos_sessao=true e o conteúdo existir. Nunca no meio da sequência (grátis no meio derruba o preço)."
+  },
+  {
+   "id": "RP_DESCANSO",
+   "fase": "rapport",
+   "situacao": "Descanso pós-sessão: só conversa (Playbook: descanso impede que toda conversa vire venda)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "E o resto do seu dia, como foi?",
+    "Me conta uma coisa sua que eu ainda não sei 😊",
+    "O que você vai fazer amanhã?"
+   ],
+   "dominante": [
+    "Agora me conta de você: como foi o teu dia?",
+    "Fala uma coisa tua que eu ainda não sei 😏",
+    "Amanhã você faz o quê? Quero saber da tua rotina"
+   ],
+   "nota": "O descanso vence o follow-up agressivo logo depois da sessão. Se ele pedir conteúdo, pode vender."
+  },
+  {
+   "id": "RE_DIA_PAGAMENTO",
+   "fase": "reengajamento",
+   "situacao": "Dia de pagamento dele (anotado, 5º dia útil ou 13º): volta leve, sem pressão",
+   "origem": "LEI",
+   "variantes": [
+    "Lembrei de você hoje 😊 como tá a semana?",
+    "Sumido! Tá tudo bem por aí?",
+    "Passando pra saber de você 🙈 e aí, novidades?"
+   ],
+   "dominante": [
+    "Lembrei de você hoje 😏 como tá a semana?",
+    "Sumiu e eu reparei. Tudo certo aí?",
+    "E aí, {nome}? Tô com vontade de conversar com você 😏"
+   ],
+   "nota": "Nunca cite salário nem dinheiro. Só volte a conversar; oferta só depois que ele responder."
+  },
+  {
+   "id": "RP_SINAL_RUIM",
+   "fase": "rapport",
+   "situacao": "Sinal ruim (respostas de 1 palavra e lentas): não venda, crie desejo e faça ele investir",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Você tá mais quietinho hoje... cansado? 🥺",
+    "Me conta uma coisa boa que aconteceu hoje",
+    "Tô curiosa: o que você mais gosta de fazer pra relaxar?"
+   ],
+   "dominante": [
+    "Tá quieto hoje. Cansado ou só me testando? 😏",
+    "Me conta uma coisa boa do teu dia. Quero ouvir",
+    "Pergunta: o que te deixa animado de verdade?"
+   ],
+   "nota": "Vendas ('sinais ruins'); OFM Wizard 'fazer o fã investir'."
+  },
+  {
+   "id": "FU_REFORCO",
+   "fase": "hora_de_vender",
+   "situacao": "Reforço 30 s depois do PPV: provocação curta, sem preço (Desirely)",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Tô nervosa com o que você vai achar 🙈",
+    "Esse é especial... 😳",
+    "Me conta quando chegar na parte do meio 👀"
+   ],
+   "dominante": [
+    "Quero ver tua cara quando chegar no meio 😈",
+    "Esse é forte. Te avisei 😏",
+    "Abre com calma... ou não 😈"
+   ],
+   "nota": "Antes do FU 1 aos 5 min. Nada de 'vai abrir?'."
+  },
+  {
+   "id": "PF_CASADO",
+   "fase": "rapport",
+   "situacao": "Perfil casado: discrição total",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Aqui é o nosso cantinho, só nosso 😊 como foi teu dia?",
+    "Pode ficar tranquilo comigo, aqui é discreto 🙈 me conta de você",
+    "Quando você tiver um tempinho só seu, eu tô aqui"
+   ],
+   "dominante": [
+    "Aqui é discreto, fica tranquilo. Me conta como foi teu dia 😏",
+    "Esse é o teu momento. Aproveita comigo 😈",
+    "Quando tiver um tempo só teu, você sabe onde me achar 😏"
+   ],
+   "nota": "Nunca cite esposa, horário dele em casa nem nada que exponha ele."
+  },
+  {
+   "id": "PF_CARENTE",
+   "fase": "rapport",
+   "situacao": "Perfil carente: atenção e memória",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Lembrei do que você me contou de {detalhe_dele}, como ficou?",
+    "Tô aqui, pode falar comigo 😊",
+    "Me conta como foi teu dia, quero saber tudo"
+   ],
+   "dominante": [
+    "Lembrei do que você falou de {detalhe_dele}. Como ficou?",
+    "Fala comigo. Eu tô aqui 😏",
+    "Teu dia foi como? Quero os detalhes"
+   ],
+   "nota": "Cite algo das notas. Atenção de verdade, sem prometer relacionamento."
+  },
+  {
+   "id": "PF_TIMIDO",
+   "fase": "rapport",
+   "situacao": "Perfil tímido: você conduz, perguntas de escolha",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Vou facilitar: foto ou vídeo? 🙈",
+    "Me responde só com um emoji: como você tá hoje?",
+    "Pode ficar à vontade comigo, eu puxo a conversa 😊"
+   ],
+   "dominante": [
+    "Eu conduzo, você só escolhe: foto ou vídeo? 😏",
+    "Responde com um emoji: como você tá agora?",
+    "Relaxa, comigo você não precisa saber o que falar 😈"
+   ]
+  },
+  {
+   "id": "PF_TESAO",
+   "fase": "hora_de_vender",
+   "situacao": "Perfil com tesão: abrir a cena degrau a degrau",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Tô vendo que você tá animado 😏 posso te mostrar uma coisa?",
+    "Então deixa eu te provocar um pouquinho...",
+    "Tenho uma cena perfeita pra esse teu humor 🙈"
+   ],
+   "dominante": [
+    "Você tá quente e eu também 😈 vou começar devagar",
+    "Então vamos brincar do meu jeito: degrau por degrau 😏",
+    "Tenho a cena certa pra você agora. Começo?"
+   ],
+   "nota": "Use o Modo cena."
+  },
+  {
+   "id": "PF_EGO",
+   "fase": "rapport",
+   "situacao": "Perfil ego: admirar o que ele conta e oferecer o premium",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Gosto de homem que sabe o que quer 😊 me conta mais de {detalhe_dele}",
+    "Que interessante, {detalhe_dele}? Você é diferente mesmo",
+    "Tô impressionada, sério 🙈"
+   ],
+   "dominante": [
+    "Homem decidido assim me interessa 😏 me conta mais de {detalhe_dele}",
+    "{detalhe_dele}? Agora entendi por que você é exigente 😈",
+    "Pra quem gosta do melhor, eu tenho o premium 😏"
+   ],
+   "nota": "Elogio sobre o que ELE contou, nunca inventado."
+  },
+  {
+   "id": "PF_ROMANTICO",
+   "fase": "rapport",
+   "situacao": "Perfil romântico: clima e carinho (K3 limpo), sem prometer namoro",
+   "origem": "CONSENSO",
+   "variantes": [
+    "E aí, como foi teu dia? Pensei em você 🥰",
+    "Se a gente tivesse uma noite só nossa, como seria?",
+    "Gosto do teu jeito, sabia? 😊"
+   ],
+   "dominante": [
+    "Como foi teu dia? Me conta tudo 😏",
+    "Uma noite só nossa: como você imagina?",
+    "Gosto do teu jeito. Não se acostuma 😏"
+   ],
+   "nota": "Nunca prometa relacionamento ou 'algo a mais' (descrição enganosa)."
+  },
+  {
+   "id": "PF_CONDUZIR",
+   "fase": "rapport",
+   "situacao": "Quer conduzir: ele escolhe entre opções reais",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Então escolhe: {opcao_a} ou {opcao_b}? 😏",
+    "Você que manda na escolha: qual você quer ver?",
+    "Deixo você escolher hoje 🙈 qual?"
+   ],
+   "dominante": [
+    "Você escolhe: {opcao_a} ou {opcao_b}. Eu faço acontecer 😈",
+    "Hoje a escolha é tua. Qual dos dois?",
+    "Fala qual você quer e eu te mostro 😏"
+   ],
+   "nota": "Nada de dominação/humilhação (proibido na Privacy). Só escolhas entre conteúdos que existem."
+  },
+  {
+   "id": "PC_FREIO_CARINHO",
+   "fase": "objecao",
+   "situacao": "Fã que já comprou disse que gastou demais (\"vai me deixar pobre\"): validar, dar carinho e segurar o preço",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Hahaha para, {nome} 🥹 você já me mimou demais hoje. Agora fica aqui comigo só conversando, tá?",
+    "Ai, você é um querido 🙈 hoje você já fez muito por mim. Não quero que você se aperte, quero você voltando sempre.",
+    "Então chega por hoje 😊 amei cada minuto. Me conta como foi teu dia que agora eu só quero te ouvir."
+   ],
+   "dominante": [
+    "Hahaha calma, {nome} 😏 você já foi muito bem hoje. Agora relaxa e fica aqui comigo, sem gastar mais nada.",
+    "Gosto de homem que sabe a hora de parar 😏 hoje você já me deixou feliz. Guarda o resto pra próxima.",
+    "Você me mimou direitinho hoje. Agora eu que cuido: me conta como você tá 😌"
+   ],
+   "nota": "Não mande PPV novo nem suba o degrau nesta sessão. Sem culpa, sem 'só mais um'. Anote no Aura que ele pediu freio. Ele volta mais se sair bem."
+  },
+  {
+   "id": "OB_ENCONTRO_VIP",
+   "fase": "objecao",
+   "situacao": "Fã pagante/VIP/ego pediu encontro: validar o status, deixar claro que é 100% online e levar para o premium daqui de dentro",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Ai {nome}, vindo de você eu até fico lisonjeada 🙈 mas eu sou 100% online, de verdade. O que eu posso é fazer algo só seu aqui dentro... quer?",
+    "Você sabe que é dos meus preferidos aqui, né? 🥰 Encontro não existe, eu só fico por aqui. Mas pra você eu capricho de um jeito que os outros não veem.",
+    "Homem que me trata como você merece o meu melhor 😏 e o meu melhor é aqui, 100% online. Deixa eu te mostrar um que eu guardo pra poucos."
+   ],
+   "dominante": [
+    "{nome}, você é dos poucos que eu levo a sério aqui 😏 mas eu sou 100% online e isso não muda. O que muda é o nível do que eu te mostro. Quer subir?",
+    "Gosto que seja você pedindo. Encontro não existe: eu só existo aqui dentro. E aqui dentro você tem acesso ao que quase ninguém tem 😈",
+    "Você já provou que não é qualquer um. Então escuta: é só online, sempre. Mas pra você eu abro a parte premium. Aguenta?"
+   ],
+   "nota": "NUNCA prometer encontro, nem 'quem sabe um dia', nem cidade ou agenda. Depois de validar, ofereça custom do menu aprovado (se a conta aceita) ou a sequência premium."
+  },
+  {
+   "id": "OB_ENCONTRO_VIP_CHAMADA",
+   "fase": "objecao",
+   "situacao": "Fã pagante/VIP/ego pediu encontro e a conta oferece chamada de vídeo: validar, 100% online, converter em chamada",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Ai {nome}, vindo de você eu fico até sem graça 🙈 pessoalmente não rola, eu sou 100% online. Mas a gente pode se ver por vídeo aqui na Privacy, só nós dois... quer?",
+    "Você é dos meus preferidos, sabia? 🥰 Encontro não existe, mas ao vivo por vídeo existe, e é aqui dentro mesmo. Te explico como marcar?",
+    "Pessoalmente não, eu só fico por aqui. O mais perto disso é a chamada de vídeo da Privacy 😏 você me vê e eu te vejo. Topa?"
+   ],
+   "dominante": [
+    "{nome}, encontro não existe: eu sou 100% online. Mas você é dos poucos que eu deixo me ver ao vivo, por vídeo, aqui dentro 😏 quer marcar?",
+    "Gosto que seja você pedindo. Pessoalmente nunca. Ao vivo por vídeo, aqui na Privacy, sim, e não é pra qualquer um 😈",
+    "Você quer me ver de verdade? Então é chamada de vídeo, aqui dentro. É o máximo que existe e eu só faço com quem merece 😏"
+   ],
+   "nota": "Só a modelo atende a chamada, nunca o chatter. NUNCA prometer encontro. Chamada paga da Privacy: R$ 39,90 a R$ 5.000."
+  },
+  {
+   "id": "VD_POST_FIXADO",
+   "fase": "hora_de_vender",
+   "situacao": "Fã mandou a palavra-chave do post fixado: entregar na hora o que o post prometeu",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Aaa você viu o fixado 😍 então é pra você mesmo. Te mando agora ({qtd_conteudo})",
+    "Palavra certa, {nome} 😏 era isso que eu tava esperando. Já tô te mandando ({qtd_conteudo})",
+    "Você leu direitinho 🙈 quem manda a palavra ganha acesso ao que tá no fixado. Tá indo ({qtd_conteudo})"
+   ],
+   "dominante": [
+    "Palavra certa, {nome} 😏 quem lê o fixado é atendido primeiro. Tá indo agora ({qtd_conteudo})",
+    "Você fez o que eu pedi no fixado. Gosto de obediência 😈 abre e me diz se valeu ({qtd_conteudo})",
+    "Era essa a palavra. Agora é com você: abre e aguenta ({qtd_conteudo})"
+   ],
+   "nota": "Entregue exatamente o que o post fixado promete (mesmo conteúdo e mesmo preço). {qtd_conteudo} obrigatório e verdadeiro. As palavras ficam em config_por_conta.<conta>.palavra_fixado."
+  },
+  {
+   "id": "SS_SUMIU_MEIO",
+   "fase": "reengajamento",
+   "situacao": "Fã sumiu no meio de uma sessão de compras ou de uma cena (5 min sem responder, sem PPV pendente): toque leve, sem cobrança",
+   "origem": "CONSENSO",
+   "variantes": [
+    "Ué, sumiu? 🙈 tava ficando bom...",
+    "Ei, ainda tá aí? Fiquei falando sozinha 😅",
+    "Te perdi no meio do caminho? 🥺 volta que eu te espero"
+   ],
+   "dominante": [
+    "Sumiu justo agora? 😏 eu ainda tô aqui.",
+    "Te perdi? Fiquei no meio do que eu tava fazendo pra você 😈",
+    "Volta. Não gosto de parar pela metade 😏"
+   ],
+   "nota": "Uma mensagem só. Sem PPV, sem preço e sem cobrança. Se ele não voltar, siga as regras normais de reengajamento."
+  }
+ ],
+ "massa_dia": {
+  "_doc": "Banco de mensagens de curiosidade para envio em massa. O painel mostra UMA por dia (muda sozinho todo dia, cada conta com uma diferente, e só repete depois de usar todas). Sem preço, sem promessa e sem urgência falsa: só curiosidade para o fã abrir a conversa. Envie pelo recurso de mensagem em massa da própria Privacy; o Delta só copia.",
+  "origem": "CONSENSO",
+  "mensagens": [
+   "Fiz uma coisa hoje que eu nunca tinha feito antes... quer que eu te conte? 🙈",
+   "Pergunta séria: você prefere surpresa ou prefere escolher? 😏",
+   "Tô com uma ideia na cabeça e preciso da opinião de alguém sincero. Você é sincero?",
+   "Adivinha em que eu tava pensando agora há pouco 😳",
+   "Se eu te pedisse pra escolher uma cor pra mim hoje, qual seria?",
+   "Tem uma coisa que eu queria te mostrar, mas tô na dúvida se você aguenta 😈",
+   "Me conta: como tá sendo o teu dia? Hoje eu tô curiosa com você.",
+   "Verdade ou desafio? Escolhe um, eu começo 😏",
+   "Acordei diferente hoje... não sei explicar. Você já acordou assim?",
+   "Qual foi a última coisa que te fez sorrir? Quero saber de verdade 🥰",
+   "Tô arrumando umas coisas aqui e lembrei de você. Sabe por quê?",
+   "Se você pudesse me pedir uma coisa só hoje, o que pediria? 🙈",
+   "Tenho uma confissão pra fazer, mas só conto pra quem responder 😅",
+   "Você é do time que manda mensagem primeiro ou do que espera? Tô te testando 😏",
+   "Uma palavra pra descrever o teu humor agora. Vai.",
+   "Fiquei na dúvida entre duas opções hoje e pensei em te pedir ajuda... posso?",
+   "Sabe quando bate uma vontade de conversar com alguém específico? Pois é 🙈",
+   "Qual é a tua parte favorita do dia? A minha é agora.",
+   "Tô em dúvida numa coisa e queria uma opinião masculina. Me dá a sua?",
+   "Me fala uma coisa que quase ninguém sabe sobre você. Eu conto uma minha depois 😏",
+   "Hoje eu tô mais ousada que o normal. Quer descobrir por quê? 😈",
+   "Você já teve a sensação de que alguém tava pensando em você? Era eu.",
+   "Se eu te desse três perguntas pra me fazer, qual seria a primeira?",
+   "Tô com saudade de uma conversa boa. Você tem cinco minutos pra mim? 🥺",
+   "Doce ou salgado? A resposta diz muito sobre você 😂",
+   "Tava olhando umas fotos minhas e fiquei pensando qual você escolheria...",
+   "Me responde rápido, sem pensar: noite ou madrugada? 🌙",
+   "Preciso te contar o que aconteceu comigo hoje. Tá por aí?",
+   "Qual foi a coisa mais louca que você já fez por curiosidade? 😏",
+   "Tô entediada e você parece ser a pessoa certa pra resolver isso 🙈",
+   "Você prefere que eu seja mais fofa ou mais atrevida hoje? Escolhe.",
+   "Tem dia que eu acordo querendo atenção. Hoje é um deles 🥰",
+   "Se a gente estivesse conversando agora, qual seria o assunto?",
+   "Uma coisa que você faria se ninguém fosse ficar sabendo. Vai, me conta 😈",
+   "Sumi um pouco, eu sei. Sentiu minha falta ou nem percebeu? 😅"
+  ]
+ }
+}

@@ -1,0 +1,16 @@
+# Capturas de tela e resultados dos testes (sao gerados de novo, nao precisa guardar)
+delta-zip/delta/teste/saida/
+
+# Lixo do Windows / editores
+Thumbs.db
+desktop.ini
+*.lnk
+~$*
+
+# Dependencias, se algum dia aparecerem
+node_modules/
+
+# Nada de segredo no repositorio
+.env
+*.key
+secrets.json

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delta</title>
+<link rel="stylesheet" href="painel.css">
+</head>
+<body>
+<header class="topo">
+  <div class="marca"><img src="logo.png" alt="Aura"><span class="coach">Delta</span></div>
+  <div class="dir"><button id="btnModo" class="btn mini" type="button">modo</button><div id="selo" class="selo cinza">aguardando</div><button id="btnSom" class="btn mini ico" type="button" aria-pressed="false" title="Som desligado. Clique para tocar um bipe quando entrar mensagem de VIP/Baleia ou vencer um follow-up.">🔕</button></div>
+  <div id="contaBadge" class="conta-badge" hidden></div>
+  <div id="faTopo" class="fa-topo" hidden></div>
+  <div id="radarGlobal" class="radar-g" role="status" aria-label="Radar das 3 contas" hidden></div>
+  <button id="btnUseiTopo" class="btn mini usei" type="button" aria-label="Usei esta jogada" hidden>✓ Usei</button>
+  <button id="btnCopiarTopo" class="btn mini rosa" type="button" title="Copiar o roteiro e já marcar como usado (tecla C ou Enter)" hidden>Copiar</button>
+  <button id="btnMini" class="btn mini ico" type="button" aria-pressed="false" title="Minimizar o Delta: fã, relógio, fase, preço e roteiro (tecla M)" hidden>▴</button>
+</header>
+
+<section id="telaLogin" class="tela" hidden>
+  <h2>Entrar no Delta</h2>
+  <p class="fraco">Use o mesmo e-mail e senha do Aura.</p>
+  <form id="formLogin">
+    <label>E-mail<input id="email" type="email" autocomplete="username" required></label>
+    <label>Senha<input id="senha" type="password" autocomplete="current-password" required></label>
+    <button class="btn rosa" type="submit">Entrar</button>
+    <p id="erroLogin" class="erro"></p>
+  </form>
+</section>
+
+<section id="telaApp" class="tela" hidden>
+  <div id="alertas"></div>
+  <div id="conteudo"></div>
+</section>
+
+<footer class="rodape"><span>Delta só sugere. Você envia.</span><span class="rod-acoes"><button id="btnAcoplar" class="link" type="button" title="Grudar a janelinha na janela da Privacy deste perfil">acoplado</button><button id="btnSair" class="link" hidden>sair</button></span></footer>
+<script src="config.js"></script>
+<script src="motor.js"></script>
+<script src="painel.js"></script>
+</body>
+</html>
