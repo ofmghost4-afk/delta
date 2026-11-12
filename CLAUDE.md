@@ -1,7 +1,7 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.3.8**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.3.9**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
 - `coach-ext/` → a extensão: `painel.js` (~1.185 linhas: use Grep, não leia inteiro) + 3 módulos que carregam ANTES dele: `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
@@ -12,7 +12,7 @@ Versão atual: **2.3.8**. Responda em português, curto, com no máximo 3 passos
 - `aura-zip/` → cópia de CONSULTA do Aura (outra extensão). Não editar.
 
 ## Ambiente
-- Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`.
+- Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`, `delta_coach_v2_3_9_nomes_conta`.
 - Função `coach-ia` publicada: versão 8 (Grok `grok-4.20-0309-non-reasoning`, reserva `grok-4.7`; secret `AI_API_KEY` no Supabase).
 - Contas: `arrudafree` (Chrome Profile 30), `xlunavitaligratis` (Profile 31; no banco a conta se chama **"Luna"**), `louisefree` (Profile 34).
 - Modo Palco: Privacy 1030×860 à esquerda + Delta 410×860 à direita, as 3 contas empilhadas; troca pelo nome no topo do Delta ou Alt+1/2/3.
@@ -36,7 +36,7 @@ Versão atual: **2.3.8**. Responda em português, curto, com no máximo 3 passos
 - Depois de mudar a extensão: subir `version` no `manifest.json`, registrar na `COACH_SPEC.md`, e pedir ao usuário para recarregar o Delta nos 3 perfis (`chrome://extensions`) + F5 na Privacy.
 
 ## Pendências conhecidas
-- Luna fica fora de `coach_ppvs` e `coach_placar` (comparam "xlunavitaligratis" com a conta "Luna" do banco). Não corrigido.
+- (Resolvido na 2.3.9) Luna ("xlunavitaligratis" no Delta, "Luna" em `emp_ppvs`): `central.coach_nomes_conta()` junta os dois nomes em `coach_ppvs`, `coach_placar` e nas conversões.
 - `emp_jogadas` tem jogadas de teste da arrudafree de 10/11/2026 (não apagar sem o usuário pedir).
 - No Mac o Delta não é executado, só editado; não há extensão carregada no Chrome de lá. Os launchers do Mac (`abrir_3_perfis.command/.sh`) continuam na lógica da 2.0.1: perfis genéricos ("Profile 1/2/3") e tela em 3 terços, sem o Modo Palco. Não foram atualizados e não dá para testá-los pelo Windows.
 - Uso das conversas da momoi como base foi autorizado pelo usuário em 12/11/2026 (exemplos curados e sem nomes).
