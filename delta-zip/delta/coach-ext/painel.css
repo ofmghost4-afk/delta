@@ -631,3 +631,23 @@ body.mini #conteudo>.barra-doca{display:flex!important;align-items:center;gap:6p
 .dobra-preco .preco .faixa{display:none}
 /* doca estreita (300 px): a cor do relógio já diz o estado; o rótulo "esperando" sai para o nome caber */
 body.mini.compacto .ft-rel small{display:none}
+
+/* ---------- v2.4.3 · visão de gestor (painel.html?gestor=1, aba cheia) ---------- */
+/* Tela larga e de leitura: mesmos tokens, um nível de cartão, números grandes e rótulo pequeno. */
+body[data-gestor] #conteudo{max-width:1060px;margin:0 auto;padding:var(--e5) var(--e4) var(--e6)}
+body[data-gestor] .topo .dir,body[data-gestor] .topo .fa-topo,body[data-gestor] .topo .radar-g,body[data-gestor] .rod-acoes #btnAcoplar{display:none}
+.g-topo{display:flex;align-items:center;gap:var(--e2);margin-bottom:var(--e4)}
+.g-topo h2{font-size:var(--t-xl);font-weight:800;margin:0}
+.g-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--e3);margin-bottom:var(--e4)}
+.g-cartao{background:var(--s1);border:1px solid var(--linha);border-radius:var(--r-l);padding:var(--e3) var(--e4)}
+.g-rot{font-size:var(--t-xs);color:var(--tx3);text-transform:lowercase}
+.g-num{font-size:var(--t-xxl);font-weight:800;line-height:1.15;color:var(--dinheiro)}
+.g-sub{font-size:var(--t-s);color:var(--tx2)}
+body[data-gestor] h3{font-size:var(--t-l);margin:var(--e5) 0 var(--e2)}
+body[data-gestor] h4{font-size:var(--t-s);color:var(--tx3);font-weight:600;margin:var(--e4) 0 var(--e1)}
+.g-tab{width:100%;border-collapse:collapse;font-size:var(--t-s)}
+.g-tab th{text-align:left;font-weight:600;color:var(--tx3);font-size:var(--t-xs);padding:var(--e1) var(--e2);border-bottom:1px solid var(--linha2)}
+.g-tab td{padding:var(--e2);border-bottom:1px solid var(--linha);color:var(--tx2)}
+.g-tab td:first-child{color:var(--tx)}
+.g-tab th.num,.g-tab td.num{text-align:right}
+.g-tab tr:hover td{background:var(--s1)}

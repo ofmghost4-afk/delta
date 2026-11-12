@@ -566,6 +566,16 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Passivo**: nada de novo na Privacy; `leitor.js` intocado. O que muda é só *quando* a chamada à `coach-ia` sai.
 - **Testes**: 3 conferências novas no `estatico.mjs` (liga só pela chave do JSON; os 3 freios existem no JSON; pedido fora do desenho e uma vez por roteiro). `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok. Conferido na prévia (VIP): 1 pedido só apesar do redesenho de 1 s, e depois de desligar na mão não pediu de novo.
 
+## 20ad. v2.4.3 (visão de gestor)
+
+- **Por quê**: o usuário quis a camada de gestão (estilo CRM de agência) sem sair da extensão e sem site novo. Opção A do plano: uma aba cheia do Chrome dentro da própria extensão, em vez de um dashboard web hospedado fora.
+- **Como abre**: `painel.html?gestor=1` — link "Abrir numa aba" na aba **Mais** (`<a target="_blank">` comum; o painel continua sem mexer em abas). O módulo `painel-gestor.js` carrega antes do `painel.js` e define `GESTOR`.
+- **O que mostra** (tudo por RPC que já existia, nada de SQL novo): hoje por conta + total (`coach_placar`), últimas 8 h com receita/vendas/PPVs/jogadas, roteiros mais usados e VIPs/baleias atendidos (`coach_relatorio_turno`), operadores (`coach_placar_chatter`), roteiros da semana (`coach_conversao_semana`) e variantes que mais venderam (`coach_conversao_variantes`).
+- **Só leitura**: a tela não grava nada. Na aba de gestor o painel **não publica radar** (`radarTick` não entra no ar — ela não é um atendente), **não pede a tela** da Privacy (`pedirEstado`) e **não acopla nem redimensiona janela** (`reacoplarSeTelaMudou`/`cabeNaTela` ficam de fora), porque ali `chrome.windows.update` pegaria a janela inteira do Chrome. Recarrega sozinha a cada 60 s.
+- **Visual**: só tokens existentes (`skills/tokens.md`), um nível de cartão, número grande com rótulo pequeno, tabelas com números à direita e `tabular-nums`. Nenhum emoji novo de interface. Largura máxima de 1060 px centrada.
+- **Cuidado de dado**: `grandes` do `coach_relatorio_turno` é `{nome, total, baleia}` e o valor é o **total na empresa**, não a receita do turno — a tabela diz "já gastou (total)".
+- **Testes**: `estatico.mjs` pega o módulo novo sozinho (regra `painel*.js`): passividade e declaração no `painel.html`. `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok. Conferido na prévia a 1200×900 com os dados de mentira do `shim.js`, e o painel normal (`?c=vip`) continua igual.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

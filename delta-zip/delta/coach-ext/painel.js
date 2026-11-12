@@ -922,6 +922,8 @@ function desenhar() {
   if (editando) { if (document.querySelector("#conteudo input.campo")) return; editando = null; }
   // v2.3.13: digitando uma nota/tag numa aba o painel CONTINUA atualizando; o remendar() não mexe no campo em foco
   if (!sessao || !R) { useiTopo(null); copiarTopo(null); faTopo(null); radar(null); desenharRadar(); return; }
+  // v2.4.3: aba cheia da visão de gestor (painel.html?gestor=1). Só leitura; não desenha o painel de atendimento.
+  if (GESTOR) { const vivoG = $("conteudo"), g = document.createElement("div"); try { desenharGestor(g); } finally { remendar(vivoG, g); } return; }
   const lembreteVencido = conferirLembretes();
   document.body.classList.toggle("urgente-lembrete", lembreteVencido);
   const vivo = $("conteudo"), a = document.createElement("div"); useiTopo(null); copiarTopo(null);
@@ -1281,7 +1283,9 @@ chrome.storage.onChanged.addListener((ch, area) => {
   // o Chrome só libera áudio depois de um clique na janelinha: aproveita o primeiro para destravar o bipe
   document.addEventListener("pointerdown", () => { if (som && audio && audio.state === "suspended") audio.resume(); else if (som && !audio) { try { audio = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {} } }, { capture: true });
   $("btnCopiarTopo").addEventListener("click", (ev) => copiarAtual(ev));
-  setInterval(radarTick, 5000); setTimeout(radarTick, 1500); // v2.2: radar das 3 contas (publica e lê a cada ~20 s)
+  // v2.4.3: na aba de gestor o Delta não publica radar (não é um atendente na tela), só lê quando pedem.
+  if (!GESTOR) { setInterval(radarTick, 5000); setTimeout(radarTick, 1500); } // v2.2: radar das 3 contas (publica e lê a cada ~20 s)
+  else setInterval(() => carregarGestor(), 60000);
   await chrome.storage.local.set({ miniAltura: ALT_MINI }); // versões antigas guardavam 180 + moldura
   perfis = s.perfis || {}; contaDoPerfil = s.contaDoPerfil || null;
   sessao = s.sessao || null; origem = s.origem != null ? s.origem : null;
@@ -1294,6 +1298,7 @@ chrome.storage.onChanged.addListener((ch, area) => {
   if (mini && !sessao) await definirMini(false); else mostrarMini();
   const ac = await chrome.storage.local.get("acoplado"); $("btnAcoplar").textContent = ac.acoplado === false ? "solto" : "acoplado";
   $("btnAcoplar").addEventListener("click", alternarAcoplar);
-  await reacoplarSeTelaMudou(); setTimeout(cabeNaTela, 800);
-  mostrarTela(); pedirEstado();
+  // v2.4.3: a aba de gestor é uma aba cheia do Chrome — não acopla, não redimensiona janela e não pede a tela da Privacy.
+  if (!GESTOR) { await reacoplarSeTelaMudou(); setTimeout(cabeNaTela, 800); }
+  mostrarTela(); if (!GESTOR) pedirEstado();
 })();

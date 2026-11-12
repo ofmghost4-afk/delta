@@ -1,10 +1,10 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.4.1**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.4.3**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
-- `coach-ext/` → a extensão: `painel.js` (~1.185 linhas: use Grep, não leia inteiro) + 3 módulos que carregam ANTES dele: `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
+- `coach-ext/` → a extensão: `painel.js` (~1.190 linhas: use Grep, não leia inteiro) + 4 módulos que carregam ANTES dele: `painel-gestor.js` (visão de gestor, `painel.html?gestor=1`), `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar, com a IA no automático), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
 - `coach-ext/vendor/van.js` → VanJS 1.5.5 (MIT), único código de terceiros; `el()` do `painel.js` monta por ele e `remendar()` atualiza o DOM sem destruí-lo. Não editar o vendor.
 - `coach-ext/data/` → ÚNICO lugar dos dados: `coach_regras.json` (números e chaves), `coach_roteiros.json`, `coach_cenas.json`, `coach_exemplos.json` (exemplos reais da momoi para a IA).
 - `coach_sql.sql` → SQL do banco (fonte). `supabase/functions/coach-ia/index.ts` → função da IA.

@@ -117,7 +117,14 @@ O painel lembra o que você deixou aberto.
   usar isso.
 - **Fila** — quem está esperando, por quanto tempo, quanto já gastou.
 - **Sumidos** — quem parou de responder e vale um follow-up.
-- **Mais** — placar, conversão, subir extrato.
+- **Mais** — placar, conversão, subir extrato e o link da visão de gestor.
+
+### Visão de gestor (2.4.3)
+
+Na aba **Mais**, "Abrir numa aba": abre o Delta em tela cheia do Chrome, só
+com números — hoje por conta, o turno, operadores, roteiros da semana e as
+variantes que mais venderam. Não grava nada e não fala com a Privacy; é para
+você olhar no fim do dia, não durante o atendimento.
 
 ---
 

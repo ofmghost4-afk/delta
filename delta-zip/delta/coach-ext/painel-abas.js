@@ -165,6 +165,10 @@ function paneMais(a) {
     el("div", { class: "nota" }, "Só curiosidade, sem preço. Envie pelo recurso de mensagem em massa da própria Privacy: o Delta só copia.")));
   else a.append(el("p", { class: "vazio" }, "Abra a Privacy para eu saber qual é a conta."));
   a.append(el("h3", {}, "Fim de turno"), el("div", {}, botaoTurno())); blocoTurno(a);
+  // v2.4.3: visão de gestor numa aba cheia do Chrome (link comum, o painel não mexe em abas)
+  a.append(el("h3", {}, "Visão de gestor"),
+    el("p", { class: "fraco pequeno" }, "Placar das 3 contas, turno, operadores e conversão dos roteiros, numa aba cheia. Só leitura."),
+    el("a", { class: "btn mini", href: "painel.html?gestor=1", target: "_blank", rel: "noopener" }, "Abrir numa aba"));
   a.append(el("h3", {}, "Sessão"), el("p", { class: "pequeno" }, "Login: " + ((sessao && sessao.email) || ""), el("br"), "Conta da Privacy nesta janela: " + ((est && est.conta) || "nenhuma")));
   a.append(el("h3", {}, "Subir extrato novo"), el("p", { class: "fraco pequeno" }, "Baixe o extrato de vendas na Privacy (arquivo .xlsx) e escolha aqui. Vendas que já estão na base não entram de novo."));
   a.append(el("input", { type: "file", accept: ".xlsx", class: "arq", onchange: escolherExtrato }));
