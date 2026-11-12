@@ -70,6 +70,12 @@ const dif = pontos.filter((p) => p.padrao !== p.padraoAntigo);
 console.log("regex antiga x nova de preço: " + dif.length + " pontos mudaram (a antiga marcava 'mencionou_preco' a mais; esses " + dif.filter((p) => p.padraoAntigo === "mencionou_preco").length + " pontos tiveram venda em " + pct(dif.filter((p) => p.venda60).length, dif.length) + " dos casos)");
 console.log("\n-- Momento de ofertar --");
 const mo = ok.filter((p) => p.r.momentoOfertar), sem = ok.filter((p) => !p.r.momentoOfertar);
+const splits = [["treino (conversas pares)", (p) => p.sala % 2 === 0], ["teste (conversas ímpares)", (p) => p.sala % 2 === 1]];
+for (const [nome, f] of splits) {
+  const tot = ok.filter(f), com = mo.filter(f), baseS = tot.filter((p) => p.venda60).length / tot.length;
+  console.log("   " + nome + ": base " + pct(tot.filter((p) => p.venda60).length, tot.length) + " · COM banner " + taxa(com) + " lift " + (com.length ? (com.filter((p) => p.venda60).length / com.length / baseS).toFixed(2) + "×" : "n/d") + " · SEM banner " + taxa(tot.filter((p) => !p.r.momentoOfertar)));
+}
+console.log("   por gatilho: " + Object.entries(cont(mo, (p) => p.r.momentoOfertar.gatilho)).map(([k, n]) => k + " " + taxa(mo.filter((p) => p.r.momentoOfertar.gatilho === k)) + " lift " + lift(mo.filter((p) => p.r.momentoOfertar.gatilho === k))).join(" · "));
 console.log("banner ligado em " + mo.length + " de " + ok.length + " pontos (" + pct(mo.length, ok.length) + ") · por padrão: " + ord(cont(mo, (p) => p.padrao)));
 console.log("venda em 60 min COM banner: " + taxa(mo) + " lift " + lift(mo) + " · SEM banner: " + taxa(sem) + " lift " + lift(sem));
 for (const pd of R.momento_ofertar.padroes) { const g = mo.filter((p) => p.padrao === pd); console.log("   " + pd + " com banner: " + taxa(g) + " lift " + lift(g)); }

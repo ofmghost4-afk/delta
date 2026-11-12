@@ -160,6 +160,7 @@ console.log("== compliance enquanto digita · Aho-Corasick (v2.3.14) ==");
   confere("mesmo que a lista peça bloqueio_visual, o painel rebaixa para aviso", M.alertas("isto é um teste", {}, Object.assign({}, R, { compliance_digitando: CD2 })).filter((x) => x.digitando).every((x) => x.nivel === "aviso"), null);
 }
 console.log("== Momento de ofertar (v2.3.15) ==");
+const _padroesOrig = R.momento_ofertar.padroes; R.momento_ofertar.padroes = ["mencionou_preco", "rapido_positivo"]; // os testes antigos exercitam o gatilho por padrão (no JSON ele agora vem vazio)
 {
   const MO = R.momento_ofertar, base = { padrao: "mencionou_preco", total: 0, ultCompraValor: 0, ultPpv: null, fu: null }, fz = { id: "hora_de_vender" };
   confere("o bloco existe, ativo, com padrões e marcas vindos do JSON", MO && MO.ativo === true && MO.padroes.includes("mencionou_preco") && MO.padroes.includes("rapido_positivo") && MO.marcas_oferta.length > 0, MO && MO.padroes);
@@ -214,12 +215,12 @@ console.log("== Momento de ofertar (v2.3.15) ==");
 }
 console.log("== Roteiro de oferta sugerido (v2.3.17) ==");
 {
-  const mo = { padrao: "mencionou_preco", motivo: "x" }, fzv = { id: "hora_de_vender" }, SG = R.momento_ofertar.sugestao;
+  const mo = { gatilho: "mencionou_preco", padrao: "mencionou_preco", motivo: "x" }, fzv = { id: "hora_de_vender" }, SG = R.momento_ofertar.sugestao;
   const imag = ROT.roteiros.find((x) => x.id === "VD_IMAGINE"), ped = ROT.roteiros.find((x) => x.id === "VD_PEDIU_PRECO");
-  confere("o bloco 'sugestao' existe e os ids sugeridos são roteiros de oferta que existem", SG && SG.ativo === true && Object.values(SG.por_padrao).every((id) => R.momento_ofertar.roteiros_oferta.includes(id) && ROT.roteiros.some((x) => x.id === id)), SG);
+  confere("o bloco 'sugestao' existe e os ids sugeridos são roteiros de oferta que existem", SG && SG.ativo === true && Object.values(SG.por_gatilho).every((id) => R.momento_ofertar.roteiros_oferta.includes(id) && ROT.roteiros.some((x) => x.id === id)), SG);
   let sg = M.sugestaoOferta(mo, imag, R, ROT, fzv);
   confere("roteiro atual é o aquecimento: sugere VD_PEDIU_PRECO para quem falou de preço", sg && sg.id === "VD_PEDIU_PRECO" && sg.atual === "VD_IMAGINE" && sg.situacao.length > 5, sg);
-  confere("rapido_positivo sugere VD_FECHAR", M.sugestaoOferta({ padrao: "rapido_positivo" }, imag, R, ROT, fzv).id === "VD_FECHAR", null);
+  confere("rapido_positivo sugere VD_FECHAR", M.sugestaoOferta({ gatilho: "rapido_positivo", padrao: "rapido_positivo" }, imag, R, ROT, fzv).id === "VD_FECHAR", null);
   confere("se o roteiro atual já é de oferta: não sugere", M.sugestaoOferta(mo, ped, R, ROT, fzv) === null, null);
   confere("fora das fases do JSON ou sem momento: não sugere", M.sugestaoOferta(mo, imag, R, ROT, { id: "rapport" }) === null && M.sugestaoOferta(null, imag, R, ROT, fzv) === null, null);
   confere("sugestao.ativo:false desliga", M.sugestaoOferta(mo, imag, Object.assign({}, R, { momento_ofertar: Object.assign({}, R.momento_ofertar, { sugestao: Object.assign({}, SG, { ativo: false }) }) }), ROT, fzv) === null, null);
@@ -228,7 +229,7 @@ console.log("== Roteiro de oferta sugerido (v2.3.17) ==");
   const base2 = calc(Object.assign({}, venda2, { padrao: "mencionou_preco" })), atual = base2.jogada.roteiro;
   const ofertas2 = R.momento_ofertar.roteiros_oferta.filter((id) => id !== atual);
   const alvo2 = atual === "VD_FECHAR" ? "VD_LEGENDA" : "VD_FECHAR"; // o roteiro atual sai da lista de oferta; o sugerido é outro
-  const R3 = () => Object.assign({}, R, { momento_ofertar: Object.assign({}, R.momento_ofertar, { roteiros_oferta: ofertas2, sugestao: Object.assign({}, R.momento_ofertar.sugestao, { por_padrao: { mencionou_preco: alvo2 } }) }) });
+  const R3 = () => Object.assign({}, R, { momento_ofertar: Object.assign({}, R.momento_ofertar, { roteiros_oferta: ofertas2, sugestao: Object.assign({}, R.momento_ofertar.sugestao, { por_gatilho: { mencionou_preco: alvo2 } }) }) });
   r = calc(Object.assign({}, venda2, { padrao: "mencionou_preco", R: R3() }));
   confere("calcular(): roteiro atual fora da lista de oferta → traz a sugestão, ainda não aplicada", r.sugestaoOferta && r.sugestaoOferta.id === alvo2 && r.sugestaoOferta.aplicada === false && r.sugestaoOferta.atual === atual && r.jogada.roteiro === atual, r.sugestaoOferta);
   const idSug = r.sugestaoOferta.id;
@@ -238,6 +239,37 @@ console.log("== Roteiro de oferta sugerido (v2.3.17) ==");
   confere("calcular(): o momento passou: o pedido de ver o roteiro some sozinho", r.sugestaoOferta === null && r.jogada.roteiro === atual, r.jogada.roteiro);
   r = calc(Object.assign({}, venda2, { padrao: "mencionou_preco", roteiroOferta: "NAO_EXISTE", R: R3() }));
   confere("calcular(): id de roteiro que não é a sugestão é ignorado", r.sugestaoOferta.aplicada === false && r.jogada.roteiro === atual, null);
+}
+R.momento_ofertar.padroes = _padroesOrig;
+console.log("== Momento de ofertar v2: gatilhos medidos nos dados (v2.3.18) ==");
+{
+  const MO = R.momento_ofertar, T = Date.parse("2026-11-10T22:00:00-03:00"), MIN = 60000;
+  const c0 = (o) => Object.assign({ agora: T, padrao: null, total: 0, ultCompraValor: 0, ultPpv: null, fu: null, ppvs: [], ultCompraEm: null, ultFa: null, daConta: [] }, o), fzv = { id: "pos_compra" };
+  confere("padrões vêm VAZIOS no JSON (não mostraram ganho) e os gatilhos medidos estão ligados", MO.padroes.length === 0 && MO.gatilhos.compra_recente_min === 30 && MO.gatilhos.sequencia.n === 3 && MO.gatilhos.resposta_lenta_min === 30, MO.gatilhos);
+  let g = M.momentoOfertar(c0({ ultCompraEm: T - 12 * MIN }), R, fzv);
+  confere("comprou há 12 min: gatilho compra_recente, com o tempo no texto", g && g.gatilho === "compra_recente" && g.motivo.includes("12 min"), g);
+  confere("comprou há 31 min: não", M.momentoOfertar(c0({ ultCompraEm: T - 31 * MIN }), R, fzv) === null, null);
+  const compras = (n) => Array.from({ length: n }, (_, i) => ({ comprado: true, t: T - (5 + i * 10) * MIN, compradoEm: T - (4 + i * 10) * MIN }));
+  g = M.momentoOfertar(c0({ ultCompraEm: T - 4 * MIN, ppvs: compras(3) }), R, fzv);
+  confere("3 compras na última hora: gatilho sequencia (vale mais que compra recente)", g && g.gatilho === "sequencia" && g.motivo.includes("3 PPVs"), g);
+  confere("2 compras recentes: cai no gatilho compra_recente", M.momentoOfertar(c0({ ultCompraEm: T - 4 * MIN, ppvs: compras(2) }), R, fzv).gatilho === "compra_recente", null);
+  confere("3 compras mas a última foi há mais de uma hora da janela: não conta como sequência", (() => { const h = M.momentoOfertar(c0({ ppvs: [90, 100, 110].map((m) => ({ comprado: true, t: T - m * MIN, compradoEm: T - m * MIN })) }), R, fzv); return h === null; })(), null);
+  const lento = (min) => c0({ ultCompraEm: T - 5 * MIN, ultFa: { t: T - MIN }, daConta: [{ t: T - MIN - min * MIN }] });
+  confere("ele levou 40 min para responder: o clima esfriou, sem banner", M.momentoOfertar(lento(40), R, fzv) === null, null);
+  confere("ele levou 10 min para responder: banner", !!M.momentoOfertar(lento(10), R, fzv), null);
+  confere("fase descanso, objeção ou vulnerável barra", ["descanso", "objecao", "vulneravel"].every((f) => M.momentoOfertar(c0({ ultCompraEm: T - 5 * MIN }), R, { id: f }) === null), null);
+  confere("pos_compra em aftercare (fim de sessão) barra: quem manda é o aftercare", M.momentoOfertar(c0({ ultCompraEm: T - 5 * MIN }), R, { id: "pos_compra", aftercare: "aftercare_1" }) === null, null);
+  confere("PPV pendente barra", M.momentoOfertar(c0({ ultCompraEm: T - 5 * MIN, ultPpv: { comprado: false, t: 1 }, fu: { n: 1 } }), R, fzv) === null, null);
+  confere("padrão sozinho (rapido_positivo) NÃO dispara com padroes vazio", M.momentoOfertar(c0({ padrao: "rapido_positivo", total: 500 }), R, fzv) === null, null);
+  const sem = (k, v) => Object.assign({}, R, { momento_ofertar: Object.assign({}, MO, { gatilhos: Object.assign({}, MO.gatilhos, { [k]: v }) }) });
+  confere("compra_recente_min:0 desliga o gatilho; sequencia:null desliga o outro", M.momentoOfertar(c0({ ultCompraEm: T - 5 * MIN }), sem("compra_recente_min", 0), fzv) === null && M.momentoOfertar(c0({ ultCompraEm: T - 4 * MIN, ppvs: compras(3) }), sem("sequencia", null), fzv).gatilho === "compra_recente", null);
+  confere("ativo:false desliga tudo", M.momentoOfertar(c0({ ultCompraEm: T - 5 * MIN }), Object.assign({}, R, { momento_ofertar: Object.assign({}, MO, { ativo: false }) }), fzv) === null, null);
+  // integração: uma conversa em que ele acabou de comprar
+  const venda = { msgs: papo.concat([[200, true, "gostei muito"], [30, true, "quero mais"]]), ppvs: [{ msg_id: "pp1", preco: 40, enviado_em: new Date(AG - 12 * 60000).toISOString(), comprado: true, comprado_em: new Date(AG - 10 * 60000).toISOString() }] };
+  r = calc(venda);
+  confere("calcular(): comprou há 10 min traz momentoOfertar com gatilho compra_recente", !!r.momentoOfertar && r.momentoOfertar.gatilho === "compra_recente" && r.momentoOfertar.motivo.length > 20, [r.fase.id, r.momentoOfertar]);
+  r = calc(Object.assign({}, venda, { ppvs: [Object.assign({}, venda.ppvs[0], { enviado_em: new Date(AG - 5 * 3600000).toISOString(), comprado_em: new Date(AG - 5 * 3600000 + 60000).toISOString() })] }));
+  confere("calcular(): comprou há 5 h: sem banner", r.momentoOfertar === null, r.momentoOfertar);
 }
 console.log("== mensagem em massa do dia (item 12) ==");
 const contas = R.contas_atendidas, dia = 86400000, vistos = new Set();

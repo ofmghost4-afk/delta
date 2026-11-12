@@ -852,13 +852,32 @@
   // algo), a fase não está em fases_barram e não há PPV pendente (aí a jogada é cobrar o que já foi enviado). Só dá prioridade e
   // destaque: o motor nunca envia nem troca o roteiro por causa disto.
   function momentoOfertar(c, R, fz) {
-    const MO = R && R.momento_ofertar; if (!MO || MO.ativo === false || !c || !c.padrao) return null;
-    if (!(MO.padroes || []).includes(c.padrao)) return null;
+    const MO = R && R.momento_ofertar; if (!MO || MO.ativo === false || !c) return null;
     if (fz && (MO.fases_barram || []).includes(fz.id)) return null;
+    if (fz && MO.barrar_aftercare !== false && fz.aftercare) return null; // fim de sessão: quem manda é o aftercare
     if (MO.ppv_pendente !== "ofertar" && c.ultPpv && c.ultPpv.comprado !== true && c.fu) return null;
-    const min = Number((MO.gasto_min_brl || {})[c.padrao]) || 0;
-    if (min > 0 && !((Number(c.total) || 0) >= min || (Number(c.ultCompraValor) || 0) > 0)) return null;
-    return { padrao: c.padrao, motivo: (MO.motivos || {})[c.padrao] || "Bom momento para ofertar." };
+    const G = MO.gatilhos || {}, MOT = MO.motivos || {}, texto = (k, v) => String(MOT[k] || "Bom momento para ofertar.").replace("{n}", v.n).replace("{min}", v.min);
+    // o clima esfriou: ele demorou muito para responder a ÚLTIMA fala da conta (medido: ~7% de chance de compra na hora seguinte)
+    if (Number(G.resposta_lenta_min) > 0 && c.ultFa && Array.isArray(c.daConta)) {
+      const antes = c.daConta.filter((m) => m.t < c.ultFa.t);
+      if (antes.length && (c.ultFa.t - antes[antes.length - 1].t) / MIN > Number(G.resposta_lenta_min)) return null;
+    }
+    // 1) sequência quente: n compras (PPVs comprados) na janela
+    const S = G.sequencia;
+    if (S && Number(S.n) > 0 && Array.isArray(c.ppvs)) {
+      const lim = c.agora - (Number(S.janela_min) || 60) * MIN, n = c.ppvs.filter((p) => p.comprado === true && (p.compradoEm || p.t) > lim).length;
+      if (n >= Number(S.n)) return { gatilho: "sequencia", padrao: c.padrao || null, motivo: texto("sequencia", { n, min: "" }) };
+    }
+    // 2) comprou há pouco
+    if (Number(G.compra_recente_min) > 0 && c.ultCompraEm && c.agora >= c.ultCompraEm && c.agora - c.ultCompraEm <= Number(G.compra_recente_min) * MIN)
+      return { gatilho: "compra_recente", padrao: c.padrao || null, motivo: texto("compra_recente", { n: "", min: Math.max(1, Math.round((c.agora - c.ultCompraEm) / MIN)) }) };
+    // 3) padrão do fã (só se listado em 'padroes'; vazio por padrão: não mostrou ganho nos dados)
+    if (c.padrao && (MO.padroes || []).includes(c.padrao)) {
+      const min = Number((MO.gasto_min_brl || {})[c.padrao]) || 0;
+      if (min > 0 && !((Number(c.total) || 0) >= min || (Number(c.ultCompraValor) || 0) > 0)) return null;
+      return { gatilho: c.padrao, padrao: c.padrao, motivo: texto(c.padrao, { n: "", min: "" }) };
+    }
+    return null;
   }
   // v2.3.17: roteiro de oferta que combina com o padrão do fã, quando o roteiro atual não é de oferta (só sugere; quem decide é o painel/operador)
   function sugestaoOferta(mo, rotAtual, R, ROT, fz) {
@@ -866,7 +885,7 @@
     if (!(SG.fases || []).includes(fz.id)) return null;
     const ofertas = MO.roteiros_oferta || [];
     if (rotAtual && ofertas.includes(rotAtual.id)) return null; // o atual já é de oferta
-    const id = (SG.por_padrao || {})[mo.padrao]; if (!id || !ofertas.includes(id)) return null;
+    const id = (SG.por_gatilho || {})[mo.gatilho] || (SG.por_padrao || {})[mo.padrao]; if (!id || !ofertas.includes(id)) return null;
     const r = (ROT.roteiros || []).find((x) => x.id === id); if (!r) return null;
     return { id, situacao: r.situacao || "", atual: rotAtual ? rotAtual.id : null };
   }

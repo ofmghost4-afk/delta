@@ -1,7 +1,7 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.3.17**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.3.18**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
 - `coach-ext/` → a extensão: `painel.js` (~1.185 linhas: use Grep, não leia inteiro) + 3 módulos que carregam ANTES dele: `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
@@ -9,7 +9,7 @@ Versão atual: **2.3.17**. Responda em português, curto, com no máximo 3 passo
 - `coach-ext/data/` → ÚNICO lugar dos dados: `coach_regras.json` (números e chaves), `coach_roteiros.json`, `coach_cenas.json`, `coach_exemplos.json` (exemplos reais da momoi para a IA).
 - `coach_sql.sql` → SQL do banco (fonte). `supabase/functions/coach-ia/index.ts` → função da IA.
 - `teste/ia/` → regressão da IA com promptfoo (manual, precisa de chave xAI sua; ver o cabeçalho do `promptfooconfig.yaml`). Só conversas inventadas.
-- `teste/simulacao/replay.mjs` (base do banco: emp_mensagens/emp_ppvs/emp_compras) e `replay_momoi.mjs` (conversas da momoi, `central.delta_msgs`) → simulam chats no motor e imprimem só números; dados dos fãs ficam fora do git. Ver COACH_SPEC 20x e 20y.
+- `teste/simulacao/replay.mjs` (base do banco: emp_mensagens/emp_ppvs/emp_compras) e `replay_momoi.mjs` (conversas da momoi, `central.delta_msgs`) → simulam chats no motor e imprimem só números; dados dos fãs ficam fora do git. `analisar_momoi.mjs` acha sinais com treino/teste. Ver COACH_SPEC 20x, 20y e 20z.
 - Scripts Windows: `abrir_3_perfis.bat/.ps1` (abre as 3 contas no Modo Palco), `arrumar_cockpit.bat/.ps1` (arruma as janelas abertas), `trocar_modelo.ps1` (ajudante Alt+1/2/3). Mac: `.command/.sh` (antigos).
 - Documentação: `COACH_SPEC.md` (seções 20c–20m = mudanças recentes), `LEIA-ME.txt` (para o usuário), `GUIA_PARA_OUTRO_CODE.md` (histórico longo: só se precisar).
 - `aura-zip/` → cópia de CONSULTA do Aura (outra extensão). Não editar.
@@ -33,7 +33,7 @@ Versão atual: **2.3.17**. Responda em português, curto, com no máximo 3 passo
 
 ## Como testar e mostrar
 - `node delta-zip/delta/teste/estatico.mjs delta-zip/delta/coach-ext` → "tudo ok".
-- `node delta-zip/delta/teste/unit_v22.mjs delta-zip/delta/coach-ext` → 121 ok (some 1 por teste novo que você criar).
+- `node delta-zip/delta/teste/unit_v22.mjs delta-zip/delta/coach-ext` → 137 ok (some 1 por teste novo que você criar).
 - Prévia sem abrir Chrome: servidor `delta-previa` (`.claude/launch.json`) → `http://127.0.0.1:4391/` (painel com dados de mentira; Palco em `/teste/previa/palco.html`).
 - Conferir no real de preferência pelo banco e pelos registros do Supabase (barato); captura de tela só se precisar.
 - Depois de mudar a extensão: subir `version` no `manifest.json`, registrar na `COACH_SPEC.md`, e pedir ao usuário para recarregar o Delta nos 3 perfis (`chrome://extensions`) + F5 na Privacy.

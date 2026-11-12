@@ -469,7 +469,7 @@ async function registrar(res) {
   try {
     await rpc("coach_registrar_jogada", { p_sala: est.conv.sala || String(est.conv.cid), p_fa_id: ficha && ficha.fa ? String(ficha.fa.id) : est.conv.perfil, p_conta: est.conta, p_fase: res.fase.id + (res.fase.tipo ? ":" + res.fase.tipo : ""), p_jogada: j.txt, p_roteiro_id: j.roteiro, p_variante: j.variante, p_preco: res.preco ? res.preco.max : null, p_modo: res.modo,
       // v2.3.16: o Delta guarda se o banner "Ofertar agora" estava ligado e se a variante usada era de oferta (mede o que vende)
-      p_momento: res.momentoOfertar ? res.momentoOfertar.padrao : null, p_oferta: res.momentoOfertar ? (j.variante >= 1 && !String(j.roteiro).startsWith("CENA_") ? res.momentoOfertar.variantes.includes(j.variante - 1) : j.variante === 0 ? res.momentoOfertar.variantes.length > 0 : false) : null });
+      p_momento: res.momentoOfertar ? res.momentoOfertar.gatilho : null, p_oferta: res.momentoOfertar ? (j.variante >= 1 && !String(j.roteiro).startsWith("CENA_") ? res.momentoOfertar.variantes.includes(j.variante - 1) : j.variante === 0 ? res.momentoOfertar.variantes.length > 0 : false) : null });
     registradas.add(chave); salvarRegistradas(); avisoRodape = "Jogada registrada.";
     if (Array.isArray(historico)) historico.unshift({ roteiro_id: j.roteiro, variante: j.variante, em: new Date().toISOString(), local: true }); // local: não some do carrossel nesta janela
   } catch (e) { avisoRodape = faltaFuncao(e) ? "Rode o coach_sql.sql no Supabase para registrar jogadas." : "Não registrou: " + e.message; }
@@ -970,7 +970,7 @@ function desenharCorpo(a) {
       el("div", { class: "sub" }, est.conta + (total != null ? " · gastou " + brl(total) + (fichaDin ? " na empresa" : " nesta conta") : "") + (res.ctx.gasto7 != null ? " · " + brl(res.ctx.gasto7) + " nos 7 primeiros dias" : "")),
       selos), rel, dadosLead(res, total)));
   // v2.3.15: Momento de ofertar (coach_regras.json > momento_ofertar). Só destaca e prioriza; não envia nem troca o roteiro.
-  if (res.momentoOfertar) a.append(el("div", { class: "ofertar-agora", role: "status", title: "Padrão lido na conversa: " + res.momentoOfertar.padrao + " · peso do boost: " + String(Math.round(res.momentoOfertar.peso * 10) / 10).replace(".", ",") + (res.momentoOfertar.pesoAprendido ? " (aprendido com as vendas)" : " (padrão do JSON)") },
+  if (res.momentoOfertar) a.append(el("div", { class: "ofertar-agora", role: "status", title: "Gatilho: " + res.momentoOfertar.gatilho + (res.momentoOfertar.padrao ? " · padrão lido: " + res.momentoOfertar.padrao : "") + " · peso do boost: " + String(Math.round(res.momentoOfertar.peso * 10) / 10).replace(".", ",") + (res.momentoOfertar.pesoAprendido ? " (aprendido com as vendas)" : " (padrão do JSON)") },
     el("b", {}, "🎯 Ofertar agora"), " · " + res.momentoOfertar.motivo + (res.momentoOfertar.variantes.length ? " As variantes de oferta vêm primeiro." : ""),
     // v2.3.17: o roteiro atual não é de oferta: oferece VER o roteiro de oferta (só troca o que aparece aqui; não envia nada)
     res.sugestaoOferta ? el("div", { class: "ofertar-sug" },

@@ -1683,17 +1683,26 @@
   "_doc": "v2.3.15: 'Momento de ofertar'. Quando o padrão do fã (calculado pelo leitor.js, só leitura) for um dos de 'padroes', ele já tiver gasto o mínimo (por padrão) e não houver PPV pendente, o painel mostra o banner 'Ofertar agora' e, nos roteiros de venda, as variantes de OFERTA passam na frente (no Thompson Sampling elas ganham 'peso_thompson' vezes a taxa sorteada; sem dados suficientes só sobem na ordem). Só prioriza e destaca: não envia nada e não troca o roteiro. 'ativo': false desliga tudo. Uma variante é de oferta se o texto tiver algum de 'marcas_oferta' (sem acento/maiúscula) OU se estiver em 'variantes_oferta' (id do roteiro -> números das variantes, a partir de 1; quando o roteiro está nessa lista ela vale no lugar das marcas).",
   "ativo": true,
   "origem": "HIPOTESE",
-  "padroes": ["mencionou_preco", "rapido_positivo"],
+  "padroes": [],
+  "gatilhos": {
+   "compra_recente_min": 30,
+   "sequencia": { "n": 3, "janela_min": 60 },
+   "resposta_lenta_min": 30,
+   "_doc": "v2.3.18, medido nas conversas da momoi (COACH_SPEC 20y/20z; treino e teste batem): quem comprou um PPV há até 30 min tem ~58-60% de chance de comprar outro na hora seguinte (lift 1,8-2,0x; base 31%); com 3+ compras na última hora sobe para ~72% (2,2-2,5x). Quem demorou mais de 30 min para responder cai para ~7% (0,25x): o clima esfriou, então o banner não aparece. O padrão do fã (padroes) não mostrou ganho (0,7-1,0x) e ficou VAZIO; para voltar a usar, liste os padrões em 'padroes'."
+  },
   "motivos": {
+   "sequencia": "Ele já comprou {n} PPVs na última hora: sequência quente, a próxima compra costuma vir logo.",
+   "compra_recente": "Ele comprou há {min} min: quem acabou de comprar costuma comprar de novo na hora seguinte. Depois do agradecimento, abra o próximo degrau.",
    "mencionou_preco": "Na última mensagem ele falou de preço ou compra.",
    "rapido_positivo": "Respondeu animado (emoji positivo) e com mais de uma frase."
   },
   "gasto_min_brl": { "mencionou_preco": 0, "rapido_positivo": 50 },
   "ppv_pendente": "nao_ofertar",
-  "fases_barram": ["vulneravel", "objecao"],
+  "fases_barram": ["vulneravel", "objecao", "descanso"],
+  "barrar_aftercare": true,
   "fases_roteiro": ["hora_de_vender"],
   "roteiros_ids": [],
-  "roteiros_oferta": ["VD_LEGENDA", "VD_PEDIU_PRECO", "VD_FECHAR", "VD_ENTRADA_DOM", "VD_ANCORA", "VD_SUBIR", "VD_CONTINUAR", "VD_PIX_ALTO", "VD_ESCASSEZ_REAL", "VD_POST_FIXADO", "WH_SEQUENCIA", "META7_SEQUENCIA", "MC_FA_QUENTE", "NT_NOBRE", "NT_PICO", "PF_TESAO"],
+  "roteiros_oferta": ["VD_LEGENDA", "VD_PEDIU_PRECO", "VD_FECHAR", "VD_ENTRADA_DOM", "VD_ANCORA", "VD_SUBIR", "VD_CONTINUAR", "VD_PIX_ALTO", "VD_ESCASSEZ_REAL", "VD_POST_FIXADO", "WH_SEQUENCIA", "META7_SEQUENCIA", "MC_FA_QUENTE", "NT_NOBRE", "NT_PICO", "PF_TESAO", "PC_PROXIMO", "PC_SEQUENCIA_NOITE", "WH_PULO"],
   "roteiros_oferta_doc": "v2.3.16: roteiros em que TODAS as variantes são de oferta (vendem o PPV). Ficam de fora de propósito: VD_IMAGINE (aquecimento antes do PPV), FU_* e PPV_ABANDONADO (cobrança de PPV já enviado), FT_* (chamada, vitrine, desafio) e PX_NUDGE (dica de Pix). Atenção: o boost do Thompson só muda a ORDEM quando o roteiro mistura variantes de oferta e de não-oferta; num roteiro 100% de oferta ele não altera nada (o que vale é o registro: o Delta mede se usar roteiro de oferta no momento vende mais).",
   "marcas_oferta": ["{qtd_conteudo}", "{item_maior}", "r$"],
   "variantes_oferta": {},
@@ -1701,7 +1710,7 @@
   "sugestao": {
    "ativo": true,
    "fases": ["hora_de_vender"],
-   "por_padrao": { "mencionou_preco": "VD_PEDIU_PRECO", "rapido_positivo": "VD_FECHAR" },
+   "por_gatilho": { "sequencia": "VD_CONTINUAR", "compra_recente": "VD_SUBIR", "mencionou_preco": "VD_PEDIU_PRECO", "rapido_positivo": "VD_FECHAR" },
    "_doc": "v2.3.17: no momento de ofertar, se o roteiro que o Delta escolheu NÃO é de oferta (ex.: o aquecimento VD_IMAGINE), o banner mostra um botão 'Ver VD_...' com o roteiro de oferta que combina com o padrão do fã. Clicar só troca o que aparece NESTA janela (e o roteiro que 'Usei' registra): não envia nada e some sozinho quando o momento passa. Só vale nas 'fases' listadas (o motor já decidiu que é hora de vender). O id precisa estar em roteiros_oferta."
   },
   "aprender_peso": { "ativo": true, "min_usos_grupo": 15, "min_peso": 1, "max_peso": 6,
