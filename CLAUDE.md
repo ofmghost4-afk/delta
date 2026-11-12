@@ -26,7 +26,7 @@ Versão atual: **2.3.8**. Responda em português, curto, com no máximo 3 passos
 - Não mexer no Aura: pasta, tabelas e funções `painel_*` (pode CHAMAR, não alterar nem apagar).
 - SQL novo ou publicar a função da IA: só com "sim" explícito do usuário; antes, conferir o banco só em leitura e mostrar o SQL.
 - Arquivos `.ps1`: só ASCII (o PowerShell lê em ANSI). Teste e2e que abre janelas: PROIBIDO (o usuário removeu).
-- Pasta sem git: olhe o arquivo antes de apagar ou sobrescrever.
+- O projeto tem git (branch `principal`) e fica no GitHub **privado** em `ofmghost4-afk/delta`. Dê `git pull` antes de editar e `git push` ao terminar: o mesmo repositório é usado no PC Windows (onde o Delta roda) e no Mac (só edição).
 
 ## Como testar e mostrar
 - `node delta-zip/delta/teste/estatico.mjs delta-zip/delta/coach-ext` → "tudo ok".
@@ -38,5 +38,5 @@ Versão atual: **2.3.8**. Responda em português, curto, com no máximo 3 passos
 ## Pendências conhecidas
 - Luna fica fora de `coach_ppvs` e `coach_placar` (comparam "xlunavitaligratis" com a conta "Luna" do banco). Não corrigido.
 - `emp_jogadas` tem jogadas de teste da arrudafree de 10/11/2026 (não apagar sem o usuário pedir).
-- Mac ainda na versão 2.0.1.
+- No Mac o Delta não é executado, só editado; não há extensão carregada no Chrome de lá. Os launchers do Mac (`abrir_3_perfis.command/.sh`) continuam na lógica da 2.0.1: perfis genéricos ("Profile 1/2/3") e tela em 3 terços, sem o Modo Palco. Não foram atualizados e não dá para testá-los pelo Windows.
 - Uso das conversas da momoi como base foi autorizado pelo usuário em 12/11/2026 (exemplos curados e sem nomes).
