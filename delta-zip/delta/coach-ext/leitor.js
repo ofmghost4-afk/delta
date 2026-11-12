@@ -108,8 +108,8 @@
           ppvs.push({ id: w.id, preco: precoPpv.toFixed(2), em: new Date(emMs).toISOString(), pago: !!pagou, pago_em: "" });
         } else if (daConta && w.querySelector(SEL_MIDIA)) {
           const pago = w.querySelector(SEL_PAGO);
-          const valor = dinheiro(txt(pago)) || dinheiro(txt(w));
-          if (pago || valor) { m.ppv = true; m.preco = valor; }
+          // só vale com o elemento de preço/pago; o preço vem só dele (nunca do texto livre da mensagem)
+          if (pago) { m.ppv = true; m.preco = dinheiro(txt(pago)); }
         }
         msgs.push(m); diag.lidas++;
       });

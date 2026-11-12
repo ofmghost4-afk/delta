@@ -17,7 +17,7 @@ const json = (corpo: unknown, status = 200) =>
   new Response(JSON.stringify(corpo), { status, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
 
 const CONTAS = ["arrudafree", "xlunavitaligratis", "louisefree"];
-const MODELO = Deno.env.get("AI_MODEL") ?? "claude-haiku-5-5";
+const MODELO = Deno.env.get("AI_MODEL") ?? "claude-haiku-4-5";
 const corta = (v: unknown, n: number) => String(v ?? "").slice(0, n);
 
 // Formato da resposta (saída estruturada: o modelo é obrigado a devolver este JSON).

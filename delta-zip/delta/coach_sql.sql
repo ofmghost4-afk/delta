@@ -120,6 +120,29 @@ end $$;
 revoke all on function public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text) from public, anon;
 grant execute on function public.coach_registrar_jogada(text, text, text, text, text, text, smallint, numeric, text) to authenticated;
 
+-- 3b) Nomes da conta (interna, não é chamada pelo Delta). emp_ppvs guarda a conta
+--     como em central.emp_contas.conta (ex.: "Luna"); o Delta e emp_jogadas usam o
+--     profile_name (ex.: "xlunavitaligratis"). Devolve todos os nomes possíveis da
+--     mesma conta para comparar com "= any(...)". Sem emp_contas, devolve só o nome dado.
+create or replace function central.coach_nomes_conta(p_conta text)
+returns text[]
+language plpgsql stable security definer
+set search_path = ''
+as $$
+declare v_nomes text[];
+begin
+  if to_regclass('central.emp_contas') is null then
+    return array[p_conta];
+  end if;
+  select array_agg(distinct x) into v_nomes
+    from (select p_conta as x
+          union all select e.conta from central.emp_contas e where e.profile_name = p_conta or e.conta = p_conta
+          union all select e.profile_name from central.emp_contas e where e.profile_name = p_conta or e.conta = p_conta) z
+   where x is not null;
+  return coalesce(v_nomes, array[p_conta]);
+end $$;
+revoke all on function central.coach_nomes_conta(text) from public, anon, authenticated;
+
 -- 4) Ler PPVs da sala (Aura 1.3). Sem a tabela emp_ppvs, devolve vazio e o
 --    Coach mostra "estado do PPV indisponível".
 create or replace function public.coach_ppvs(p_sala text, p_conta text)
@@ -137,7 +160,7 @@ begin
   return query execute
     'select p.msg_id::text, p.preco::numeric, p.enviado_em::timestamptz, p.comprado::boolean, p.comprado_em::timestamptz
        from central.emp_ppvs p
-      where p.sala = $1 and p.conta = $2
+      where p.sala = $1 and p.conta = any(central.coach_nomes_conta($2))
       order by p.enviado_em desc
       limit 20'
     using p_sala, p_conta;
@@ -163,16 +186,16 @@ begin
   if to_regclass('central.emp_ppvs') is null then
     return query
       select c.cta, 0::numeric, 0::bigint, 0::bigint,
-             (select count(*) from central.emp_jogadas j where j.conta = c.cta and j.em >= v_ini)
+             (select count(*) from central.emp_jogadas j where j.conta = any(central.coach_nomes_conta(c.cta)) and j.em >= v_ini)
         from unnest(v_contas) as c(cta);
     return;
   end if;
   return query execute
     'select c.cta,
-            coalesce((select sum(p.preco) from central.emp_ppvs p where p.conta = c.cta and p.comprado and p.comprado_em >= $1), 0)::numeric,
-            (select count(*) from central.emp_ppvs p where p.conta = c.cta and p.comprado and p.comprado_em >= $1)::bigint,
-            (select count(*) from central.emp_ppvs p where p.conta = c.cta and p.enviado_em >= $1)::bigint,
-            (select count(*) from central.emp_jogadas j where j.conta = c.cta and j.em >= $1)::bigint
+            coalesce((select sum(p.preco) from central.emp_ppvs p where p.conta = any(central.coach_nomes_conta(c.cta)) and p.comprado and p.comprado_em >= $1), 0)::numeric,
+            (select count(*) from central.emp_ppvs p where p.conta = any(central.coach_nomes_conta(c.cta)) and p.comprado and p.comprado_em >= $1)::bigint,
+            (select count(*) from central.emp_ppvs p where p.conta = any(central.coach_nomes_conta(c.cta)) and p.enviado_em >= $1)::bigint,
+            (select count(*) from central.emp_jogadas j where j.conta = any(central.coach_nomes_conta(c.cta)) and j.em >= $1)::bigint
        from unnest($2::text[]) as c(cta)'
     using v_ini, v_contas;
 end $$;
@@ -232,7 +255,7 @@ begin
        from central.emp_jogadas j
        left join lateral (
          select p.preco from central.emp_ppvs p
-          where p.sala = j.sala and p.conta = j.conta and p.comprado
+          where p.sala = j.sala and p.conta = any(central.coach_nomes_conta(j.conta)) and p.comprado
             and p.comprado_em >= j.em and p.comprado_em <= j.em + interval ''60 minutes''
             and not exists (
               select 1 from central.emp_jogadas j2
@@ -285,7 +308,7 @@ begin
        from central.emp_jogadas j
        left join lateral (
          select p.preco from central.emp_ppvs p
-          where p.sala = j.sala and p.conta = j.conta and p.comprado
+          where p.sala = j.sala and p.conta = any(central.coach_nomes_conta(j.conta)) and p.comprado
             and p.comprado_em >= j.em and p.comprado_em <= j.em + interval ''60 minutes''
             and not exists (
               select 1 from central.emp_jogadas j2
@@ -380,7 +403,7 @@ begin
           vd as (select u.usuario, count(*) n, sum(p.preco) v
                    from central.emp_ppvs p
                    join lateral (select j.usuario from central.emp_jogadas j
-                                  where j.sala = p.sala and j.conta = p.conta and j.usuario is not null and j.em >= $1 and j.em <= p.comprado_em
+                                  where j.sala = p.sala and p.conta = any(central.coach_nomes_conta(j.conta)) and j.usuario is not null and j.em >= $1 and j.em <= p.comprado_em
                                   order by j.em desc, j.id desc limit 1) u on true
                   where p.comprado and p.comprado_em >= $1
                   group by u.usuario)
@@ -460,13 +483,15 @@ begin
     execute
       'select jsonb_build_object(''vendas'', count(*) filter (where p.comprado and p.comprado_em >= $1), ''receita'', coalesce(sum(p.preco) filter (where p.comprado and p.comprado_em >= $1), 0), ''ppvs'', count(*) filter (where p.enviado_em >= $1))
          from central.emp_ppvs p
-        where exists (select 1 from central.emp_jogadas j where j.usuario = $2 and j.em >= $1 and j.sala = p.sala and j.conta = p.conta)'
+        where exists (select 1 from central.emp_jogadas j where j.usuario = $2 and j.em >= $1 and j.sala = p.sala and p.conta = any(central.coach_nomes_conta(j.conta)))'
       into v_ven using v_ini, auth.uid();
     execute
       'select coalesce(jsonb_agg(t order by t.receita desc, t.usos desc), ''[]''::jsonb) from (
          select j.roteiro_id, count(*) usos, count(v.preco) vendas, coalesce(sum(v.preco), 0) receita
            from central.emp_jogadas j
-           left join lateral (select p.preco from central.emp_ppvs p where p.sala = j.sala and p.conta = j.conta and p.comprado and p.comprado_em >= j.em and p.comprado_em <= j.em + interval ''60 minutes'' order by p.comprado_em limit 1) v on true
+           left join lateral (select p.preco from central.emp_ppvs p where p.sala = j.sala and p.conta = any(central.coach_nomes_conta(j.conta)) and p.comprado and p.comprado_em >= j.em and p.comprado_em <= j.em + interval ''60 minutes''
+                    and not exists (select 1 from central.emp_jogadas j2 where j2.sala = j.sala and j2.conta = j.conta and j2.roteiro_id is not null and j2.id <> j.id and (j2.em > j.em or (j2.em = j.em and j2.id > j.id)) and j2.em <= p.comprado_em)
+                  order by p.comprado_em limit 1) v on true
           where j.usuario = $2 and j.em >= $1 and j.roteiro_id is not null
           group by j.roteiro_id order by coalesce(sum(v.preco), 0) desc, count(*) desc limit 3) t'
       into v_top using v_ini, auth.uid();

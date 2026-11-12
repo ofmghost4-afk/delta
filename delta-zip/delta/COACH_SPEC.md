@@ -457,6 +457,12 @@ Começa a quebrar o `painel.js` (1.571 linhas num arquivo só) em módulos. **Ne
 - Conferido na prévia antes e depois de cada corte: 5 abas + fluxo completo do `⚡` (clique, resposta, revisor descartando a versão com contato externo) + `📊 Fechar Turno`. **Os 7 deram texto idêntico**, mesmo tamanho e mesmo hash, sem erro no console.
 - Ainda por fazer: o miolo do `painel.js` (estado, banco, desenho) continua junto; é o pedaço mais entrelaçado e exige mais cuidado.
 
+## 20o. v2.3.9 (4 correções cirúrgicas)
+- **`coach_sql.sql` (ainda NÃO aplicado no banco)**: nova `central.coach_nomes_conta(p_conta)` (interna, sem acesso de anon/authenticated) devolve os nomes da mesma conta ("Luna" + "xlunavitaligratis"). `coach_ppvs`, `coach_placar`, `coach_conversao_semana`, `coach_conversao_variantes`, `coach_placar_chatter` e `coach_relatorio_turno` passam a comparar `emp_ppvs.conta = any(...)`. Isso resolve a Luna fora de `coach_ppvs`/`coach_placar`. No relatório de turno, o top de roteiros ganhou o mesmo "not exists" da conversão (uma venda conta em um roteiro só).
+- **`leitor.js`**: no fallback de PPV por mídia, só vira PPV se existir o elemento `SEL_PAGO`, e o preço vem só de `txt(pago)` (nunca do texto da mensagem inteira).
+- **`painel.js`**: `cenaSala` e `varsSala` ficam salvos em `chrome.storage.local` (`estadoSalas`, com a data do dia, igual `registradas`) por `salvarEstadoSalas()`; restaurados na abertura se for o mesmo dia.
+- **`supabase/functions/coach-ia/index.ts`**: modelo padrão `claude-haiku-4-5` (função ainda NÃO republicada).
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

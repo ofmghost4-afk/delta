@@ -65,6 +65,9 @@ function salvarRegistradas() { chrome.storage.local.set({ registradas: { data: h
 let copiadoEm = 0, naoCopiouEm = 0; // para o botão mostrar "Copiado" por 2,5 s mesmo com o painel redesenhando a cada segundo
 // v2.1: {placeholders} preenchidos à mão (chip de 1 clique ou digitando em cima do campo), por sala. Só na memória desta janela.
 const varsSala = new Map(); // sala -> { campo: valor }
+// v2.3.9: cena fixada/ajuste (cenaSala) e {placeholders} preenchidos (varsSala) ficam salvos neste Chrome com a data do dia,
+// igual a "registradas": fechar ou recarregar a janelinha não perde nada (amanhã começa limpo).
+function salvarEstadoSalas() { chrome.storage.local.set({ estadoSalas: { data: hojeSP(), cena: Object.fromEntries(cenaSala), vars: Object.fromEntries(varsSala) } }); }
 let editando = null; // campo em edição inline: enquanto isso o painel não redesenha
 let acaoTopo = null; // o que o "Copiar" do topo (e as teclas C / Enter) copia agora: { texto, res, n, cena }
 // ---------- v2.2 ----------
@@ -479,7 +482,7 @@ const dadosDe = (res) => Object.assign({ nome: res.nome }, res.dados || {}, vars
 function definirVar(campo, valor) {
   const k = salaK(), v = Object.assign({}, varsSala.get(k) || {});
   if (valor) v[campo] = valor; else delete v[campo];
-  varsSala.set(k, v); desenhar();
+  varsSala.set(k, v); salvarEstadoSalas(); desenhar();
 }
 function editarCampo(span, campo, atual) {
   if (editando) return;
@@ -668,14 +671,14 @@ function desenharLeitura(a, res) {
   // modo sequência (cena)
   const c = res.cena; if (!c || res.fase.id === "vulneravel") return;
   const k = est.conv.sala, cur = cenaSala.get(k) || { id: null, ajuste: 0 }, fixa = !!cenaFixa(res);
-  const selC = el("select", { class: "mini-sel", onchange: (ev) => { cenaSala.set(k, Object.assign({}, cur, { id: ev.target.value, ajuste: 0 })); desenhar(); } }, c.lista.map((x) => { const o = el("option", { value: x.id }, x.id + " · " + x.titulo); if (x.id === c.id) o.selected = true; return o; }));
+  const selC = el("select", { class: "mini-sel", onchange: (ev) => { cenaSala.set(k, Object.assign({}, cur, { id: ev.target.value, ajuste: 0 })); salvarEstadoSalas(); desenhar(); } }, c.lista.map((x) => { const o = el("option", { value: x.id }, x.id + " · " + x.titulo); if (x.id === c.id) o.selected = true; return o; }));
   const det = el("details", { class: "cena", ontoggle: (ev) => { cenaAberta = ev.target.open; } },
     el("summary", {}, "Cena · " + (c.fim ? "aftercare" : "degrau " + c.n + "/" + c.total) + " · " + c.titulo + (c.sugerida ? " (sugerida p/ o perfil)" : "") + (fixa ? " · fixada no topo" : "")));
   if (cenaAberta) det.open = true;
   // v2.1: fixa a cena no cartão principal (degrau, espera e legenda no topo, também no mini). Desafixa sozinha no fim.
   // (fica FORA do bloco recolhível, para estar sempre à vista)
   if (!c.fim) a.append(el("button", { class: "btn mini fixar" + (fixa ? " on" : ""), type: "button", "aria-pressed": fixa ? "true" : "false", title: fixa ? "Voltar a mostrar o roteiro normal no cartão principal" : "Mostrar o degrau desta cena no cartão principal (e no mini), pronto para copiar",
-    onclick: () => { cenaSala.set(k, Object.assign({}, cur, { id: c.id, fixa: !fixa })); desenhar(); } }, fixa ? "🎬 Cena fixada no topo · desafixar" : "🎬 Fixar Cena no Topo"));
+    onclick: () => { cenaSala.set(k, Object.assign({}, cur, { id: c.id, fixa: !fixa })); salvarEstadoSalas(); desenhar(); } }, fixa ? "🎬 Cena fixada no topo · desafixar" : "🎬 Fixar Cena no Topo"));
   det.append(el("div", { class: "barra" }, selC,
     el("button", { class: "btn mini", title: "degrau anterior", onclick: () => passoCena(res, -1) }, "−"),
     el("button", { class: "btn mini", title: "próximo degrau", onclick: () => passoCena(res, 1) }, "+")),
@@ -692,7 +695,7 @@ const barraDegraus = (c) => el("div", { class: "degraus" }, Array.from({ length:
 function passoCena(res, d) {
   const c = res && res.cena; if (!c || !est || !est.conv) return;
   const k = est.conv.sala, cur = cenaSala.get(k) || {};
-  cenaSala.set(k, Object.assign({}, cur, { id: c.id, ajuste: (cur.ajuste || 0) + d })); desenhar();
+  cenaSala.set(k, Object.assign({}, cur, { id: c.id, ajuste: (cur.ajuste || 0) + d })); salvarEstadoSalas(); desenhar();
 }
 // Cena fixada: o cartão principal mostra o degrau N/total, a barrinha de degraus, − / +, o aviso de espera e a legenda
 // pronta (o "Copiar" do topo copia a legenda e já marca o degrau como usado).
@@ -712,7 +715,7 @@ function desenharCenaTopo(a, res, c) {
   a.append(el("div", { class: "roteiro" },
     textoRoteiro(leg, dados), chipsFaltam(leg),
     el("div", { class: "barra" }, nav(), el("span", { class: "esp" }),
-      el("button", { class: "btn mini", type: "button", title: "Voltar ao roteiro normal", onclick: () => { cenaSala.set(k, Object.assign({}, cur, { id: c.id, fixa: false })); desenhar(); } }, "Desafixar"),
+      el("button", { class: "btn mini", type: "button", title: "Voltar ao roteiro normal", onclick: () => { cenaSala.set(k, Object.assign({}, cur, { id: c.id, fixa: false })); salvarEstadoSalas(); desenhar(); } }, "Desafixar"),
       botaoUsei(res, true),
       el("button", { class: "btn mini rosa copiar", type: "button", onclick: (ev) => copiarAtual(ev) }, rotuloCopiar(leg.texto))),
     avisoJogada() ? el("div", { class: "nota reg" + (/^(Jogada registrada|Já registrado)/.test(avisoJogada()) ? " ok" : " falhou") }, avisoJogada()) : null,
@@ -874,7 +877,7 @@ function desenhar() {
   const res = M.calcular(contexto(), R, ROT, CN);
   window.__coachUltimo = res; // para teste
   // cena fixada que chegou ao fim (passou do último degrau): desafixa sozinha e volta ao roteiro normal
-  if (res.cena && res.cena.fim && (cenaSala.get(est.conv.sala) || {}).fixa) cenaSala.set(est.conv.sala, Object.assign({}, cenaSala.get(est.conv.sala), { fixa: false }));
+  if (res.cena && res.cena.fim && (cenaSala.get(est.conv.sala) || {}).fixa) { cenaSala.set(est.conv.sala, Object.assign({}, cenaSala.get(est.conv.sala), { fixa: false })); salvarEstadoSalas(); }
   radar(res);
   desenharAlertas(res);
   desenharConta(a);
@@ -1158,11 +1161,15 @@ chrome.storage.onChanged.addListener((ch, area) => {
 (async () => {
   const [r, rot, cn, ex] = await Promise.all([fetch(chrome.runtime.getURL("data/coach_regras.json")).then((x) => x.json()), fetch(chrome.runtime.getURL("data/coach_roteiros.json")).then((x) => x.json()), fetch(chrome.runtime.getURL("data/coach_cenas.json")).then((x) => x.json()).catch(() => null), fetch(chrome.runtime.getURL("data/coach_exemplos.json")).then((x) => x.json()).catch(() => null)]);
   R = r; ROT = rot; CN = cn; EX = ex;
-  const s = await chrome.storage.local.get(["sessao", "origem", "modo", "placarLocal", "perfis", "contaDoPerfil", "mini", "alturaCheia", "registradas", "som", "lembretes", "palco"]);
+  const s = await chrome.storage.local.get(["sessao", "origem", "modo", "placarLocal", "perfis", "contaDoPerfil", "mini", "alturaCheia", "registradas", "estadoSalas", "som", "lembretes", "palco"]);
   palco = s.palco === true;
   if (palco && s.mini === true) { s.mini = false; await chrome.storage.local.set({ mini: false }); }
   lembretes = Array.isArray(s.lembretes) ? s.lembretes.filter((l) => l && l.k && l.em) : [];
   if (s.registradas && s.registradas.data === hojeSP() && Array.isArray(s.registradas.chaves)) s.registradas.chaves.forEach((k) => registradas.add(k));
+  if (s.estadoSalas && s.estadoSalas.data === hojeSP()) {
+    Object.entries(s.estadoSalas.cena || {}).forEach(([k, v]) => cenaSala.set(k, v));
+    Object.entries(s.estadoSalas.vars || {}).forEach(([k, v]) => varsSala.set(k, v));
+  }
   som = s.som === true; mostrarSom();
   $("btnSom").addEventListener("click", async () => { som = !som; await chrome.storage.local.set({ som }); mostrarSom(); bipe("vip"); });
   // o Chrome só libera áudio depois de um clique na janelinha: aproveita o primeiro para destravar o bipe
