@@ -9,7 +9,7 @@ Versão atual: **2.3.17**. Responda em português, curto, com no máximo 3 passo
 - `coach-ext/data/` → ÚNICO lugar dos dados: `coach_regras.json` (números e chaves), `coach_roteiros.json`, `coach_cenas.json`, `coach_exemplos.json` (exemplos reais da momoi para a IA).
 - `coach_sql.sql` → SQL do banco (fonte). `supabase/functions/coach-ia/index.ts` → função da IA.
 - `teste/ia/` → regressão da IA com promptfoo (manual, precisa de chave xAI sua; ver o cabeçalho do `promptfooconfig.yaml`). Só conversas inventadas.
-- `teste/simulacao/replay.mjs` → simula chats com a base real (emp_mensagens/emp_ppvs/emp_compras) no motor e imprime só números; dados dos fãs ficam fora do git. Ver COACH_SPEC 20x.
+- `teste/simulacao/replay.mjs` (base do banco: emp_mensagens/emp_ppvs/emp_compras) e `replay_momoi.mjs` (conversas da momoi, `central.delta_msgs`) → simulam chats no motor e imprimem só números; dados dos fãs ficam fora do git. Ver COACH_SPEC 20x e 20y.
 - Scripts Windows: `abrir_3_perfis.bat/.ps1` (abre as 3 contas no Modo Palco), `arrumar_cockpit.bat/.ps1` (arruma as janelas abertas), `trocar_modelo.ps1` (ajudante Alt+1/2/3). Mac: `.command/.sh` (antigos).
 - Documentação: `COACH_SPEC.md` (seções 20c–20m = mudanças recentes), `LEIA-ME.txt` (para o usuário), `GUIA_PARA_OUTRO_CODE.md` (histórico longo: só se precisar).
 - `aura-zip/` → cópia de CONSULTA do Aura (outra extensão). Não editar.
