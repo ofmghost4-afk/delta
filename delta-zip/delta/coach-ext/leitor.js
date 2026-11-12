@@ -20,6 +20,27 @@
     const m = /R\$\s*(\d{1,3}(?:[.,]\d{3})+|\d+)[.,](\d{2})(?!\d)/.exec(s || "");
     return m ? Number(m[1].replace(/[.,]/g, "") + "." + m[2]) : null;
   }
+
+  // === Classificação de padrão (passiva) ===
+  function classificarPadrao(msgs) {
+    if (!msgs || !msgs.length) return "neutro";
+    const doFan = msgs.filter(m => m.de_fa && m.texto).slice(-6);
+    if (!doFan.length) return "neutro";
+
+    const ultima = doFan[doFan.length - 1];
+    const texto = (ultima.texto || "").toLowerCase();
+    const temEmojiPositivo = /😍|🔥|❤️|🥰|😏|😘|💦|🥵|😈/.test(texto);
+    const mencionouPreco = /preço|preco|valor|quanto|pix|pago|pagar|compra|compro|r\$/.test(texto);
+    const curta = texto.length < 25;
+    const temAudio = doFan.some(m => m.tipo === "audio");
+
+    if (mencionouPreco) return "mencionou_preco";
+    if (temAudio) return "mandou_audio";
+    if (temEmojiPositivo && !curta) return "rapido_positivo";
+    if (curta && doFan.length >= 2) return "lento_curto";
+    return "neutro";
+  }
+
   // PALPITE (confirmar no DOM real): mensagem da conta com mídia e preço/cadeado = PPV.
   const SEL_MIDIA = "img, video, .vac-message-image, .vac-message-video, .vac-message-files-container, .vac-message-file-container";
   const SEL_PAGO = "[class*='price'], [class*='paid'], [class*='lock'], [class*='ppv'], [class*='preco'], [class*='pago']";
@@ -114,8 +135,16 @@
         msgs.push(m); diag.lidas++;
       });
     }
+
+    // === NOVO: calcula o padrão ===
+    const padrao = classificarPadrao(msgs);
+
     const c = campo(r);
-    return { conta, conv, salas, msgs: msgs.slice(-200), ppvs: conv && conv.sala ? ppvs.slice(-60) : [], diag, texto: c ? String(c.value || "") : "" };
+    return { 
+      conta, conv, salas, msgs: msgs.slice(-200), ppvs: conv && conv.sala ? ppvs.slice(-60) : [], 
+      diag, texto: c ? String(c.value || "") : "",
+      padrao
+    };
   }
 
   function mandar(obj) { try { chrome.runtime.sendMessage(obj, () => void chrome.runtime.lastError); } catch (_) { /* extensão recarregada: atualize a aba */ } }
@@ -129,7 +158,12 @@
     const agora = Date.now();
     if (chave !== candidato) { candidato = chave; candidatoDesde = agora; }
     if (e.conv && agora - candidatoDesde < 1200) { agendar(1300); return; }
-    const base = { t: "coach_estado", conta: e.conta, conv: e.conv, salas: e.salas, msgs: e.msgs, ppvs: e.ppvs, diag: e.diag, texto: e.texto, visivel: document.visibilityState === "visible" };
+    const base = { 
+      t: "coach_estado", conta: e.conta, conv: e.conv, salas: e.salas, 
+      msgs: e.msgs, ppvs: e.ppvs, diag: e.diag, texto: e.texto, 
+      padrao: e.padrao,
+      visivel: document.visibilityState === "visible" 
+    };
     const json = JSON.stringify(base);
     if (!forcar && json === ultimoJson) return;
     ultimoJson = json; ultimoTexto = e.texto;
