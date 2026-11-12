@@ -17,7 +17,7 @@ function calc(o) {
   const conta = o.conta || "arrudafree", cfg = Object.assign({}, R.config_por_conta[conta], o.cfg || {});
   return M.calcular({ agora: AG, conta, conv: { nome: o.nome === undefined ? "João Teste" : o.nome, perfil: "joao_teste", sala: "s1", total: null }, msgs: msgs(o.msgs || []), ppvs: o.ppvs || null,
     ficha: o.ficha === undefined ? { fa: { id: 1 }, total: 0, n: 0, ultimas: [], por_conta: [], notas: [], tags: [] } : o.ficha, compraTelaEm: o.compraTelaEm || null, config: cfg, texto: o.texto || "", modo: o.modo || "dominante",
-    historico: o.historico || null, convVar: o.convVar || null, cenaFixa: !!o.cenaFixa, ligacaoSoNome: !!o.soNome, padrao: o.padrao || null }, o.R || R, ROT, CN);
+    historico: o.historico || null, convVar: o.convVar || null, cenaFixa: !!o.cenaFixa, ligacaoSoNome: !!o.soNome, padrao: o.padrao || null, roteiroOferta: o.roteiroOferta || null }, o.R || R, ROT, CN);
 }
 const compra = (min, valor) => ({ data: new Date(AG - min * 60000).toISOString(), valor, conta: "arrudafree" });
 const fichaPag = (total, ultimas, por) => ({ fa: { id: 1 }, total, n: ultimas.length, ultimas, por_conta: por || [{ conta: "arrudafree", gasto: total, n: ultimas.length }], notas: [], tags: [] });
@@ -211,6 +211,33 @@ console.log("== Momento de ofertar (v2.3.15) ==");
   confere("calcular(): a variante marcada como oferta (nº 2) fica em primeiro e vem na lista do banner", r.variantesIdx[0] === 1 && JSON.stringify(r.momentoOfertar.variantes) === "[1]", [r.variantesIdx, r.momentoOfertar]);
   r = calc(Object.assign({}, venda, { padrao: "neutro", R: R2 }));
   confere("calcular(): sem o momento a ordem volta ao normal", r.variantesIdx[0] === 0 && r.momentoOfertar === null, r.variantesIdx);
+}
+console.log("== Roteiro de oferta sugerido (v2.3.17) ==");
+{
+  const mo = { padrao: "mencionou_preco", motivo: "x" }, fzv = { id: "hora_de_vender" }, SG = R.momento_ofertar.sugestao;
+  const imag = ROT.roteiros.find((x) => x.id === "VD_IMAGINE"), ped = ROT.roteiros.find((x) => x.id === "VD_PEDIU_PRECO");
+  confere("o bloco 'sugestao' existe e os ids sugeridos são roteiros de oferta que existem", SG && SG.ativo === true && Object.values(SG.por_padrao).every((id) => R.momento_ofertar.roteiros_oferta.includes(id) && ROT.roteiros.some((x) => x.id === id)), SG);
+  let sg = M.sugestaoOferta(mo, imag, R, ROT, fzv);
+  confere("roteiro atual é o aquecimento: sugere VD_PEDIU_PRECO para quem falou de preço", sg && sg.id === "VD_PEDIU_PRECO" && sg.atual === "VD_IMAGINE" && sg.situacao.length > 5, sg);
+  confere("rapido_positivo sugere VD_FECHAR", M.sugestaoOferta({ padrao: "rapido_positivo" }, imag, R, ROT, fzv).id === "VD_FECHAR", null);
+  confere("se o roteiro atual já é de oferta: não sugere", M.sugestaoOferta(mo, ped, R, ROT, fzv) === null, null);
+  confere("fora das fases do JSON ou sem momento: não sugere", M.sugestaoOferta(mo, imag, R, ROT, { id: "rapport" }) === null && M.sugestaoOferta(null, imag, R, ROT, fzv) === null, null);
+  confere("sugestao.ativo:false desliga", M.sugestaoOferta(mo, imag, Object.assign({}, R, { momento_ofertar: Object.assign({}, R.momento_ofertar, { sugestao: Object.assign({}, SG, { ativo: false }) }) }), ROT, fzv) === null, null);
+  // integração: força o roteiro atual a NÃO ser de oferta (tira os de oferta da lista) e confere o botão e a troca
+  const venda2 = { msgs: papo.concat([[100, true, "tô aqui"], [80, true, "pensando"], [60, true, "em você"], [20, true, "o que você tem de novo pra mim?"]]) };
+  const base2 = calc(Object.assign({}, venda2, { padrao: "mencionou_preco" })), atual = base2.jogada.roteiro;
+  const ofertas2 = R.momento_ofertar.roteiros_oferta.filter((id) => id !== atual);
+  const alvo2 = atual === "VD_FECHAR" ? "VD_LEGENDA" : "VD_FECHAR"; // o roteiro atual sai da lista de oferta; o sugerido é outro
+  const R3 = () => Object.assign({}, R, { momento_ofertar: Object.assign({}, R.momento_ofertar, { roteiros_oferta: ofertas2, sugestao: Object.assign({}, R.momento_ofertar.sugestao, { por_padrao: { mencionou_preco: alvo2 } }) }) });
+  r = calc(Object.assign({}, venda2, { padrao: "mencionou_preco", R: R3() }));
+  confere("calcular(): roteiro atual fora da lista de oferta → traz a sugestão, ainda não aplicada", r.sugestaoOferta && r.sugestaoOferta.id === alvo2 && r.sugestaoOferta.aplicada === false && r.sugestaoOferta.atual === atual && r.jogada.roteiro === atual, r.sugestaoOferta);
+  const idSug = r.sugestaoOferta.id;
+  r = calc(Object.assign({}, venda2, { padrao: "mencionou_preco", roteiroOferta: idSug, R: R3() }));
+  confere("calcular(): com o clique (roteiroOferta) mostra o roteiro de oferta e registra ele", r.sugestaoOferta.aplicada === true && r.jogada.roteiro === idSug && r.roteiro.id === idSug && r.jogada.txt.includes(idSug), [r.jogada.roteiro, r.roteiro && r.roteiro.id]);
+  r = calc(Object.assign({}, venda2, { padrao: "neutro", roteiroOferta: idSug, R: R3() }));
+  confere("calcular(): o momento passou: o pedido de ver o roteiro some sozinho", r.sugestaoOferta === null && r.jogada.roteiro === atual, r.jogada.roteiro);
+  r = calc(Object.assign({}, venda2, { padrao: "mencionou_preco", roteiroOferta: "NAO_EXISTE", R: R3() }));
+  confere("calcular(): id de roteiro que não é a sugestão é ignorado", r.sugestaoOferta.aplicada === false && r.jogada.roteiro === atual, null);
 }
 console.log("== mensagem em massa do dia (item 12) ==");
 const contas = R.contas_atendidas, dia = 86400000, vistos = new Set();

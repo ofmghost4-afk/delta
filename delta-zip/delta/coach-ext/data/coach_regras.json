@@ -1698,6 +1698,12 @@
   "marcas_oferta": ["{qtd_conteudo}", "{item_maior}", "r$"],
   "variantes_oferta": {},
   "peso_thompson": 3,
+  "sugestao": {
+   "ativo": true,
+   "fases": ["hora_de_vender"],
+   "por_padrao": { "mencionou_preco": "VD_PEDIU_PRECO", "rapido_positivo": "VD_FECHAR" },
+   "_doc": "v2.3.17: no momento de ofertar, se o roteiro que o Delta escolheu NÃO é de oferta (ex.: o aquecimento VD_IMAGINE), o banner mostra um botão 'Ver VD_...' com o roteiro de oferta que combina com o padrão do fã. Clicar só troca o que aparece NESTA janela (e o roteiro que 'Usei' registra): não envia nada e some sozinho quando o momento passa. Só vale nas 'fases' listadas (o motor já decidiu que é hora de vender). O id precisa estar em roteiros_oferta."
+  },
   "aprender_peso": { "ativo": true, "min_usos_grupo": 15, "min_peso": 1, "max_peso": 6,
    "_doc": "v2.3.16: com pelo menos min_usos_grupo jogadas em CADA grupo (usou oferta no momento x usou outra coisa no momento, últimos 60 dias, coach_momento_stats), o peso do boost vira a razão entre as taxas de venda (com suavização +1/+2), limitada a min_peso..max_peso. Antes disso vale peso_thompson." }
  },

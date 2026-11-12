@@ -108,7 +108,8 @@ let acaoTopo = null; // o que o "Copiar" do topo (e as teclas C / Enter) copia a
 // abas do Aura dentro do Delta (Ficha / Fila / Sumidos / Mais) e botão ⚡ Adaptar. Cada bloco some sozinho se a
 // função dele ainda não existe no banco (coach_sql.sql v2.2 não rodado).
 let convVar = null, convVarEm = 0, convVarDisp = true;
-let momentoStats = null, momentoStatsEm = 0, momentoStatsDisp = true; // v2.3.16: coach_momento_stats
+let momentoStats = null, momentoStatsEm = 0, momentoStatsDisp = true;
+const roteiroOfertaSala = new Map(); // sala -> id do roteiro de oferta que o operador pediu para VER (v2.3.17; só na memória desta janela) // v2.3.16: coach_momento_stats
 let radarG = null, radarDisp = true, radarEm = 0, radarOcupado = false, radarConta = null;
 let chatter = null, chatterDisp = true, chatterEm = 0;
 let aba = "delta"; // delta | ficha | fila | sumidos | mais
@@ -898,7 +899,7 @@ function contexto() {
   const conv = est.conv, k = conv.perfil ? conv.perfil.toLowerCase() : "";
   return { agora: Date.now(), conta: est.conta, conv, msgs: est.msgs || [], ppvs, ficha, ligacaoSoNome: ligacaoProvavel(), compraTelaEm: (totais.get(k) || {}).compraTelaEm || null, config: (R.config_por_conta || {})[est.conta] || {}, texto, modo,
     perfil: perfis[faId()] || null, cena: (cenaSala.get(conv.sala) || {}).id || null, cenaAjuste: (cenaSala.get(conv.sala) || {}).ajuste || 0, copiado, historico,
-    convVar, cenaFixa: !!(cenaSala.get(conv.sala) || {}).fixa, padrao: est.padrao || null, momentoStats };
+    convVar, cenaFixa: !!(cenaSala.get(conv.sala) || {}).fixa, padrao: est.padrao || null, momentoStats, roteiroOferta: roteiroOfertaSala.get(conv.sala) || null };
 }
 
 function desenhar() {
@@ -935,6 +936,7 @@ function desenharCorpo(a) {
   // cena fixada que chegou ao fim (passou do último degrau): desafixa sozinha e volta ao roteiro normal
   if (res.cena && res.cena.fim && (cenaSala.get(est.conv.sala) || {}).fixa) { cenaSala.set(est.conv.sala, Object.assign({}, cenaSala.get(est.conv.sala), { fixa: false })); salvarEstadoSalas(); }
   radar(res);
+  if (!res.sugestaoOferta && roteiroOfertaSala.has(est.conv.sala)) roteiroOfertaSala.delete(est.conv.sala); // o momento passou: o "ver roteiro de oferta" não volta sozinho
   avisarRisco(res);
   desenharAlertas(res);
   desenharConta(a);
@@ -969,7 +971,14 @@ function desenharCorpo(a) {
       selos), rel, dadosLead(res, total)));
   // v2.3.15: Momento de ofertar (coach_regras.json > momento_ofertar). Só destaca e prioriza; não envia nem troca o roteiro.
   if (res.momentoOfertar) a.append(el("div", { class: "ofertar-agora", role: "status", title: "Padrão lido na conversa: " + res.momentoOfertar.padrao + " · peso do boost: " + String(Math.round(res.momentoOfertar.peso * 10) / 10).replace(".", ",") + (res.momentoOfertar.pesoAprendido ? " (aprendido com as vendas)" : " (padrão do JSON)") },
-    el("b", {}, "🎯 Ofertar agora"), " · " + res.momentoOfertar.motivo + (res.momentoOfertar.variantes.length ? " As variantes de oferta vêm primeiro." : "")));
+    el("b", {}, "🎯 Ofertar agora"), " · " + res.momentoOfertar.motivo + (res.momentoOfertar.variantes.length ? " As variantes de oferta vêm primeiro." : ""),
+    // v2.3.17: o roteiro atual não é de oferta: oferece VER o roteiro de oferta (só troca o que aparece aqui; não envia nada)
+    res.sugestaoOferta ? el("div", { class: "ofertar-sug" },
+      res.sugestaoOferta.aplicada
+        ? [el("span", {}, "Mostrando o roteiro de oferta " + res.sugestaoOferta.id + " (" + res.sugestaoOferta.situacao + "). "),
+           el("button", { class: "btn mini", type: "button", onclick: () => { roteiroOfertaSala.delete(est.conv.sala); desenhar(); } }, "Voltar ao " + (res.sugestaoOferta.atual || "anterior"))]
+        : [el("span", {}, "O roteiro atual (" + (res.sugestaoOferta.atual || "?") + ") não é de oferta. Sugestão: " + res.sugestaoOferta.situacao + ". "),
+           el("button", { class: "btn mini rosa", type: "button", onclick: () => { roteiroOfertaSala.set(est.conv.sala, res.sugestaoOferta.id); variante = 0; desenhar(); } }, "Ver " + res.sugestaoOferta.id)]) : null));
   if (fichaErro && fichaErro !== "conta_fora") a.append(el("p", { class: "pequeno fraco" }, "Ficha indisponível (" + fichaErro + "). As regras usam só o que está na tela."));
 
   desenharHud(a, res);

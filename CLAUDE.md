@@ -1,7 +1,7 @@
 # Delta — resumo para o Claude Code (ler isto primeiro; não reler tudo)
 
 Delta = extensão Chrome (MV3) que roda ao lado do chat da Privacy e SÓ SUGERE (fase, jogada, roteiro, preço, IA ⚡).
-Versão atual: **2.3.16**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
+Versão atual: **2.3.17**. Responda em português, curto, com no máximo 3 passos por vez (o usuário não é técnico).
 
 ## Onde está cada coisa (tudo dentro de `delta-zip/delta/`)
 - `coach-ext/` → a extensão: `painel.js` (~1.185 linhas: use Grep, não leia inteiro) + 3 módulos que carregam ANTES dele: `painel-turno.js` (📊 Fechar Turno), `painel-ia.js` (⚡ Adaptar), `painel-abas.js` (abas Delta/Ficha/Fila/Sumidos/Mais), `painel.css`, `painel.html`, `motor.js` (regras), `fundo.js` (janela/acoplar), `leitor.js` (lê a tela), `manifest.json` (versão).
@@ -32,7 +32,7 @@ Versão atual: **2.3.16**. Responda em português, curto, com no máximo 3 passo
 
 ## Como testar e mostrar
 - `node delta-zip/delta/teste/estatico.mjs delta-zip/delta/coach-ext` → "tudo ok".
-- `node delta-zip/delta/teste/unit_v22.mjs delta-zip/delta/coach-ext` → 111 ok (some 1 por teste novo que você criar).
+- `node delta-zip/delta/teste/unit_v22.mjs delta-zip/delta/coach-ext` → 121 ok (some 1 por teste novo que você criar).
 - Prévia sem abrir Chrome: servidor `delta-previa` (`.claude/launch.json`) → `http://127.0.0.1:4391/` (painel com dados de mentira; Palco em `/teste/previa/palco.html`).
 - Conferir no real de preferência pelo banco e pelos registros do Supabase (barato); captura de tela só se precisar.
 - Depois de mudar a extensão: subir `version` no `manifest.json`, registrar na `COACH_SPEC.md`, e pedir ao usuário para recarregar o Delta nos 3 perfis (`chrome://extensions`) + F5 na Privacy.

@@ -475,6 +475,7 @@ body.mini .lead1 .chip.so-nome{display:inline-flex;font-size:9.5px;padding:0 5px
 .roteiro .nota.oferta{color:var(--ouro)}
 .ofertar-agora{margin:8px 0;padding:8px 12px;border:1px solid var(--ouro);border-radius:10px;background:rgba(240,200,110,.10);color:var(--ouro);font-size:13px}
 .ofertar-agora b{margin-right:2px}
+.ofertar-sug{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--tx)}
 .roteiro.massa .barra{margin-top:8px}
 .chip.cara_baleia{background:linear-gradient(90deg,rgba(240,200,110,.22),rgba(240,200,110,.08));color:var(--ouro);border-color:rgba(240,200,110,.55);font-weight:800}
 .chip.freio{background:rgba(244,183,64,.12);color:var(--amarelo);border-color:rgba(244,183,64,.4)}

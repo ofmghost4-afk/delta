@@ -222,7 +222,7 @@
       primeiraCompraEm, ppvAband, tentativas, compraNestaConta, modo: R._modo || "normal",
       comprasT, compraSutil, rajada, ruim, longo, atrasoMed, perfilManual: ctx.perfil || null, cenaId: ctx.cena || null, cenaAjuste: Number(ctx.cenaAjuste) || 0, copiado: ctx.copiado || "", hist: ctx.historico || null,
       agora, msgs, doFa, daConta, ppvs, fontePpv, ultPpv, msgsFaDesdePpv, ultFa, ultConta, ultima, sinais, objecoes,
-      total, ultCompraEm, ultCompraValor, gasto7, porConta, qual, nuncaPagou, recusas, fu, ficha: f, soNome, notasTxt, padrao: typeof ctx.padrao === "string" ? ctx.padrao : null, momentoStats: Array.isArray(ctx.momentoStats) ? ctx.momentoStats : null,
+      total, ultCompraEm, ultCompraValor, gasto7, porConta, qual, nuncaPagou, recusas, fu, ficha: f, soNome, notasTxt, padrao: typeof ctx.padrao === "string" ? ctx.padrao : null, roteiroOferta: typeof ctx.roteiroOferta === "string" ? ctx.roteiroOferta : null, momentoStats: Array.isArray(ctx.momentoStats) ? ctx.momentoStats : null,
       gapFa_s: ultFa ? Math.round((agora - ultFa.t) / 1000) : null,
       ultimaEhFa: !!(ultima && ultima.de_fa), msgsFaTotal: doFa.length, salaSemConta: daConta.length === 0,
       cfg: ctx.config || {}, nome: ((ctx.conv && ctx.conv.nome) || (f && f.fa && f.fa.nome) || "").split(/\s+/)[0] || ""
@@ -860,6 +860,16 @@
     if (min > 0 && !((Number(c.total) || 0) >= min || (Number(c.ultCompraValor) || 0) > 0)) return null;
     return { padrao: c.padrao, motivo: (MO.motivos || {})[c.padrao] || "Bom momento para ofertar." };
   }
+  // v2.3.17: roteiro de oferta que combina com o padrão do fã, quando o roteiro atual não é de oferta (só sugere; quem decide é o painel/operador)
+  function sugestaoOferta(mo, rotAtual, R, ROT, fz) {
+    const MO = R && R.momento_ofertar, SG = MO && MO.sugestao; if (!mo || !SG || SG.ativo === false || !fz || !ROT) return null;
+    if (!(SG.fases || []).includes(fz.id)) return null;
+    const ofertas = MO.roteiros_oferta || [];
+    if (rotAtual && ofertas.includes(rotAtual.id)) return null; // o atual já é de oferta
+    const id = (SG.por_padrao || {})[mo.padrao]; if (!id || !ofertas.includes(id)) return null;
+    const r = (ROT.roteiros || []).find((x) => x.id === id); if (!r) return null;
+    return { id, situacao: r.situacao || "", atual: rotAtual ? rotAtual.id : null };
+  }
   // peso do boost: o do JSON, ou (com dados) a razão entre as taxas de venda de "usou oferta no momento" e "usou outra coisa no momento"
   function pesoOferta(R, stats) {
     const MO = R && R.momento_ofertar, base = Number(MO && MO.peso_thompson) || 1, AP = MO && MO.aprender_peso;
@@ -946,14 +956,18 @@
   function calcular(ctx, R0, ROT, CN) {
     const R = aplicarModo(R0, ctx.modo), dom = ehDom(R);
     const c = contexto(ctx, R), sl = selos(c, R), fz = fase(c, R, sl), pr = preco(c, R, sl, fz);
-    const jg = dom ? jogadaDom(c, R, sl, fz, pr) : jogada(c, R, sl, fz, pr), rc = recursos(c, R, sl, fz, pr), rl = relogio(c, R);
+    let jg = dom ? jogadaDom(c, R, sl, fz, pr) : jogada(c, R, sl, fz, pr), rc = recursos(c, R, sl, fz, pr), rl = relogio(c, R);
     const al = alertas(ctx.texto || "", c, R).concat(revisor(ctx.texto || "", c, fz, R)).sort((a, b) => ({ bloqueio_visual: 0, aviso: 1, revisor: 2, info: 3 })[a.nivel] - ({ bloqueio_visual: 0, aviso: 1, revisor: 2, info: 3 })[b.nivel]);
     const pf = dom ? perfil(c, R) : null, ses = sessao(c, R);
     if (dom && ses && ses.completa && fz.id === "pos_compra" && (fz.aftercare === "brinde" || (ses.valor >= R.sessao.brinde_acima_brl && c.cfg.brinde_pos_sessao))) rc.push({ id: "brinde", txt: "Brinde grátis pós-sessão (R$500+)", aviso: "Só depois do aftercare, nunca no meio da sequência.", roteiro: "PC_BRINDE" });
     if (dom && c.cfg.mimo_ativo && fz.aftercare === "mimo") rc.push({ id: "mimo_ativo", txt: "Mimo (pedido honesto)", aviso: "Uma vez, como agradecimento. Nada de emergência ou culpa.", roteiro: "FT_MIMO_AGRADECER" });
-    const rot = ROT ? (ROT.roteiros || []).find((r) => r.id === jg.roteiro) || null : null;
+    let rot = ROT ? (ROT.roteiros || []).find((r) => r.id === jg.roteiro) || null : null;
+    const mo = momentoOfertar(c, R, fz), sug = sugestaoOferta(mo, rot, R, ROT, fz);
+    // o operador clicou em "Ver roteiro de oferta" (painel): mostra esse roteiro no lugar do atual; some sozinho quando o momento passa
+    const verOferta = !!(sug && c.roteiroOferta === sug.id);
+    if (verOferta) { jg = Object.assign({}, jg, { roteiro: sug.id, txt: jg.txt + " · roteiro de oferta (" + sug.id + ")" }); rot = (ROT.roteiros || []).find((r) => r.id === sug.id) || rot; }
     const todas = rot ? (dom && rot.dominante && rot.dominante.length ? rot.dominante : rot.variantes) : [];
-    const dSP = diaSP(c.agora), mo = momentoOfertar(c, R, fz), marcOf = mo && rot ? variantesOferta(rot, todas, R) : new Set();
+    const dSP = diaSP(c.agora), marcOf = mo && rot ? variantesOferta(rot, todas, R) : new Set();
     const po = mo ? pesoOferta(R, c.momentoStats) : null;
     const ov = ordenarVariantes(todas.length, rot ? rot.id : null, c.convVar, c.hist, R, [c.conv && c.conv.sala, rot && rot.id, dSP.y, dSP.m, dSP.d, R._modo].join("|"), marcOf.size ? { marcadas: marcOf, peso: po.peso } : null), variantes = ov.ordem.map((i) => todas[i]);
     const m7 = meta7(c, R), tr = tier(c, R), pv = previsao(c, R);
@@ -965,11 +979,11 @@
     const comprando = fz.id === "pos_compra" || pr.tipo === "sequencia" || !!(c.ultCompraEm && c.agora - c.ultCompraEm <= 6 * HORA);
     extras.dados = dadosFa(c.notasTxt, c.doFa.map((m) => m.texto).join(" \n "));
     extras.escada = fz.id !== "vulneravel" && fz.tipo !== "freio_gasto" && (dom || comprando) ? escada(pr, c, R, 3) : null;
-    extras.momentoOfertar = mo ? Object.assign({}, mo, { variantes: [...marcOf], peso: po.peso, pesoAprendido: po.aprendido }) : null; extras.previsao = pv; extras.variantesIdx = ov.ordem; extras.variantesInfo = { melhor: ov.melhor, ocultas: ov.ocultas, total: todas.length }; extras.boasVindas = c.soBoasVindas;
+    extras.momentoOfertar = mo ? Object.assign({}, mo, { variantes: [...marcOf], peso: po.peso, pesoAprendido: po.aprendido }) : null; extras.sugestaoOferta = sug ? Object.assign({}, sug, { aplicada: verOferta }) : null; extras.previsao = pv; extras.variantesIdx = ov.ordem; extras.variantesInfo = { melhor: ov.melhor, ocultas: ov.ocultas, total: todas.length }; extras.boasVindas = c.soBoasVindas;
     extras.ppvEstadoTela = c.fontePpv === "tela" && !!c.ppvs && c.ppvs.some((p) => p.comprado !== null);
     return Object.assign(extras, { modo: R._modo, fase: fz, rotuloFase, selos: sl, jogada: jg, roteiro: rot, variantes, preco: pr, recursos: rc, alertas: al, relogio: rl, hud: hud(c, R, sl, rl, m7, fz), meta7: m7, tier: tr ? { id: tr.id, rotulo: tr.rotulo } : null, ppvFonte: c.fontePpv, nome: c.nome, ctx: { msgsFaDesdePpv: c.msgsFaDesdePpv, gapFa_s: c.gapFa_s, total: c.total, gasto7: c.gasto7, ultCompraValor: c.ultCompraValor } });
   }
 
-  const API = { momentoOfertar, variantesOferta, pesoOferta, construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
+  const API = { momentoOfertar, sugestaoOferta, variantesOferta, pesoOferta, construirAC, buscarAC, varrerRisco, previsao, ordenarVariantes, amostrarBeta, aleatorio, semente, massaDoDia, sumiuMeio, dadosFa, escada, sessao, espelho, termometro, perfil, calendario, quintoDiaUtil, revisor, fila, repetido, conversaoSemana, cena, aplicarModo, nomeModo, tier, meta7, hud, placar, arredCima, arredBaixo, norm, casa, arred90, valoresReais, contexto, selos, fase, preco, recursos, jogada, alertas, relogio, calcular, preencher, fmtSeg, brl, emNobre };
   if (typeof module !== "undefined" && module.exports) module.exports = API; else raiz.CoachMotor = API;
 })(typeof self !== "undefined" ? self : this);
