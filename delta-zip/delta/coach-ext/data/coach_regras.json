@@ -1776,6 +1776,13 @@
    "ignorar": ["para","pra","com","sem","que","como","mais","menos","muito","muita","isso","isto","esse","essa","esses","essas","aquele","aquela","você","voce","vc","tem","ter","fazer","fazendo","estou","estava","então","entao","mas","porque","porém","quando","onde","qual","quem","tudo","nada","algo","aqui","ali","hoje","agora","depois","antes","ainda","também","tambem","já","vai","vou","são","foi","ser","está","esta","nao","não","sim","obrigado","obrigada","bom","boa","dia","tarde","noite","oi","olá","ola","amor","gata","linda","gostosa","delicia","delícia"],
    "_doc": "v2.3.10: antes do ⚡ da IA, procura em coach_recall_fatos (mensagens antigas DELE) as palavras mais fortes das últimas falas dele e manda até max_itens lembranças que não estão na tela. Só sugere; desligue com ativo:false." },
   "max_doc": "v2.3.2: era 30 mensagens de até 400 caracteres. Na prática a IA recebia quase nada (pedidos de 0,6 a 1,3 KB). Só manda o que está na tela da Privacy.",
+  "automatico": {
+   "ativo": true,
+   "so_na_sua_vez": true,
+   "folga_ms": 5000,
+   "max_por_hora": 60,
+   "_doc": "v2.4.2: a IA roda sozinha, sem apertar o ⚡. ativo:false volta ao botão. so_na_sua_vez: só pede quando a última mensagem é do fã (se você já respondeu, não gasta). folga_ms: espera mínima entre dois pedidos. max_por_hora: teto de pedidos por hora, somando as 3 contas desta janela. Pede uma vez por roteiro de cada conversa; desligar na mão (⚡, tecla A ou 'voltar ao roteiro normal') vale até o roteiro mudar."
+  },
   "timeout_ms": 25000,
   "timeout_doc": "Era 12000. No teste real de 11/11/2026 a IA passou de 12 s e o painel desistia antes da função (que espera o provedor por até 20 s). Com 25000 o painel sempre recebe a resposta ou o motivo do erro."
  },

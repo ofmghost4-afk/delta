@@ -1025,6 +1025,7 @@ function desenharCorpo(a) {
     const p = M.preencher(v, dados);
     baseIA = iaV ? M.preencher(vsRot[0], dados).texto : p.texto;
     acao = { texto: p.texto, res, n: vs.length, faltam: p.faltam, base: baseIA };
+    autoAdaptar(res, baseIA); // v2.4.2: IA no automático, se ia.automatico.ativo estiver ligado no JSON
     const caixa = el("div", { class: "roteiro" + (iaV ? " da-ia" : "") },
       ia && ia.chave === chaveIA(res) && ia.erro ? el("div", { class: "ia-erro" }, "⚡ " + ia.erro) : null,
       textoRoteiro(p, dados),
@@ -1127,7 +1128,7 @@ document.addEventListener("keydown", (e) => {
   if (k === "l") { e.preventDefault(); ciclarLembrete(); return; }     // lembrete 10 min → 30 min → 1 h → desliga
   if (k === "a" && acaoTopo && !acaoTopo.cena && acaoTopo.res.roteiro) { // ⚡ adaptar com a IA / voltar ao roteiro
     e.preventDefault();
-    if (iaAtiva(acaoTopo.res)) { ia = null; variante = 0; desenhar(); } else adaptar(acaoTopo.res, acaoTopo.base || acaoTopo.texto);
+    if (iaAtiva(acaoTopo.res)) desligarIA(acaoTopo.res); else adaptar(acaoTopo.res, acaoTopo.base || acaoTopo.texto);
     return;
   }
   const a = acaoTopo; if (!a) return;

@@ -13,7 +13,7 @@ function botaoAdaptar(res, base) {
   const meu = ia && ia.chave === chaveIA(res), ligado = !!iaAtiva(res);
   return el("button", { class: "btn mini nav adaptar" + (ligado ? " on" : ""), type: "button", disabled: !!(meu && ia.carregando), "aria-label": ligado ? "Voltar ao roteiro normal" : "Adaptar o roteiro a este fã com a IA", "aria-pressed": ligado ? "true" : "false",
     title: ligado ? "Versões da IA em uso. Clique para voltar ao roteiro normal." : "Adaptar este roteiro a este fã com a IA: 3 versões, já filtradas pelos alertas, entram no lugar das variantes.",
-    onclick: () => { if (ligado) { ia = null; variante = 0; desenhar(); } else adaptar(res, typeof base === "function" ? base() : base); } }, meu && ia.carregando ? "…" : "⚡");
+    onclick: () => { if (ligado) desligarIA(res); else adaptar(res, typeof base === "function" ? base() : base); } }, meu && ia.carregando ? "…" : "⚡");
 }
 // v2.3.4 · qual situação da biblioteca de exemplos (coach_exemplos.json) combina com a jogada de agora. Objeção e
 // vulnerável não levam exemplo. Escolha fixa por conversa (a mesma sala recebe os mesmos), variando entre conversas.
@@ -57,6 +57,30 @@ async function lembrancasPara(todas, idsUsados) {
     return [...porMsg.values()].sort((a, b) => Date.parse(b.em) - Date.parse(a.em)).slice(0, cf.max_itens || 5)
       .map((x) => ({ ha_min: x.em ? Math.max(0, Math.round((Date.now() - Date.parse(x.em)) / 60000)) : null, texto: String(x.texto).slice(0, cf.max_chars || 300) }));
   } catch (_) { return []; }
+}
+// v2.4.2 · IA no automático (ia.automatico no coach_regras.json): o Delta pede as versões sozinho, sem o ⚡.
+// Freios, para não gastar à toa: uma vez só por roteiro de cada conversa, só quando a última mensagem é do fã
+// (é a sua vez de responder), uma folga entre chamadas e um teto por hora. Desligar na mão (⚡, tecla A ou
+// "voltar ao roteiro normal") vale até o roteiro mudar. Continua passivo: nada é enviado à Privacy.
+const semAuto = new Set();   // chaves que você desligou na mão
+const autoFeito = new Map(); // chave -> quando o automático já pediu
+let autoUltimo = 0, autoHora = [];
+// único jeito de voltar ao roteiro normal: marca para o automático não pedir de novo na mesma hora
+function desligarIA(res) { if (res) semAuto.add(chaveIA(res)); ia = null; variante = 0; desenhar(); }
+function autoAdaptar(res, base) {
+  const cf = (R && R.ia && R.ia.automatico) || {};
+  if (!cf.ativo || !est || !est.conv || !res || !res.roteiro || !res.jogada) return;
+  const chave = chaveIA(res);
+  if (semAuto.has(chave) || autoFeito.has(chave)) return;   // já desligado na mão ou já pedido
+  if (ia && ia.chave === chave) return;                     // já tem versões, já falhou ou está carregando
+  const ms = est.msgs || [], ult = ms[ms.length - 1];
+  if (cf.so_na_sua_vez !== false && !(ult && ult.de_fa)) return; // você já respondeu: não gasta
+  const agora = Date.now();
+  if (agora - autoUltimo < (cf.folga_ms || 5000)) return;
+  autoHora = autoHora.filter((t) => agora - t < 3600000);
+  if (autoHora.length >= (cf.max_por_hora || 60)) return;
+  autoFeito.set(chave, agora); autoUltimo = agora; autoHora.push(agora);
+  setTimeout(() => adaptar(res, base), 0); // fora do desenho (desenhar() roda a cada segundo)
 }
 async function adaptar(res, base) {
   const chave = chaveIA(res), cfg = R.ia || {};
@@ -133,6 +157,6 @@ function blocoIA(res) {
   if (ia.memoria) b.append(el("div", { class: "ia-m" }, el("span", {}, el("b", {}, "Memória do fã: "), Object.entries(ia.memoria).map(([k, v]) => k.replace(/_/g, " ") + ": " + v).join(" · ")),
     ia.salvou ? el("span", { class: "ok" }, "✓ salvo nas notas") : el("button", { class: "btn mini", type: "button", disabled: !!ia.salvando || !ficha || !ficha.fa, title: "Grava nas notas da ficha (as mesmas do Aura), uma nota por campo", onclick: salvarMemoria }, ia.salvando ? "Salvando…" : "Salvar nas notas"),
     ia.erroMem ? el("div", { class: "nota falhou" }, ia.erroMem) : null));
-  b.append(el("button", { class: "link ia-f", type: "button", onclick: () => { ia = null; variante = 0; desenhar(); } }, "voltar ao roteiro normal"));
+  b.append(el("button", { class: "link ia-f", type: "button", onclick: () => desligarIA(res) }, "voltar ao roteiro normal"));
   return b;
 }

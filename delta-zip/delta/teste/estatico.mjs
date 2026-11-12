@@ -35,6 +35,13 @@ for (const [f, t] of Object.entries(tudo)) {
 const html = ler("painel.html");
 for (const f of ARQS_PAINEL) confere(f + ": declarado no painel.html", html.includes(`src="${f}"`), f);
 
+// 2c) v2.4.2: a IA no automatico so pode ligar pela chave do JSON (nunca chumbada) e tem que ter os freios.
+{
+  const auto = JSON.parse(ler(path.join("data", "coach_regras.json"))).ia.automatico || {};
+  confere("IA automatica: so liga pela chave R.ia.automatico", /R\.ia && R\.ia\.automatico/.test(PAINEL["painel-ia.js"] || ""), null);
+  confere("IA automatica: freios no JSON (so_na_sua_vez, folga_ms, max_por_hora)", ["so_na_sua_vez", "folga_ms", "max_por_hora"].every((k) => k in auto), Object.keys(auto));
+  confere("IA automatica: pedido fora do desenho (setTimeout) e uma vez por roteiro", /setTimeout\(\(\) => adaptar\(/.test(PAINEL["painel-ia.js"] || "") && /autoFeito\.has\(chave\)/.test(PAINEL["painel-ia.js"] || ""), null);
+}
 // 3) chrome.windows.update só na janela do Delta; windows.create só do painel.html; nada de remove.
 const upd = achar(fundo + "\n" + painel, /chrome\.windows\.update\(\s*[^,)]+/g);
 confere("chrome.windows.update só com a janela do Delta (coachJanela / eu.id)", upd.length > 0 && upd.every((x) => /\(\s*(coachJanela|eu\.id)$/.test(x)), upd);

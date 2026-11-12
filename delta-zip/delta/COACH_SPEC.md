@@ -556,6 +556,16 @@ Fonte: pesquisa de 11/11/2026 (bandits, memória de agentes, busca no Postgres, 
 - **Dobras viraram cartões**: Preço (preço de entrada grande + "até R$ máx" + Pix), Meta do dia (valor + "de meta" + posição + barra), Leitura do fã (termômetro N/10 + cena) e Recursos (quantidade) ficam numa grade 2×2; ao abrir, o cartão ocupa a largura toda. Mais avisos, Fila e Diagnóstico viraram faixas com fundo; Diagnóstico e Roteiros da semana ficam tracejados (técnicos). No inteiro o `#conteudo` passou a `flex-flow: row wrap` (cada bloco ocupa 100%, só os 4 cartões fechados ficam a 50%).
 - **Doca**: mesma estrutura; só as cores novas. Testes: `estatico.mjs` tudo ok; `unit_v22.mjs` 137 ok. Prévia conferida em 410×860, 340 px, doca 466×157 e Palco 1440×860.
 
+## 20ac. v2.4.2 (IA no automático)
+
+- **Por quê**: o usuário pediu a IA sem apertar o ⚡ ("deixar tudo pela Grok já"). O ⚡ continua existindo e funcionando igual; o automático é uma camada por cima, desligável.
+- **Onde**: `painel-ia.js > autoAdaptar(res, base)`, chamado no `painel.js` logo depois de montar `acao` (onde `baseIA` já está pronto). Liga pela chave nova `ia.automatico` do `coach_regras.json` — nada chumbado no código.
+- **Freios** (todos no JSON): `ativo` (false volta ao botão), `so_na_sua_vez` (só pede quando a última mensagem é do fã; se você já respondeu, não gasta), `folga_ms` (5 s entre dois pedidos), `max_por_hora` (teto de 60, somando as contas desta janela). Além disso pede **uma vez por `chaveIA` (sala|roteiro)**, guardada em `autoFeito`.
+- **Não entra em laço**: o `desenhar()` roda a cada segundo e passa por `autoAdaptar` toda vez; quem segura é `autoFeito` + o `ia.chave` (que também fica setado quando a IA falha). O pedido sai por `setTimeout(…, 0)`, fora do desenho, porque `adaptar()` chama `desenhar()`.
+- **Desligar na mão**: ⚡, tecla `A` e "voltar ao roteiro normal" passam agora por `desligarIA(res)`, que põe a chave em `semAuto`. Vale até o roteiro mudar (antes os três faziam `ia = null` solto, e com o automático ligado a IA voltaria sozinha no segundo seguinte).
+- **Passivo**: nada de novo na Privacy; `leitor.js` intocado. O que muda é só *quando* a chamada à `coach-ia` sai.
+- **Testes**: 3 conferências novas no `estatico.mjs` (liga só pela chave do JSON; os 3 freios existem no JSON; pedido fora do desenho e uma vez por roteiro). `estatico.mjs` tudo ok, `unit_v22.mjs` 137 ok. Conferido na prévia (VIP): 1 pedido só apesar do redesenho de 1 s, e depois de desligar na mão não pediu de novo.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

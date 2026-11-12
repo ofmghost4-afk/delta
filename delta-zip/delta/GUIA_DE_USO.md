@@ -56,7 +56,7 @@ Se já copiou com o mouse sem querer, clique em `✓ Usei` para registrar.
 | `C` ou `Enter` | Copia o roteiro **e** marca como usado |
 | `←` `→` | Troca a variante do roteiro (ou o passo da cena) |
 | `1` `2` `3` | Vai direto na variante 1, 2 ou 3 |
-| `A` | ⚡ Adapta o roteiro a este fã com a IA (aperte de novo para voltar) |
+| `A` | ⚡ Liga/desliga a versão da IA para este roteiro |
 | `N` | Nota rápida sobre o fã |
 | `L` | Lembrete: 1× = 10 min, 2× = 30 min, 3× = 1 h, 4× = desliga |
 | `M` | Minimiza o painel (não funciona no Modo Palco) |
@@ -118,6 +118,27 @@ O painel lembra o que você deixou aberto.
 - **Fila** — quem está esperando, por quanto tempo, quanto já gastou.
 - **Sumidos** — quem parou de responder e vale um follow-up.
 - **Mais** — placar, conversão, subir extrato.
+
+---
+
+## 6b. A IA no automático (2.4.2)
+
+Desde a 2.4.2 você **não precisa apertar o ⚡**. Quando o fã escreve e é a sua
+vez de responder, o Delta já pede as versões adaptadas à Grok sozinho e elas
+entram no lugar do roteiro.
+
+Os freios, para não virar dinheiro jogado fora:
+
+- **Só na sua vez.** Se a última mensagem é sua, ele não pede nada.
+- **Uma vez por roteiro de cada conversa.** Mudou a fase, pede de novo.
+- **5 segundos** de folga entre dois pedidos e teto de **60 por hora**.
+
+Se não gostar de uma versão, aperte `A` (ou ⚡, ou "voltar ao roteiro
+normal") e volta ao roteiro escrito — e ele **não** insiste de novo naquele
+roteiro.
+
+Para desligar de vez: `coach-ext/data/coach_regras.json` → `ia` →
+`automatico` → `ativo: false`. Aí o ⚡ volta a ser no botão, como antes.
 
 ---
 
