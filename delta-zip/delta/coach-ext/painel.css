@@ -214,6 +214,7 @@ body.mini .conta-badge{min-width:0;overflow:hidden}
    O "Copiar" do roteiro nunca fica abaixo da dobra (só visual: a ordem no HTML não muda). */
 body:not(.mini) #conteudo>.alerta{order:-8}
 body:not(.mini) #conteudo>.cab{order:-7}
+body:not(.mini) #conteudo>.ofertar-agora{order:-7}
 body:not(.mini) #conteudo>.jogo{order:-6}
 body:not(.mini) #conteudo>.abas{order:-5}
 body:not(.mini) #conteudo>.pane{order:-4}
@@ -471,6 +472,9 @@ body.mini .lead1 .chip.so-nome{display:inline-flex;font-size:9.5px;padding:0 5px
 .ia-m{font-size:12px;color:var(--tx2);display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
 .ia-f{align-self:flex-end;font-size:11px}
 .roteiro .nota.melhor{color:var(--ouro)}
+.roteiro .nota.oferta{color:var(--ouro)}
+.ofertar-agora{margin:8px 0;padding:8px 12px;border:1px solid var(--ouro);border-radius:10px;background:rgba(240,200,110,.10);color:var(--ouro);font-size:13px}
+.ofertar-agora b{margin-right:2px}
 .roteiro.massa .barra{margin-top:8px}
 .chip.cara_baleia{background:linear-gradient(90deg,rgba(240,200,110,.22),rgba(240,200,110,.08));color:var(--ouro);border-color:rgba(240,200,110,.55);font-weight:800}
 .chip.freio{background:rgba(244,183,64,.12);color:var(--amarelo);border-color:rgba(244,183,64,.4)}

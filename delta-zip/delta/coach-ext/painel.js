@@ -887,7 +887,7 @@ function contexto() {
   const conv = est.conv, k = conv.perfil ? conv.perfil.toLowerCase() : "";
   return { agora: Date.now(), conta: est.conta, conv, msgs: est.msgs || [], ppvs, ficha, ligacaoSoNome: ligacaoProvavel(), compraTelaEm: (totais.get(k) || {}).compraTelaEm || null, config: (R.config_por_conta || {})[est.conta] || {}, texto, modo,
     perfil: perfis[faId()] || null, cena: (cenaSala.get(conv.sala) || {}).id || null, cenaAjuste: (cenaSala.get(conv.sala) || {}).ajuste || 0, copiado, historico,
-    convVar, cenaFixa: !!(cenaSala.get(conv.sala) || {}).fixa };
+    convVar, cenaFixa: !!(cenaSala.get(conv.sala) || {}).fixa, padrao: est.padrao || null };
 }
 
 function desenhar() {
@@ -956,6 +956,9 @@ function desenharCorpo(a) {
       el("div", { class: "nome" }, est.conv.nome || est.conv.perfil || "(sem nome)", chipPadrao),
       el("div", { class: "sub" }, est.conta + (total != null ? " · gastou " + brl(total) + (fichaDin ? " na empresa" : " nesta conta") : "") + (res.ctx.gasto7 != null ? " · " + brl(res.ctx.gasto7) + " nos 7 primeiros dias" : "")),
       selos), rel, dadosLead(res, total)));
+  // v2.3.15: Momento de ofertar (coach_regras.json > momento_ofertar). Só destaca e prioriza; não envia nem troca o roteiro.
+  if (res.momentoOfertar) a.append(el("div", { class: "ofertar-agora", role: "status", title: "Padrão lido na conversa: " + res.momentoOfertar.padrao },
+    el("b", {}, "🎯 Ofertar agora"), " · " + res.momentoOfertar.motivo + (res.momentoOfertar.variantes.length ? " As variantes de oferta vêm primeiro." : "")));
   if (fichaErro && fichaErro !== "conta_fora") a.append(el("p", { class: "pequeno fraco" }, "Ficha indisponível (" + fichaErro + "). As regras usam só o que está na tela."));
 
   desenharHud(a, res);
@@ -998,6 +1001,7 @@ function desenharCorpo(a) {
         el("button", { class: "btn mini rosa copiar", type: "button", title: "Copiar e já marcar como usado (tecla C ou Enter)", onclick: (ev) => copiarAtual(ev) }, rotuloCopiar(p.texto))),
       blocoIA(res),
       !iaV && res.variantesInfo && res.variantesInfo.melhor && res.variantesIdx[variante % vs.length] === res.variantesInfo.melhor.i ? el("div", { class: "nota melhor" }, "★ Esta é a variante que mais converteu na semana (" + Math.round(res.variantesInfo.melhor.conv * 100) + "% em " + res.variantesInfo.melhor.usos + " usos): por isso vem primeiro.") : null,
+      res.momentoOfertar && res.momentoOfertar.variantes.includes(res.variantesIdx[variante % vs.length]) ? el("div", { class: "nota oferta" }, "🎯 Variante de oferta: sobe agora porque é o momento de ofertar.") : null,
       res.variantesInfo && res.variantesInfo.ocultas.length ? el("div", { class: "nota" }, res.variantesInfo.ocultas.length + (res.variantesInfo.ocultas.length === 1 ? " variante já usada com ele ficou escondida." : " variantes já usadas com ele ficaram escondidas.")) : null,
       avisoJogada() ? el("div", { class: "nota reg" + (/^(Jogada registrada|Já registrado)/.test(avisoJogada()) ? " ok" : " falhou") }, avisoJogada()) : null,
       p.faltam.length ? el("div", { class: "nota" }, "Preencha antes de enviar: " + p.faltam.map((f) => "{" + f + "}").join(", ")) : null,

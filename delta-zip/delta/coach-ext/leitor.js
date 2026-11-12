@@ -30,7 +30,8 @@
     const ultima = doFan[doFan.length - 1];
     const texto = (ultima.texto || "").toLowerCase();
     const temEmojiPositivo = /😍|🔥|❤️|🥰|😏|😘|💦|🥵|😈/.test(texto);
-    const mencionouPreco = /preço|preco|valor|quanto|pix|pago|pagar|compra|compro|r\$/.test(texto);
+    // palavra inteira (v2.3.15): "apagou" e "comprado" não contam mais como menção a preço
+    const mencionouPreco = /(?<![a-zà-ú0-9])(preço|preco|valor|quanto|pix|pago|pagar|compra|compro)(?![a-zà-ú0-9])|r\$/.test(texto);
     const curta = texto.length < 25;
     const temAudio = doFan.some(m => m.tipo === "audio");
 

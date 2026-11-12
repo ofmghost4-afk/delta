@@ -17,7 +17,7 @@ function calc(o) {
   const conta = o.conta || "arrudafree", cfg = Object.assign({}, R.config_por_conta[conta], o.cfg || {});
   return M.calcular({ agora: AG, conta, conv: { nome: o.nome === undefined ? "João Teste" : o.nome, perfil: "joao_teste", sala: "s1", total: null }, msgs: msgs(o.msgs || []), ppvs: o.ppvs || null,
     ficha: o.ficha === undefined ? { fa: { id: 1 }, total: 0, n: 0, ultimas: [], por_conta: [], notas: [], tags: [] } : o.ficha, compraTelaEm: o.compraTelaEm || null, config: cfg, texto: o.texto || "", modo: o.modo || "dominante",
-    historico: o.historico || null, convVar: o.convVar || null, cenaFixa: !!o.cenaFixa, ligacaoSoNome: !!o.soNome }, R, ROT, CN);
+    historico: o.historico || null, convVar: o.convVar || null, cenaFixa: !!o.cenaFixa, ligacaoSoNome: !!o.soNome, padrao: o.padrao || null }, o.R || R, ROT, CN);
 }
 const compra = (min, valor) => ({ data: new Date(AG - min * 60000).toISOString(), valor, conta: "arrudafree" });
 const fichaPag = (total, ultimas, por) => ({ fa: { id: 1 }, total, n: ultimas.length, ultimas, por_conta: por || [{ conta: "arrudafree", gasto: total, n: ultimas.length }], notas: [], tags: [] });
@@ -158,6 +158,45 @@ console.log("== compliance enquanto digita · Aho-Corasick (v2.3.14) ==");
   confere("sem texto digitado: nenhum alerta de digitação", calc(vend).alertas.filter((x) => x.digitando).length === 0, null);
   const CD2 = { ativo: true, grupos: [{ id: "x", nivel: "bloqueio_visual", motivo: "m", termos: ["teste"] }] };
   confere("mesmo que a lista peça bloqueio_visual, o painel rebaixa para aviso", M.alertas("isto é um teste", {}, Object.assign({}, R, { compliance_digitando: CD2 })).filter((x) => x.digitando).every((x) => x.nivel === "aviso"), null);
+}
+console.log("== Momento de ofertar (v2.3.15) ==");
+{
+  const MO = R.momento_ofertar, base = { padrao: "mencionou_preco", total: 0, ultCompraValor: 0, ultPpv: null, fu: null }, fz = { id: "hora_de_vender" };
+  confere("o bloco existe, ativo, com padrões e marcas vindos do JSON", MO && MO.ativo === true && MO.padroes.includes("mencionou_preco") && MO.padroes.includes("rapido_positivo") && MO.marcas_oferta.length > 0, MO && MO.padroes);
+  confere("mencionou preço: é o momento (sem exigir gasto)", !!M.momentoOfertar(base, R, fz), null);
+  confere("rápido positivo SEM gasto mínimo: não é", M.momentoOfertar(Object.assign({}, base, { padrao: "rapido_positivo", total: 20 }), R, fz) === null, null);
+  confere("rápido positivo com gasto de R$ 80: é", !!M.momentoOfertar(Object.assign({}, base, { padrao: "rapido_positivo", total: 80 }), R, fz), null);
+  confere("rápido positivo que já comprou antes (última compra > 0): é", !!M.momentoOfertar(Object.assign({}, base, { padrao: "rapido_positivo", ultCompraValor: 40 }), R, fz), null);
+  confere("padrão neutro / áudio / curto: não é", ["neutro", "mandou_audio", "lento_curto", null].every((p) => M.momentoOfertar(Object.assign({}, base, { padrao: p }), R, fz) === null), null);
+  confere("fase vulnerável ou objeção barra", ["vulneravel", "objecao"].every((f) => M.momentoOfertar(base, R, { id: f }) === null), null);
+  const pend = Object.assign({}, base, { ultPpv: { comprado: false, t: 1 }, fu: { n: 1 } });
+  confere("PPV pendente: não oferta outro (cobra o que já enviou)", M.momentoOfertar(pend, R, fz) === null, null);
+  confere("PPV pendente + ppv_pendente:'ofertar' no JSON: é", !!M.momentoOfertar(pend, Object.assign({}, R, { momento_ofertar: Object.assign({}, MO, { ppv_pendente: "ofertar" }) }), fz), null);
+  confere("ativo:false desliga", M.momentoOfertar(base, Object.assign({}, R, { momento_ofertar: Object.assign({}, MO, { ativo: false }) }), fz) === null, null);
+  const vd = ROT.roteiros.filter((x) => x.fase === "hora_de_vender"), marcados = vd.map((x) => M.variantesOferta(x, x.variantes, R).size);
+  confere("roteiros de venda têm variantes de oferta marcadas pelas marcas do JSON", marcados.some((n) => n > 0), marcados);
+  const outra = ROT.roteiros.find((x) => x.fase === "rapport");
+  confere("roteiro de outra fase não recebe marca", M.variantesOferta(outra, outra.variantes, R).size === 0, null);
+  const fake = { id: "XX", fase: "hora_de_vender" }, vs3 = ["a {qtd_conteudo}", "b", "c R$ 50"];
+  confere("marcas por texto: acha {qtd_conteudo} e R$", [...M.variantesOferta(fake, vs3, R)].join() === "0,2", [...M.variantesOferta(fake, vs3, R)]);
+  confere("variantes_oferta explícita vale no lugar das marcas (números a partir de 1)", [...M.variantesOferta(fake, vs3, Object.assign({}, R, { momento_ofertar: Object.assign({}, MO, { variantes_oferta: { XX: [2] } }) }))].join() === "1", null);
+  // Thompson: o boost faz a variante de oferta (índice 2) vir na frente muito mais vezes
+  const dados = [1, 2, 3].map((v) => ({ roteiro_id: "R", modo: "normal", variante: v, usos: 12, vendas: 3 })), RR = Object.assign({}, R, { _modo: "normal" });
+  const frente = (of) => { let k = 0; for (let s = 0; s < 600; s++) if (M.ordenarVariantes(3, "R", dados, null, RR, "o" + s, of).ordem[0] === 2) k++; return k; };
+  const sem = frente(null), com = frente({ marcadas: new Set([2]), peso: 3 });
+  confere("boost no Thompson: a de oferta vem 1ª em ~1/3 sem boost e em quase sempre com boost", sem > 120 && sem < 280 && com > 500, [sem, com]);
+  confere("sem dados para sortear: variantes de oferta só sobem, mantendo a ordem original", JSON.stringify(M.ordenarVariantes(4, "R", null, null, RR, "x", { marcadas: new Set([1, 3]), peso: 3 }).ordem) === "[1,3,0,2]", null);
+  confere("sem momento de ofertar a ordem original é a de sempre", JSON.stringify(M.ordenarVariantes(4, "R", null, null, RR, "x", null).ordem) === "[0,1,2,3]", null);
+  // integração: calcular() entrega o banner e coloca a variante de oferta na frente
+  const venda = { msgs: papo.concat([[100, true, "tô aqui"], [80, true, "pensando"], [60, true, "em você"], [20, true, "o que você tem de novo pra mim?"]]) };
+  r = calc(Object.assign({}, venda, { padrao: "mencionou_preco" }));
+  confere("calcular(): com padrão de preço traz momentoOfertar com motivo", !!r.momentoOfertar && r.momentoOfertar.padrao === "mencionou_preco" && r.momentoOfertar.motivo.length > 5, r.momentoOfertar);
+  confere("calcular(): sem padrão não traz", calc(venda).momentoOfertar === null, null);
+  const rid2 = r.jogada.roteiro, R2 = Object.assign({}, R, { momento_ofertar: Object.assign({}, R.momento_ofertar, { roteiros_ids: [rid2], variantes_oferta: { [rid2]: [2] } }) });
+  r = calc(Object.assign({}, venda, { padrao: "mencionou_preco", R: R2 }));
+  confere("calcular(): a variante marcada como oferta (nº 2) fica em primeiro e vem na lista do banner", r.variantesIdx[0] === 1 && JSON.stringify(r.momentoOfertar.variantes) === "[1]", [r.variantesIdx, r.momentoOfertar]);
+  r = calc(Object.assign({}, venda, { padrao: "neutro", R: R2 }));
+  confere("calcular(): sem o momento a ordem volta ao normal", r.variantesIdx[0] === 0 && r.momentoOfertar === null, r.variantesIdx);
 }
 console.log("== mensagem em massa do dia (item 12) ==");
 const contas = R.contas_atendidas, dia = 86400000, vistos = new Set();

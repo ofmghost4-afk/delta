@@ -1679,6 +1679,24 @@
   ],
   "taxa_base_pct": 1
  },
+ "momento_ofertar": {
+  "_doc": "v2.3.15: 'Momento de ofertar'. Quando o padrão do fã (calculado pelo leitor.js, só leitura) for um dos de 'padroes', ele já tiver gasto o mínimo (por padrão) e não houver PPV pendente, o painel mostra o banner 'Ofertar agora' e, nos roteiros de venda, as variantes de OFERTA passam na frente (no Thompson Sampling elas ganham 'peso_thompson' vezes a taxa sorteada; sem dados suficientes só sobem na ordem). Só prioriza e destaca: não envia nada e não troca o roteiro. 'ativo': false desliga tudo. Uma variante é de oferta se o texto tiver algum de 'marcas_oferta' (sem acento/maiúscula) OU se estiver em 'variantes_oferta' (id do roteiro -> números das variantes, a partir de 1; quando o roteiro está nessa lista ela vale no lugar das marcas).",
+  "ativo": true,
+  "origem": "HIPOTESE",
+  "padroes": ["mencionou_preco", "rapido_positivo"],
+  "motivos": {
+   "mencionou_preco": "Na última mensagem ele falou de preço ou compra.",
+   "rapido_positivo": "Respondeu animado (emoji positivo) e com mais de uma frase."
+  },
+  "gasto_min_brl": { "mencionou_preco": 0, "rapido_positivo": 50 },
+  "ppv_pendente": "nao_ofertar",
+  "fases_barram": ["vulneravel", "objecao"],
+  "fases_roteiro": ["hora_de_vender"],
+  "roteiros_ids": [],
+  "marcas_oferta": ["{qtd_conteudo}", "{item_maior}", "{premio_desafio}", "r$"],
+  "variantes_oferta": {},
+  "peso_thompson": 3
+ },
  "compliance_digitando": {
   "_doc": "v2.3.14: enquanto o operador digita, o Delta varre o texto (Aho-Corasick, uma passada só, sem acento e sem diferença de maiúscula) atrás destes termos e mostra um AVISO amarelo (e, com o som ligado, um bipe grave) no painel. Nunca bloqueia nem altera o texto: quem decide é quem envia. Cada termo vale só como palavra/frase inteira. Edite à vontade: id, motivo e termos de cada grupo.",
   "ativo": true,
