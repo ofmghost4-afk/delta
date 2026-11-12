@@ -469,6 +469,9 @@ Começa a quebrar o `painel.js` (1.571 linhas num arquivo só) em módulos. **Ne
 - **`coach-ia` v9 (publicada)**: o pedido ganhou o bloco "LEMBRANÇAS ANTIGAS DELE", só usado se encaixar. Modelo padrão da Anthropic continua `claude-haiku-5-5` (Grok não mudou).
 - **Não feito**: busca "híbrida" por significado (precisaria de embeddings/pgvector e outro provedor).
 
+## 20q. v2.3.11 (lembranças: sem acento e com erro de digitação)
+- **Banco** (migrações `delta_coach_v2_3_11_extensoes_busca` e `delta_coach_v2_3_11_recall_sem_acento`): ligadas as extensões `unaccent` e `pg_trgm` (schema `extensions`); `coach_recall_fatos` agora acha "acai" em "açaí", "sao paulo" em "São Paulo" e "trabaio" em "trabalho" (similaridade de palavra ≥ 0,6). Testado no banco com frases de exemplo e `search_path = ''`. Nenhuma mudança na extensão (continua 2.3.10) nem na `coach-ia`.
+
 ## 21. Testes v2
 - **Testes que existem hoje**: `teste/estatico.mjs` (desde a v2.3 também confere `trocar_modelo.ps1` e `arrumar_cockpit.ps1`: sem tecla/clique/mensagem/rede, só ASCII, ajudante sem mover nem redimensionar) e `teste/unit_v22.mjs` (verificações do motor). Nenhum abre janela.
 - **`teste/e2e_real.mjs` foi REMOVIDO em 11/11/2026 a pedido do usuário** (abria janelas do Chrome por cima do atendimento). Ele carregava a extensão num Chrome real com Privacy e Supabase simulados; chegou a 501 verificações na v2.2, mas já estava desatualizado para o ⚡ na doca e o bloco do lead. Não recriar sem o usuário pedir. `teste/preview_cockpit.html` (simulação 1440×860 com o `painel.css` de verdade) continua e abre com dois cliques.

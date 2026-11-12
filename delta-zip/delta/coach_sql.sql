@@ -584,15 +584,20 @@ grant execute on function public.coach_conversa(bigint, text, text, integer) to 
 -- select proname, prosecdef, proconfig from pg_proc where proname like 'coach_%';
 -- select * from central.emp_jogadas order by em desc limit 20;
 
--- 16) Recall de fatos antigos do fã (v2.3.10, ainda NÃO ligado na IA). Só LEITURA de
---     central.emp_mensagens: devolve até p_limite (1 a 10) mensagens DO FÃ, das mais
---     novas para as mais antigas, que contenham as palavras de p_busca (busca de texto
---     em português). Usa o índice emp_mensagens_fa_idx pelo fã; nenhuma tabela é alterada.
+-- 16) Recall de fatos antigos do fã (v2.3.10; sem acento e com erro de digitação na v2.3.11). Só
+--     LEITURA de central.emp_mensagens: devolve até p_limite (1 a 10) mensagens DO FÃ, das mais
+--     novas para as mais antigas, que contenham a palavra de p_busca (busca de texto em português,
+--     ignorando acentos) OU algo muito parecido com ela ("trabaio" acha "trabalho"; pg_trgm,
+--     limite 0.6). Usa as extensões unaccent e pg_trgm (schema extensions). Nenhuma tabela é alterada.
+create extension if not exists unaccent with schema extensions;
+create extension if not exists pg_trgm with schema extensions;
 create or replace function public.coach_recall_fatos(p_fa bigint, p_busca text, p_limite int default 5)
 returns table (msg_id text, em timestamptz, texto text)
 language plpgsql stable security definer
 set search_path = ''
 as $$
+declare
+  v_q text;
 begin
   if not central.coach_pode() then
     raise exception 'sem permissão' using errcode = '42501';
@@ -600,11 +605,13 @@ begin
   if p_fa is null or btrim(coalesce(p_busca, '')) = '' or to_regclass('central.emp_mensagens') is null then
     return;
   end if;
+  v_q := extensions.unaccent('extensions.unaccent'::regdictionary, lower(left(btrim(p_busca), 200)));
   return query
     select m.msg_id, m.em, m.texto
       from central.emp_mensagens m
      where m.fa_id = p_fa and m.de_fa = true and m.texto is not null
-       and to_tsvector('portuguese', m.texto) @@ plainto_tsquery('portuguese', left(p_busca, 200))
+       and (to_tsvector('portuguese', extensions.unaccent('extensions.unaccent'::regdictionary, m.texto)) @@ plainto_tsquery('portuguese', v_q)
+            or extensions.word_similarity(v_q, extensions.unaccent('extensions.unaccent'::regdictionary, lower(m.texto))) >= 0.6)
      order by m.em desc
      limit least(greatest(coalesce(p_limite, 5), 1), 10);
 end $$;

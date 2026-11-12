@@ -12,7 +12,7 @@ Versão atual: **2.3.10**. Responda em português, curto, com no máximo 3 passo
 - `aura-zip/` → cópia de CONSULTA do Aura (outra extensão). Não editar.
 
 ## Ambiente
-- Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`, `delta_coach_v2_3_9_nomes_conta`, `delta_coach_v2_3_10_recall_fatos`.
+- Supabase "Central de Chat", projeto `ndtnwukltujxzkfvqxtk`. Migrações do Delta aplicadas: `delta_coach_v2_0_1`, `delta_coach_v2_2`, `delta_coach_v2_2_radar_fix`, `delta_coach_v2_3_3_conversa`, `delta_coach_v2_3_9_nomes_conta`, `delta_coach_v2_3_10_recall_fatos`, `delta_coach_v2_3_11_extensoes_busca`, `delta_coach_v2_3_11_recall_sem_acento`.
 - Função `coach-ia` publicada: versão 9 (Grok `grok-4.20-0309-non-reasoning`, reserva `grok-4.7`; secret `AI_API_KEY` no Supabase).
 - Contas: `arrudafree` (Chrome Profile 30), `xlunavitaligratis` (Profile 31; no banco a conta se chama **"Luna"**), `louisefree` (Profile 34).
 - Modo Palco: Privacy 1030×860 à esquerda + Delta 410×860 à direita, as 3 contas empilhadas; troca pelo nome no topo do Delta ou Alt+1/2/3.
