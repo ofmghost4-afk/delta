@@ -1,208 +1,164 @@
-# Guia de uso do Delta (versão 2.4.1)
+# Guia de uso do Delta (versão 2.5.1)
 
-Isto não é a lista do que mudou (essa é a `LEIA-ME.txt`). É como usar o Delta
-bem, no dia a dia.
+Isto é como usar. A lista do que mudou em cada versão é a `LEIA-ME.txt`.
 
-Antes de tudo, a regra que explica todas as outras: **o Delta só sugere. Quem
-lê, escolhe e envia é você.** Ele nunca clica, nunca digita, nunca manda
-mensagem. Se uma sugestão está errada, ignore — nada acontece.
-
----
-
-## 1. O hábito que vale mais que todos os outros
-
-**Use sempre o botão `Copiar` (ou a tecla `C`).** Nunca selecione o texto do
-roteiro com o mouse.
-
-O `Copiar` faz duas coisas ao mesmo tempo: põe o texto na área de
-transferência **e** marca a jogada como usada. Essa marca é o que alimenta o
-aprendizado — é assim que o Delta descobre quais variantes vendem mais e
-começa a mostrar as boas primeiro.
-
-Se você copiar com o mouse, a mensagem sai igual, mas o Delta fica cego: não
-aprende nada daquele atendimento. Com o tempo a diferença é grande.
-
-Se já copiou com o mouse sem querer, clique em `✓ Usei` para registrar.
+**Em uma frase:** o Delta lê a conversa, diz em que fase o fã está e entrega o
+texto pronto. Ele pode abrir a conversa e pôr o texto no campo — mas **quem
+aperta Enter é sempre você**.
 
 ---
 
-## 2. A rotina de um turno
+## 1. O turno em três momentos
 
-**Abrir (uma vez por turno)**
+**Abrir (uma vez)**
 1. Dois cliques em `abrir_3_perfis.bat` — abre as 3 contas no Modo Palco.
-2. Dois cliques em `arrumar_cockpit.bat` — arruma as janelas. Ele deixa uma
-   janela preta aberta: **minimize, não feche** (é ela que faz o Alt+1/2/3).
-3. Em cada conta, confira que o Delta está do lado direito da Privacy.
+2. Dois cliques em `arrumar_cockpit.bat` — arruma as janelas. Deixa uma janela
+   preta aberta: **minimize, não feche** (é ela que faz o Alt+1/2/3).
 
 **Durante (o ciclo que se repete)**
-1. Veja no topo qual modelo tem gente esperando (o nome pisca).
+1. No topo, veja qual modelo tem gente esperando (o nome pisca).
 2. `Alt+1` / `Alt+2` / `Alt+3` para trocar de modelo.
-3. Abra a conversa que o Delta indica como **próximo da fila** (no painel
-   inteiro vem como aviso no topo; na doca, como `★ Próximo` no rodapé).
-4. Leia a fase e o roteiro sugerido.
-5. `C` para copiar, cole na Privacy, ajuste o que quiser, envie.
+3. `Espaço` ou clique no nome → a conversa abre na Privacy.
+4. Leia a fase e o texto. Se a IA já adaptou, ele vem adaptado.
+5. `V` põe o texto no campo → você revisa → **Enter seu**.
 
 **Fechar**
-- Clique em `📊 Fechar Turno`. Ele gera e copia um resumo das últimas 8 horas:
-  faturamento, conversão, top 3 roteiros, baleias atendidas e quem ficou
-  esperando.
+- `📊 Fechar Turno` gera e copia o resumo das últimas 8 h.
 
 ---
 
-## 3. Teclas (decore estas cinco)
+## 2. As três formas de mandar o texto
+
+| Como | Quando usar |
+|---|---|
+| **`C` · Copiar** | o padrão. Copia e marca como usado. Cole com Ctrl+V. |
+| **`V` · Campo** | põe o texto direto no campo da Privacy. Menos Ctrl+V, menos dor no braço. Também marca como usado. |
+| `←` `→` ou `1` `2` `3` | troca a variante antes de mandar |
+
+As duas primeiras **marcam a jogada**, e é essa marca que ensina o Delta. Se
+você selecionar o texto com o mouse, ele não aprende nada daquele atendimento.
+
+Com um `{campo}` por preencher, o `V` recusa e diz qual falta.
+
+---
+
+## 3. Abrir a conversa certa sem caçar na lista
+
+Clique no nome e a conversa abre na Privacy. Funciona em três lugares:
+
+- o aviso **"Próximo da fila"**, no alto do painel;
+- as linhas da aba **Fila**;
+- o **"★ Próximo"** no rodapé da doca.
+
+Ou só `Espaço`, que abre o primeiro da fila.
+
+Se a conversa não estiver na lista já carregada da Privacy, ele avisa em vez
+de sair procurando — role a lista e clique de novo.
+
+---
+
+## 4. A IA (⚡)
+
+Ela roda **sozinha** quando o fã escreve e é a sua vez de responder. As
+versões adaptadas entram no lugar do roteiro.
+
+- As **3 versões aparecem sempre.** A que bate numa regra de risco vem com
+  contorno vermelho e o motivo: *"Alerta: …"*. Ela não some — você decide.
+- `A` (ou ⚡) volta ao roteiro escrito, e ele não insiste naquele roteiro.
+- Freios: só na sua vez, uma vez por roteiro, 5 s entre pedidos, 60 por hora.
+- Desligar de vez: `coach-ext/data/coach_regras.json` → `ia` → `automatico` →
+  `ativo: false`.
+
+---
+
+## 5. Teclas
 
 | Tecla | O que faz |
 |---|---|
 | `C` ou `Enter` | Copia o roteiro **e** marca como usado |
-| `V` | Põe o texto direto no campo da Privacy (não envia) |
+| `V` | Põe o texto no campo da Privacy (não envia) |
 | `Espaço` | Abre o próximo da fila na Privacy |
-| `←` `→` | Troca a variante do roteiro (ou o passo da cena) |
+| `←` `→` | Troca a variante (ou o passo da cena) |
 | `1` `2` `3` | Vai direto na variante 1, 2 ou 3 |
-| `A` | ⚡ Liga/desliga a versão da IA para este roteiro |
+| `A` | Liga/desliga a versão da IA |
 | `N` | Nota rápida sobre o fã |
-| `L` | Lembrete: 1× = 10 min, 2× = 30 min, 3× = 1 h, 4× = desliga |
-| `M` | Minimiza o painel (não funciona no Modo Palco) |
+| `L` | Lembrete: 1× 10 min, 2× 30 min, 3× 1 h, 4× desliga |
+| `M` | Minimiza (não funciona no Palco) |
 | `Alt+1/2/3` | Traz a modelo 1, 2 ou 3 para a frente |
 
-As teclas não funcionam quando o cursor está dentro de um campo de texto —
-clique fora primeiro.
+Não funcionam com o cursor dentro de um campo de texto.
 
 ---
 
-## 3b. Menos Ctrl+V e menos caça à conversa (2.5.0)
+## 6. Ler o painel
 
-Duas coisas que o Delta passou a fazer por você, **sempre com um clique seu**:
+**Um só botão cheio:** o `Copiar`, vermelho. O resto é discreto de propósito.
 
-**`V` ou o botão "No campo"** põe o texto do roteiro direto no campo da
-Privacy. Já marca a jogada como usada, igual ao Copiar. **Não envia:** você lê,
-ajusta e aperta Enter. Se faltar preencher um `{campo}`, ele recusa e diz qual.
+**Sempre à vista:** fã, relógio, fase, texto e o Copiar.
 
-**Clique no nome e a conversa abre na Privacy.** Funciona no aviso "Próximo da
-fila", nas linhas da aba Fila e no rodapé da doca — ou tecla `Espaço` para o
-primeiro da fila.
+**Quatro cartões (2×2), fechados mostram o número que importa:** Preço, Meta
+do dia, Leitura do fã e Recursos. **Não precisa abrir para saber como está.**
 
-O que ele **nunca** faz, e o teste automático impede: apertar enviar, simular
-Enter, rodar em lote ou fingir ser gente para enganar a Privacy. Uma ação por
-clique seu, e o envio é sempre seu.
+**Faixas embaixo:** Mais avisos, Fila, Roteiros da semana e Diagnóstico. As
+tracejadas são técnicas — não são para a sua próxima mensagem.
 
 ---
 
-## 4. Ler o painel novo (2.4.1)
-
-Existe **um só botão cheio** na tela: o `Copiar`, em vermelho. Se algum botão
-está cheio e colorido, é esse. O resto (`✓ Usei`, `⚡`, `‹ ›`) é
-propositalmente discreto — não é defeito, é para o seu olho não se perder.
-
-**Nível 1 — sempre à vista:** o fã (nome e relógio grandes), a fase, o
-roteiro sugerido e o `Copiar`. É o que muda a sua próxima mensagem.
-
-**Nível 2 — quatro cartões, numa grade 2×2:**
-
-| Cartão | O que mostra fechado |
-|---|---|
-| **Preço** | preço de entrada grande, o teto e o Pix |
-| **Meta do dia** | quanto fez, de quanto é a meta, sua posição e a barrinha |
-| **Leitura do fã** | termômetro N/10 e a cena |
-| **Recursos** | quantos recursos da Privacy dão para usar |
-
-Cada um já mostra fechado o número que importa — **não precisa abrir para
-saber como está.** Clique só quando quiser o detalhe; aberto, o cartão ocupa
-a largura toda.
-
-**Nível 3 — faixas embaixo:** Mais avisos, Fila, Roteiros da semana e
-Diagnóstico. As duas últimas vêm com borda tracejada, que é o jeito do painel
-dizer "isto é técnico, não é para a sua próxima mensagem".
-
-O painel lembra o que você deixou aberto.
-
----
-
-## 5. Os avisos que você não deve ignorar
+## 7. Avisos que não dá para ignorar
 
 | O que aparece | O que significa |
 |---|---|
-| 🎯 **Ofertar agora** | O Delta leu sinal de compra (compra recente, sequência boa, resposta rápida). As variantes de oferta sobem para o topo. É a hora de pedir dinheiro. |
-| **Faixa vermelha no topo** | Ele não conseguiu ler a conversa. **Dê F5 na Privacy.** Enquanto isso, qualquer sugestão está no escuro — não confie. |
-| **Bipe grave** (uma vez) | Você digitou um termo de risco. É só aviso, nunca bloqueia; releia a frase antes de enviar. |
-| **Chip vermelho "N no prazo estourado"** | Tem gente esperando demais na fila. A aba Fila **não abre mais sozinha** — é você que decide ir lá. |
-| **Borda pulsando em ouro** | Um lembrete venceu. Aquele fã virou o primeiro do `★ Próximo`. |
+| 🎯 **Ofertar agora** | sinal de compra lido. É a hora de pedir dinheiro. |
+| **Faixa vermelha no topo** | não conseguiu ler a conversa. **F5 na Privacy.** Até lá, qualquer sugestão está no escuro. |
+| **Alerta vermelho na versão da IA** | aquele texto bate numa regra de risco. Leia antes de usar. |
+| **Bipe grave** | você digitou um termo de risco. Só aviso. |
+| **Chip "N no prazo estourado"** | gente esperando demais. A Fila não abre sozinha. |
+| **Borda pulsando em ouro** | um lembrete venceu. |
 
 ---
 
-## 6. As cinco abas
+## 8. As abas
 
-- **Delta** — o trabalho. Fase, roteiro, preço. É onde você fica 95% do tempo.
-- **Ficha** — quem é o fã: gasto, compras, notas, tags. Escreva aqui o que
-  descobrir (`profissao: engenheiro`, `recebe dia 5`) e os roteiros passam a
-  usar isso.
-- **Fila** — quem está esperando, por quanto tempo, quanto já gastou.
-- **Sumidos** — quem parou de responder e vale um follow-up.
-- **Mais** — placar, conversão, subir extrato e o link da visão de gestor.
+- **Delta** — o trabalho. É onde você fica 95% do tempo.
+- **Ficha** — quem é o fã. Escreva `profissao: engenheiro` ou `recebe dia 5` e
+  os roteiros passam a usar isso.
+- **Fila** — quem está esperando (e clicável, veja o item 3).
+- **Sumidos** — quem parou de responder.
+- **Mais** — placar, extrato e o link da **visão de gestor**.
 
-### Visão de gestor (2.4.3)
-
-Na aba **Mais**, "Abrir numa aba": abre o Delta em tela cheia do Chrome, só
-com números — hoje por conta (com a **meta de cada uma**, ticket e conversão),
-o turno, operadores, roteiros da semana e as variantes que mais venderam.
-Não grava nada e não fala com a Privacy; é para você olhar no fim do dia,
-não durante o atendimento.
-
-O botão **Montar curva** mostra sua receita hora a hora nas últimas 8 h. Ele
-fica atrás de um botão porque são 8 leituras do banco — não vem sozinho para
-não pesar. E é a *sua* receita, das salas que você atendeu, não a da casa.
+**Visão de gestor:** "Abrir numa aba", na aba Mais. Tela cheia só com números —
+hoje por conta com meta, ticket e conversão; o turno; operadores; roteiros e
+variantes que mais venderam. O botão **Montar curva** mostra sua receita hora a
+hora (é sua, das salas que você atendeu, não a da casa). Olhe no fim do dia.
 
 ---
 
-## 6b. A IA no automático (2.4.2)
+## 9. Modo Dominante
 
-Desde a 2.4.2 você **não precisa apertar o ⚡**. Quando o fã escreve e é a sua
-vez de responder, o Delta já pede as versões adaptadas à Grok sozinho e elas
-entram no lugar do roteiro.
-
-Os freios, para não virar dinheiro jogado fora:
-
-- **Só na sua vez.** Se a última mensagem é sua, ele não pede nada.
-- **Uma vez por roteiro de cada conversa.** Mudou a fase, pede de novo.
-- **5 segundos** de folga entre dois pedidos e teto de **60 por hora**.
-
-Se não gostar de uma versão, aperte `A` (ou ⚡, ou "voltar ao roteiro
-normal") e volta ao roteiro escrito — e ele **não** insiste de novo naquele
-roteiro.
-
-Para desligar de vez: `coach-ext/data/coach_regras.json` → `ia` →
-`automatico` → `ativo: false`. Aí o ⚡ volta a ser no botão, como antes.
+Botão no topo, alterna `Normal` / `Dominante`, salvo neste Chrome. Muda o tom
+dos roteiros e mostra os próximos degraus de preço. Use com fã que já respondeu
+bem a esse tom, não como padrão.
 
 ---
 
-## 7. Modo Dominante
+## 10. Quando der errado
 
-Botão no topo, alterna entre `Normal` e `Dominante`. Fica salvo neste Chrome
-(é por conta, não é global). No Dominante os roteiros mudam de tom e aparece
-a projeção dos próximos degraus de preço. Use com fã que já respondeu bem a
-esse tom — não como padrão para todo mundo.
-
----
-
-## 8. Erros comuns (e o que fazer)
-
-| Sintoma | Causa | Solução |
-|---|---|---|
-| Sugestões não mudam ao abrir outra conversa | O leitor travou | F5 na Privacy |
-| "Não trocou…" no Alt+1/2/3 | A janela preta foi fechada | Rodar `arrumar_cockpit.bat` de novo |
-| ⚡ Adaptar não responde | Chave de IA no Supabase | Me avise |
-| O placar ignora uma conta | Nome da conta diferente no banco | Me avise |
-| Painel na versão antiga depois de atualizar | Extensão não recarregada | `chrome://extensions` nos 3 perfis + F5 |
+| Sintoma | Solução |
+|---|---|
+| Sugestões não mudam ao trocar de conversa | F5 na Privacy |
+| "Não trocou…" no Alt+1/2/3 | rodar `arrumar_cockpit.bat` de novo |
+| "essa conversa não está na lista carregada" | role a lista da Privacy e clique de novo |
+| "a Privacy desta janela não está aberta" | F5 na Privacy daquele perfil |
+| ⚡ não responde | me avise (chave de IA no Supabase) |
+| Versão antiga depois de atualizar | `chrome://extensions` nos 3 perfis + F5 |
 
 ---
 
-## 9. O que o Delta aprende sozinho
+## 11. O que ele aprende — e o que ele nunca faz
 
-Três coisas, todas a partir das suas jogadas registradas:
+**Aprende**, a partir das jogadas marcadas: qual variante vende, quando ofertar
+e quanto cobrar. Por isso vale sempre usar `C` ou `V`, nunca o mouse.
 
-1. **Qual variante vende** — ele testa as 3 e vai mostrando mais a que
-   converte (Thompson Sampling).
-2. **Quando ofertar** — o peso dos gatilhos do 🎯 vem das suas vendas reais,
-   não de um número chumbado.
-3. **Quanto cobrar** — os degraus de preço se calibram pela sua base.
-
-Nada disso funciona sem o passo 1 deste guia. **Copiar sempre pelo botão.**
+**Nunca faz**, e o teste automático impede: apertar enviar, simular Enter,
+rodar em lote ou fingir ser gente para enganar a Privacy. Uma ação por clique
+seu. O envio é sempre seu.
